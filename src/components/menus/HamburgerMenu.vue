@@ -1,19 +1,31 @@
 <template>
- <div>
+ <div class="hamburger-container">
     <div
-    v-on:click="toggle"
-    class="btn-container"
-    v-bind:class="{ change: active }">
+     v-on:click="toggle"
+     class="btn"
+     v-if="!active">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
     </div>
-    <div v-bind:class="{ menu: active, 'menu-hidden': !active }">
+    <div
+     class="menu-container"
+     v-bind:class="{ menu: active, 'menu-hidden': !active }">
+        <div
+        v-on:click="toggle"
+        class="btn btn-close x"
+        v-if="active">
+            <div class="bar1"></div>
+            <div class="bar2"></div>
+            <div class="bar3"></div>
+        </div>
         <div v-if="active">
-        <h2>PROFILE</h2>
-        <h2>RESERVATIONS</h2>
-        <h2>MAP RESERVE</h2>
-        <h2>SPEAK FOR THE TREES</h2>
+            <div class="menu__links">
+                <h2>PROFILE</h2>
+                <h2>RESERVATIONS</h2>
+                <h2>MAP RESERVE</h2>
+                <h2>SPEAK FOR THE TREES</h2>
+            </div>
         </div>
     </div>
  </div>
@@ -35,6 +47,14 @@ export default {
 
 <style>
 
+.menu-container {
+    display: grid;
+    grid-template-areas: "close"
+                         "logo"
+                         "links";
+    grid-template-rows: 1rem 20rem 50rem;
+    grid-template-columns: 100%;
+}
 
 .menu {
    top: 0;
@@ -57,13 +77,20 @@ export default {
    transition: .3s;
 }
 
-.btn-container {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1001;
+.menu__links {
+    grid-area: links;
+    border: 2px solid red;
+}
+
+.btn {
   display: inline-block;
   cursor: pointer;
+}
+
+.btn-close {
+  grid-area: close;
+  margin-left: 1rem;
+  margin-top: 1rem;
 }
 
 .bar1, .bar2, .bar3 {
@@ -71,17 +98,18 @@ export default {
   height: 5px;
   background-color: #333;
   margin: 6px 0;
-  transition: 0.4s;
 }
 
-.change .bar1 {
+.x .bar1 {
   -webkit-transform: rotate(-45deg) translate(-8px, 8px);
   transform: rotate(-45deg) translate(-8px, 8px);
 }
 
-.change .bar2 {opacity: 0;}
+.x .bar2 {
+    opacity: 0;
+}
 
-.change .bar3 {
+.x .bar3 {
   -webkit-transform: rotate(45deg) translate(-8px, -8px);
   transform: rotate(45deg) translate(-8px, -8px);
 }
