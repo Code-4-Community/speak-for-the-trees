@@ -35,7 +35,7 @@
 export default {
   name: 'HamburgerMenu',
   data: () => ({
-    active: true,
+    active: false,
   }),
   methods: {
     toggle() {
@@ -48,12 +48,15 @@ export default {
 <style>
 
 .menu-container {
-    display: grid;
+    /* display: grid;
     grid-template-areas: "close"
                          "logo"
                          "links";
     grid-template-rows: 1rem 20rem 50rem;
-    grid-template-columns: 100%;
+    grid-template-columns: 100%; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .menu {
@@ -79,7 +82,6 @@ export default {
 
 .menu__links {
     grid-area: links;
-    border: 2px solid red;
 }
 
 .btn {
