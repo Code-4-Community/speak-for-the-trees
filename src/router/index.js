@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Authentication from '../components/Authentication/Authentication.vue';
+import Login from '../components/Authentication/Login/Login.vue';
+import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 
 Vue.use(VueRouter);
 
@@ -24,9 +27,28 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/HamburgerMenu.vue'),
   },
   {
+
     path: '/navbar',
     name: 'navbar',
     component: () => import(/* webpackChunkName: "about" */ '../views/Navbar.vue'),
+  },
+  {
+    path: '/authentication',
+    name: 'authentication',
+    component: Authentication,
+    redirect: '/authentication/login',
+    children: [
+      {
+        path: '/login',
+        name: 'login',
+        component: Login,
+      },
+      {
+        path: '/sign-up',
+        name: 'sign-up',
+        component: SignUp,
+      },
+    ],
   },
 ];
 
