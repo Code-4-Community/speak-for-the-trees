@@ -48,12 +48,6 @@ export default {
 <style>
 
 .menu-container {
-    /* display: grid;
-    grid-template-areas: "close"
-                         "logo"
-                         "links";
-    grid-template-rows: 1rem 20rem 50rem;
-    grid-template-columns: 100%; */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
