@@ -52,11 +52,10 @@ export default {
         // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
         popupTemplate: template,
       });
-
       // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
       this.view.popup.on('trigger-action', (event) => {
         if (event.action.id === 'reserve-this') {
-          this.view.popup.content = '<button onClick="handleRegister()">Register for this Event</button>';
+          // store.commit('addStreetReservation', event);
         }
       });
       // https://developers.arcgis.com/labs/javascript/filter-a-feature-layer/
@@ -97,8 +96,6 @@ export default {
 
 <style scoped>
 #map {
-  padding: 0;
-  margin: 5%;
   width: 100%;
   height: 100%;
 }
