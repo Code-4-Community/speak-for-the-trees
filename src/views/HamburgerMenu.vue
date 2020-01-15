@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div>
     <h1>Hamburger Menu</h1>
     <hamburger-menu />
   </div>

@@ -23,6 +23,11 @@ const routes = [
     name: 'hamburger',
     component: () => import(/* webpackChunkName: "about" */ '../views/HamburgerMenu.vue'),
   },
+  {
+    path: '/navbar',
+    name: 'navbar',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Navbar.vue'),
+  },
 ];
 
 const router = new VueRouter({
