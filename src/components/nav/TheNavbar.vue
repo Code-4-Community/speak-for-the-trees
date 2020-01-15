@@ -20,8 +20,9 @@ export default {
 
 <style>
 .header-container {
-    padding: 1rem;
-    width: 95vw;
+    padding: 1em;
+    width: 98vw; /* setting this to 100vw pushes it
+                    off the edge of the screen, just fyi */
     height: 3rem;
     position: fixed;
     top: 0;
@@ -32,10 +33,12 @@ export default {
 }
 
 .header__logo {
-    height: 1rem;
-    width: 1rem;
+    display:  flex;
+    align-items: center;
+    justify-content: center;
+    height: 3em;
+    width: 3em;
     color: white;
     background-color: grey;
-    margin-right: 1rem;
 }
 </style>
