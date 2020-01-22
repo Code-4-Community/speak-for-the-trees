@@ -32,6 +32,8 @@ export default {
       password: ['', ''],
       inputError: [],
       serverError: '',
+      signUpForNewsLetter: false,
+      rememberLogIn: false,
     };
   },
   methods: {

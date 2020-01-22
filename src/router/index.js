@@ -22,19 +22,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/hamburger',
-    name: 'hamburger',
-    component: () => import(/* webpackChunkName: "about" */ '../views/HamburgerMenu.vue'),
-  },
-  {
-
-    path: '/navbar',
-    name: 'navbar',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Navbar.vue'),
-  },
-  {
     path: '/authentication',
-    name: 'authentication',
     component: Authentication,
     redirect: '/authentication/login',
     children: [
@@ -49,6 +37,10 @@ const routes = [
         component: SignUp,
       },
     ],
+  },
+  {
+    path: '/*',
+    redirect: '/',
   },
 ];
 

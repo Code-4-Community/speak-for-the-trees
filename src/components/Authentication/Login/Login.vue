@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'login',
   data() {
     return {
       email: '',
@@ -35,6 +35,7 @@ export default {
       rememberMe: '',
       submitted: false,
       inputValid: false,
+      rememberLogIn: false,
       error: '',
     };
   },
