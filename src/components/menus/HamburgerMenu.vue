@@ -14,6 +14,7 @@
        <h2>RESERVATIONS</h2>
        <h2>MAP RESERVE</h2>
        <h2>SPEAK FOR THE TREES</h2>
+       <router-link :to="{ name: 'login' }" tag="h2">Login/SignUp</router-link>
        </div>
    </div>
 </div>
@@ -23,7 +24,7 @@
 export default {
   name: 'HamburgerMenu',
   data: () => ({
-    active: true,
+    active: false,
   }),
   methods: {
     toggle() {
