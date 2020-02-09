@@ -8,11 +8,15 @@
 //   this standardizes that each volunteer does similar amounts of work.
 
 import { loadModules } from 'esri-loader';
+// import axios from 'axios';
 // import { expression } from '@babel/template';
 
 export default {
   /* eslint-disable no-alert, no-unused-vars */
   name: 'ArcMap',
+  deleteFeature(id) {
+    console.log('Hit');
+  },
   mounted() {
     // lazy load the required ArcGIS API for JavaScript modules and CSS
     const reserveSegment = {
@@ -23,9 +27,10 @@ export default {
     const template = {
       // autocasts as new PopupTemplate()
       title: '{ST_NAME} {ST_TYPE}', // Show attribute value
-      content: '<b>ID:</b> {SEGMENT_ID} <br><b>Length:</b> {SHAPElen} ft<br><b>Available?</b> Yes<br><b>Last Observered:</b> August 17, 2018',
+      content: '<b>ID:</b> {FID} <strong>RESERVED: {RESERVED}</strong>',
       actions: [reserveSegment],
     };
+    // The basis of the map load...
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/layers/GraphicsLayer',
       'esri/Graphic'],
     { css: true }).then(([ArcGISMap, MapView, FeatureLayer, GraphicsLayer]) => {
@@ -35,11 +40,13 @@ export default {
       this.view = new MapView({
         container: this.$el,
         map,
+        // NEU Coordinates
         center: [-71.0892, 42.3398],
         zoom: 15,
       });
+      // Fetched street segments, to be later replaced with::::
       const streetSegments = new FeatureLayer({
-        url: 'https://services1.arcgis.com/KUeKSLlMUcWvuPRM/arcgis/rest/services/Boston_Street_Segments/FeatureServer',
+        url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/arcgis/rest/services/boston_street_segments_1/FeatureServer',
         renderer: {
           type: 'simple',
           symbol: {
@@ -48,14 +55,16 @@ export default {
             width: '1px',
           },
         },
-        outFields: ['SEGMENT_ID', 'ST_NAME'],
+        outFields: ['ST_NAME'],
         // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
         popupTemplate: template,
       });
       // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
       this.view.popup.on('trigger-action', (event) => {
         if (event.action.id === 'reserve-this') {
-          // store.commit('addStreetReservation', event);
+          console.log(JSON.stringify(event.target.selectedFeature.attributes.FID));
+          const id = event.target.selectedFeature.attributes.FID;
+          this.deleteFeature(event.target.selectedFeature.attributes.FID);
         }
       });
       // https://developers.arcgis.com/labs/javascript/filter-a-feature-layer/
@@ -76,14 +85,8 @@ export default {
       selectFilter.addEventListener('change', (event) => {
         setFeatureLayerFilter(event.target.value);
       });
-
-      const graphicsLayer = new GraphicsLayer();
-      map.add(graphicsLayer);
       map.add(streetSegments);
     });
-  },
-  handleRegister() {
-    // console.log('hit');
   },
   beforeDestroy() {
     if (this.view) {

@@ -11,7 +11,6 @@
         <ArcMap/>
       </div>
     </div>
-    <h2>gfgf</h2>
   </div>
 </template>
 
