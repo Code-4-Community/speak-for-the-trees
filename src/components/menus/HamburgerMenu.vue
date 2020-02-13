@@ -34,8 +34,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="less">
+@import '../../../assets/color-constants.less';
 
 .menu {
   top: 0;
@@ -44,7 +44,7 @@ export default {
   z-index: 1000;
   width: 20em;
   height: 100vh;
-  background-color: rgba(3, 252, 232, 0.8);
+  background-color: @menu-bg-color;
   transition: .2s;
 }
 
@@ -70,7 +70,7 @@ export default {
 .bar1, .bar2, .bar3 {
  width: 2.1875em;
  height: .3125em;
- background-color: #333;
+ background-color: @bar-bg-color;
  margin: .375em 0;
  transition: 0.4s;
 }
