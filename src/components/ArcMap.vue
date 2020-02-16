@@ -64,7 +64,15 @@ export default {
         if (event.action.id === 'reserve-this') {
           console.log(JSON.stringify(event.target.selectedFeature.attributes.FID));
           const id = event.target.selectedFeature.attributes.FID;
-          this.deleteFeature(event.target.selectedFeature.attributes.FID);
+          this.$store.commit({
+            type: 'addStreetReservation',
+            street: {
+              id: 12,
+              name: 'efeef',
+              description: 'sfsfsf',
+              users: [],
+            },
+          });
         }
       });
       // https://developers.arcgis.com/labs/javascript/filter-a-feature-layer/

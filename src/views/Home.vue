@@ -5,7 +5,11 @@
       <div id='menu'>
         <!-- To be a seperate component -->
         <div class='menu-title'>Your Team Name:</div>
-        <div>Reserved Streets ....</div>
+        <ul id="example-1">
+          <li v-for="event in events" v-bind:key="event.id">
+            {{ event.id }}:{{ event.name }}
+          </li>
+</ul>
       </div>
       <div id='map'>
         <ArcMap/>
@@ -21,6 +25,18 @@ export default {
   name: 'home',
   components: {
     ArcMap,
+  },
+  computed: {
+    doneTodos() {
+      return this.$store.getters.doneTodos;
+    },
+  },
+  data() {
+    return {
+      // dummy data
+      // events: this.$store.state.events,
+      events: this.$store.getters.doneTodos,
+    };
   },
 };
 </script>
