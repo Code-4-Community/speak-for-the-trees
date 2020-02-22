@@ -18,7 +18,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+@import '../../../assets/color-constants.less';
+
 .header-container {
     padding: 1em;
     width: 98vw; /* setting this to 100vw pushes it
@@ -38,7 +40,7 @@ export default {
     justify-content: center;
     height: 3em;
     width: 3em;
-    color: white;
-    background-color: grey;
+    color: @header-logo-color;
+    background-color: @header-logo-bg;
 }
 </style>
