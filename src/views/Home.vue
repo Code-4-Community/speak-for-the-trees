@@ -8,19 +8,19 @@
         <div>Reserved Streets ....</div>
       </div>
       <div id='map'>
-        <ArcMap/>
+        <ArcMapLeaflet/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ArcMap from '../components/ArcMap.vue';
+import ArcMapLeaflet from '../components/ArcMapLeaflet.vue';
 
 export default {
   name: 'home',
   components: {
-    ArcMap,
+    ArcMapLeaflet,
   },
 };
 </script>

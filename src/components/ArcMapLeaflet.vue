@@ -8,7 +8,7 @@
 //   this standardizes that each volunteer does similar amounts of work.
 
 // import { loadModules } from 'esri-loader';
-import L from 'leaflet';
+// import L from 'leaflet';
 // import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 // import axios from 'axios';
 // import { expression } from '@babel/template';
@@ -25,7 +25,7 @@ export default {
     // LMarker,
   },
   mounted() {
-    const map = L.map('map', {
+    const map = this.map('map', {
       center: [51.505, -0.09],
       zoom: 13,
     });
