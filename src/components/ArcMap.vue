@@ -51,9 +51,33 @@ export default {
           type: 'simple',
           symbol: {
             type: 'simple-line',
-            color: 'green',
+            color: FeatureLayer ? 'red' : 'green',
             width: '1px',
           },
+        },
+        style: (feature) => {
+          console.log(feature);
+          let c;
+          switch (feature.properties.ST_TYPE) {
+            case 'AVE':
+              c = 'green';
+              break;
+            case 'ST':
+              c = 'blue';
+              break;
+            default:
+              c = 'red';
+          }
+          return {
+            renderer: {
+              type: 'simple',
+              symbol: {
+                type: 'simple-line',
+                color: c,
+                width: '1px',
+              },
+            },
+          };
         },
         outFields: ['ST_NAME'],
         // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
