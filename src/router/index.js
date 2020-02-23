@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Authentication from '../components/Authentication/Authentication.vue';
 import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
+import Map from '../components/Map/Map.vue';
 
 Vue.use(VueRouter);
 
@@ -12,6 +13,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home,
+  },
+  {
+    path: '/map',
+    name: 'map',
+    component: Map,
   },
   {
     path: '/about',
