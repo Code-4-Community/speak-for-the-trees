@@ -8,7 +8,7 @@
 //   this standardizes that each volunteer does similar amounts of work.
 
 // import { loadModules } from 'esri-loader';
-// import L from 'leaflet';
+import L from 'leaflet';
 // import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 // import axios from 'axios';
 // import { expression } from '@babel/template';
@@ -25,10 +25,17 @@ export default {
     // LMarker,
   },
   mounted() {
-    const map = this.map('map', {
-      center: [51.505, -0.09],
-      zoom: 13,
+    const map = L.map('map', {
+      center: [-71.0892, 42.3398],
+      zoom: 10,
     });
+    L.esri.basemapLayer('Gray').addTo(map);
+    const parks = L.esri.featureLayer({
+      url: 'https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/services/Portland_Parks/FeatureServer/0',
+      style() {
+        return { color: '#70ca49', weight: 2 };
+      },
+    }).addTo(map);
   },
   beforeDestroy() {
     if (this.view) {
