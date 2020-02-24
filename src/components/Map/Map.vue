@@ -12,14 +12,15 @@ export default {
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
       .then(([ArcGISMap, MapView, FeatureLayer]) => {
         const map = new ArcGISMap({
-          basemap: 'topo-vector',
+          basemap: 'gray',
         });
         const renderer = {
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-UniqueValueRenderer.html
           type: 'unique-value',
           field: 'ST_TYPE',
           defaultSymbol: { type: 'simple-line' },
           uniqueValueInfos: [{
-            // All features with value of "North" will be blue
             value: 'ST',
             symbol: {
               type: 'simple-line', // autocasts as new SimpleFillSymbol()
@@ -27,7 +28,6 @@ export default {
               width: '3px',
             },
           }, {
-            // All features with value of "East" will be green
             value: 'AVE',
             symbol: {
               type: 'simple-line', // autocasts as new SimpleFillSymbol()
@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 .map {
-  width: 100vw;
-  height: 100vh;
+  width: 70vw;
+  height: 70vh;
 }
 </style>
