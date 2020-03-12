@@ -3,30 +3,31 @@
     <table>
       <tr v-for="street in streets" :key="street.id">
         <td>{{ street.name }}</td>
-        <td>Remove</td>
+        <td><button @click="remove(street.id)">(Remove)</button></td>
       </tr>
     </table>
 
-    <button>Checkout</button>
+    <button @click="checkout">Checkout</button>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
 export default {
   name: 'Checkout',
   computed: {
-    streets() {
-      return [
-        {
-          id: 0,
-          name: 'Street 1',
-        },
-        {
-          id: 1,
-          name: 'Street 2',
-        },
-      ];
+    ...mapGetters({
+      streets: 'getStreets',
+    }),
+  },
+  methods: {
+    checkout() {
+      console.log(this.streets);
     },
+    ...mapMutations({
+      remove: 'removeStreet', // removes a street by ID
+    }),
   },
 };
 </script>

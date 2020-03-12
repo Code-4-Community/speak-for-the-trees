@@ -4,7 +4,7 @@ import Home from '../views/Home.vue';
 import Authentication from '../components/Authentication/Authentication.vue';
 import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
-import Map from '../components/Map/Map.vue';
+import MapContainer from '../components/Map/MapContainer.vue';
 
 Vue.use(VueRouter);
 
@@ -17,7 +17,7 @@ const routes = [
   {
     path: '/map',
     name: 'map',
-    component: Map,
+    component: MapContainer,
   },
   {
     path: '/about',

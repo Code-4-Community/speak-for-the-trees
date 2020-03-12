@@ -4,6 +4,7 @@
 
 <script>
 import { loadModules } from 'esri-loader';
+import { mapMutations } from 'vuex';
 
 export default {
   name: 'map',
@@ -59,6 +60,11 @@ export default {
       // destroy the map view
       this.view.container = null;
     }
+  },
+  methods: {
+    ...mapMutations([
+      'addStreet', // adds a street object to the store (for checkout)
+    ]),
   },
 };
 
