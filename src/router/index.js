@@ -5,6 +5,7 @@ import Authentication from '../components/Authentication/Authentication.vue';
 import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 import Map from '../components/Map/Map.vue';
+import Leaderboard from '../views/Leaderboard.vue';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,11 @@ const routes = [
     path: '/map',
     name: 'map',
     component: Map,
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
   },
   {
     path: '/about',
