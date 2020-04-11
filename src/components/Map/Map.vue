@@ -95,7 +95,8 @@ export default {
 
 <style scoped>
 .map {
-  margin-left: 15%;
+  margin-left: 20em;
+  margin-right: 20em;
   width: 70vw;
   height: 70vh;
 }
