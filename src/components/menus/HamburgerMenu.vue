@@ -12,7 +12,7 @@
        <div v-if="active">
        <h2>PROFILE</h2>
        <h2>RESERVATIONS</h2>
-       <h2>MAP RESERVE</h2>
+       <router-link :to="{ name: 'map' }" tag="h2">MAP RESERVE</router-link>
        <h2>SPEAK FOR THE TREES</h2>
        <router-link :to="{ name: 'login' }" tag="h2">Login/SignUp</router-link>
        </div>
