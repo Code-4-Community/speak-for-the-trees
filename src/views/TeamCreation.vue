@@ -1,0 +1,30 @@
+<template>
+   <div class="text-center">
+    <div class="team-creation">
+     <b-form-input v-model="text" placeholder="Enter your Team Name"></b-form-input>
+     <b-form-input v-for="x in members" :key="x"
+     placeholder="Enter your Member"></b-form-input>
+    </div>
+     <b-col v-on:click="members += 1" lg="4" class="pb-2">
+         <b-button>Add Another Member</b-button></b-col>
+    </div>
+</template>
+
+<script>
+export default {
+  name: 'TeamCreation',
+  members: 1,
+  data: () => ({
+    members: 1,
+  }),
+  computed: {
+
+  },
+};
+</script>
+
+<style>
+.team-creation {
+
+}
+</style>

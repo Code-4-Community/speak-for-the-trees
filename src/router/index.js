@@ -4,6 +4,7 @@ import AuthenticationView from '../views/AuthenticationView.vue';
 import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 import Map from '../components/Map/Map.vue';
+import HomeView from '../views/HomeView.vue';
 
 Vue.use(VueRouter);
 
@@ -11,7 +12,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue'),
+    component: HomeView,
   },
   {
     path: '/map',
