@@ -5,6 +5,7 @@ import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 import Map from '../components/Map/Map.vue';
 import HomeView from '../views/HomeView.vue';
+import Leaderboard from '../views/Leaderboard.vue';
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
   },
   {
     path: '/map',

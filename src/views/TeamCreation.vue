@@ -6,7 +6,9 @@
      placeholder="Enter your Member"></b-form-input>
     </div>
      <b-col v-on:click="members += 1" lg="4" class="pb-2">
-         <b-button>Add Another Member</b-button></b-col>
+         <b-button variant="outline-primary">Add Another Member</b-button>
+         </b-col>
+         <b-button variant="success">Create Team</b-button>
     </div>
 </template>
 
