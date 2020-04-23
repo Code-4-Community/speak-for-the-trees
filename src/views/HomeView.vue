@@ -3,7 +3,7 @@
     <h1>Home Page</h1>
     <div>
     <b-button-group vertical>
-    <b-button class="individual-button" ref="/map" pill variant="outline-success">
+    <b-button class="individual-button" href="/map" pill variant="outline-success">
     Reserve New</b-button>
     <b-button class="individual-button" href="/current-reservations" pill variant="outline-success">
     Current Reservations</b-button>
