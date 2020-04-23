@@ -9,10 +9,10 @@
        <div class="bar3"></div>
    </div>
    <div v-bind:class="{ menu: active, 'menu-hidden': !active }">
-       <div v-if="active">
-       <h2>Profile</h2>
-     <router-link :to="{ name: 'leaderboard' }" tag="h2">Leaderboard</router-link>
-       <h2>Contact</h2>
+      <div v-if="active">
+      <router-link :to="{ name: 'home' }" tag="h2">Home</router-link>
+      <router-link :to="{ name: 'leaderboard' }" tag="h2">Leaderboard</router-link>
+      <h2>Contact</h2>
        <router-link :to="{ name: 'login' }" tag="h2">Login/SignUp</router-link>
        </div>
    </div>

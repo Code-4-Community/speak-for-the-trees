@@ -6,6 +6,8 @@ import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 import Map from '../components/Map/Map.vue';
 import HomeView from '../views/HomeView.vue';
 import Leaderboard from '../views/Leaderboard.vue';
+import TeamCreation from '../views/TeamCreation.vue';
+import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
 
@@ -19,6 +21,16 @@ const routes = [
     path: '/leaderboard',
     name: 'leaderboard',
     component: Leaderboard,
+  },
+  {
+    path: '/create',
+    name: 'TeamCreation',
+    component: TeamCreation,
+  },
+  {
+    path: '/current-reservations',
+    name: 'CurrentReservations',
+    component: CurrentReservations,
   },
   {
     path: '/map',

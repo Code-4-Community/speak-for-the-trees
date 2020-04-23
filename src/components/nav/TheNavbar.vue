@@ -3,7 +3,7 @@
       <div class="header__hamburger-menu">
           <hamburger-menu />
       </div>
-      <div class="header__logo">logo</div>
+      <div href="/home" class="header__logo">logo</div>
   </div>
 </template>
 
