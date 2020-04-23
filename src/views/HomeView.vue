@@ -1,25 +1,24 @@
 <template>
-  <div class="home">
-    <h1>Home Page</h1>
-    <div>
-    <b-button-group vertical>
-    <b-button class="individual-button" href="/map" pill variant="outline-success">
-    Reserve New</b-button>
-    <b-button class="individual-button" href="/current-reservations" pill variant="outline-success">
-    Current Reservations</b-button>
-    <b-button  class="individual-button" href="/create" pill variant="outline-success">
-    Create Team</b-button>
-    </b-button-group>
-    </div>
+  <div>
+    <about/>
+    <leaderboard v-if="loggedIn" />
   </div>
 </template>
 
 <script>
 
+import Leaderboard from './Leaderboard.vue';
+import About from './AboutView.vue';
+
 export default {
   name: 'home',
   components: {
+    Leaderboard,
+    About,
   },
+  data: () => ({
+    loggedIn: true,
+  }),
 };
 </script>
 

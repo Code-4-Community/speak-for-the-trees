@@ -2,12 +2,18 @@
   <div class="header-container">
           <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
             <b-dropdown-item href="/">Home</b-dropdown-item>
+            <b-dropdown-item href="/map">Reserve Streets</b-dropdown-item>
             <b-dropdown-item href="/current-reservations">Current Reservations</b-dropdown-item>
+            <b-dropdown-item href="/create">Create Team</b-dropdown-item>
             <b-dropdown-item href="/contact">Contact</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
     <!-- Put logic here to detect if logged-in already and changed account options accordingly -->
-            <b-dropdown-item href="/sign-up">Sign-Up</b-dropdown-item>
-            <b-dropdown-item href="/login">Login</b-dropdown-item>
+            <b-dropdown-item href="/sign-up" v-if="!loggedIn">
+            <strong>Sign-Up</strong></b-dropdown-item>
+            <b-dropdown-item href="/login" v-if="!loggedIn">
+            <strong>Login</strong></b-dropdown-item>
+            <b-dropdown-item href="/login" v-if="loggedIn">
+            <strong>Logout</strong></b-dropdown-item>
   </b-dropdown>
      <a href="/home" ><img class="header__logo" src="../../../assets/sftt-logo-text.jpg" /></a>
   </div>
@@ -18,6 +24,9 @@ export default {
   name: 'Header',
   components: {
   },
+  data: () => ({
+    loggedIn: true,
+  }),
 };
 </script>
 

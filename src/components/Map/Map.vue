@@ -96,7 +96,6 @@ export default {
 <style scoped>
 .map {
   width: 98vw;
-  height: 98vh;
-
+  height: 90vh;
 }
 </style>

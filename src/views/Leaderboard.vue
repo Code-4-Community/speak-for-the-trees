@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h3>Leaderboard</h3>
     <b-table striped hover :items="items"></b-table>
   </div>
 </template>
