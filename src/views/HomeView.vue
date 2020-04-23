@@ -2,16 +2,14 @@
   <div class="home">
     <h1>Home Page</h1>
     <div>
-    <b-col>
-    <b-button href="/map" pill variant="outline-success">Reserve New</b-button>
-    </b-col>
-    <b-col>
-    <b-button href="/current-reservations" pill variant="outline-success">
+    <b-button-group vertical>
+    <b-button class="individual-button" ref="/map" pill variant="outline-success">
+    Reserve New</b-button>
+    <b-button class="individual-button" href="/current-reservations" pill variant="outline-success">
     Current Reservations</b-button>
-    </b-col>
-    <b-col>
-    <b-button href="/create" pill variant="outline-success">Create Team</b-button>
-    </b-col>
+    <b-button  class="individual-button" href="/create" pill variant="outline-success">
+    Create Team</b-button>
+    </b-button-group>
     </div>
   </div>
 </template>
@@ -24,3 +22,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.individual-button {
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+</style>
