@@ -1,5 +1,5 @@
 <template>
-    <div class='map'></div>
+  <div class='map'></div>
 </template>
 
 <script>
@@ -95,9 +95,7 @@ export default {
 
 <style scoped>
 .map {
-  margin-left: 20em;
-  margin-right: 20em;
-  width: 70vw;
-  height: 70vh;
+  width: 98vw;
+  height: 90vh;
 }
 </style>

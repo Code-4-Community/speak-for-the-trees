@@ -1,20 +1,32 @@
 <template>
   <div class="header-container">
-      <div class="header__hamburger-menu">
-          <hamburger-menu />
-      </div>
-      <div class="header__logo">logo</div>
+          <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
+            <b-dropdown-item href="/">Home</b-dropdown-item>
+            <b-dropdown-item href="/map">Reserve Streets</b-dropdown-item>
+            <b-dropdown-item href="/current-reservations">Current Reservations</b-dropdown-item>
+            <b-dropdown-item href="/create">Create Team</b-dropdown-item>
+            <b-dropdown-item href="/contact">Contact</b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
+    <!-- Put logic here to detect if logged-in already and changed account options accordingly -->
+            <b-dropdown-item href="/sign-up" v-if="!loggedIn">
+            <strong>Sign-Up</strong></b-dropdown-item>
+            <b-dropdown-item href="/login" v-if="!loggedIn">
+            <strong>Login</strong></b-dropdown-item>
+            <b-dropdown-item href="/login" v-if="loggedIn">
+            <strong>Logout</strong></b-dropdown-item>
+  </b-dropdown>
+     <a href="/home" ><img class="header__logo" src="../../../assets/sftt-logo-text.jpg" /></a>
   </div>
 </template>
 
 <script>
-import HamburgerMenu from '../menus/HamburgerMenu.vue';
-
 export default {
   name: 'Header',
   components: {
-    HamburgerMenu,
   },
+  data: () => ({
+    loggedIn: true,
+  }),
 };
 </script>
 
@@ -22,11 +34,10 @@ export default {
 @import '../../../assets/color-constants.less';
 
 .header-container {
-    padding: 1em;
     width: 98vw; /* setting this to 100vw pushes it
                     off the edge of the screen, just fyi */
     height: 3rem;
-    position: fixed;
+    margin: 1em;
     top: 0;
     left: 0;
     display: flex;
@@ -38,6 +49,7 @@ export default {
     display:  flex;
     align-items: center;
     justify-content: center;
+    margin: 3em;
     height: 3em;
     width: 3em;
     color: @header-logo-color;

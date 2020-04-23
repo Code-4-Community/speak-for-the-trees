@@ -1,9 +1,38 @@
 <template>
   <div>
-    <img class="auth-logo" src="../../../../assets/sftt-logo-text.jpg" />
+    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <b-form>
+      <b-form-group>
+        <b-form-input
+          id="input-username"
+          v-model="username"
+          type="text"
+          required
+          placeholder="Username"
+        ></b-form-input>
+        </b-form-group>
+
+<b-form-group>
+        <b-form-input
+          id="input-password"
+          v-model="password"
+          type="password"
+          required
+          placeholder="Password"
+        ></b-form-input>
+        </b-form-group>
+
+      <b-form-group id="input-remember-login">
+        <b-form-checkbox-group v-model="rememberLogIn" id="checkboxes-4">
+          <b-form-checkbox value="">Remember for next time?</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-form>
+    <!-- <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
     <h1>Sign in</h1>
-    <!-- <h4> Welcome! </h4>
-    <p> A very detailed login description </p> -->
     <div class="auth-container">
       <input v-model="email" @focus="resetSubmit" type="text" placeholder="Email Address" />
       <input v-model="password" @focus="resetSubmit" type="password" placeholder="Password"/>
@@ -21,7 +50,7 @@
       <a href="/"> FORGOT USERNAME? </a>
       <a href="/"> FORGOT PASSWORD? </a>
       <router-link to="sign-up" tag="a"> NEW TO SPEAK FOR THE TREES? SIGN UP HERE! </router-link>
-    </div>
+    </div> -->
   </div>
 </template>
 

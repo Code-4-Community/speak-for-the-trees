@@ -1,8 +1,10 @@
 <template>
+<div>
+<the-navbar />
   <div id="app">
-    <the-navbar />
-    <router-view/>
+  <router-view/>
   </div>
+</div>
 </template>
 
 <script>
@@ -24,6 +26,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: @app-text;
+  display: flex;
+  justify-content: center;
 }
 
 #nav {

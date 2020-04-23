@@ -1,9 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthenticationView from '../views/AuthenticationView.vue';
-import Login from '../components/Authentication/Login/Login.vue';
-import SignUp from '../components/Authentication/SignUp/SignUp.vue';
+import Login from '../views/Login.vue';
+import SignUp from '../views/SignUp.vue';
 import Map from '../components/Map/Map.vue';
+import HomeView from '../views/HomeView.vue';
+import Leaderboard from '../views/Leaderboard.vue';
+import TeamCreation from '../views/TeamCreation.vue';
+import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
 
@@ -11,7 +15,22 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue'),
+    component: HomeView,
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
+  },
+  {
+    path: '/create',
+    name: 'TeamCreation',
+    component: TeamCreation,
+  },
+  {
+    path: '/current-reservations',
+    name: 'CurrentReservations',
+    component: CurrentReservations,
   },
   {
     path: '/map',
