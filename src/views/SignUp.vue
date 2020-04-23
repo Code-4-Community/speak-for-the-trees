@@ -1,6 +1,60 @@
 <template>
   <div>
-    <img class="auth-logo" src="../../../../assets/sftt-logo-text.jpg" />
+    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <b-form>
+      <b-form-group>
+        <b-form-input
+          id="input-username"
+          v-model="username"
+          type="text"
+          required
+          placeholder="Username"
+        ></b-form-input>
+        </b-form-group>
+<b-form-group
+          id="input-group-1"
+        label-for="input-1"
+        description="We'll never share your email with anyone else."
+        >
+        <b-form-input
+          id="input-email"
+          v-model="email"
+          type="email"
+          required
+          placeholder="Email"
+        ></b-form-input>
+        </b-form-group>
+<b-form-group>
+        <b-form-input
+          id="input-password"
+          v-model="password[0]"
+          type="password"
+          required
+          placeholder="Password"
+        ></b-form-input>
+        </b-form-group>
+<b-form-group>
+        <b-form-input
+          id="input-password-confirm"
+          v-model="password[1]"
+          type="password"
+          required
+          placeholder="Confirm Password"
+        ></b-form-input>
+      </b-form-group>
+
+      <b-form-group id="input-remember-login">
+        <b-form-checkbox-group v-model="rememberLogIn" id="checkboxes-4">
+          <b-form-checkbox value="">Remember for next time?</b-form-checkbox>
+        </b-form-checkbox-group>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary">Submit</b-button>
+      <b-button type="reset" variant="danger">Reset</b-button>
+    </b-form>
+  </div>
+  <!-- <div>
+    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
     <h1> Sign Up </h1>
     <div class="auth-container">
       <input v-model="username" type="text" placeholder="USERNAME">
@@ -19,7 +73,7 @@
       <input type="checkbox" id="rememberLogIn" v-model="rememberLogIn">
     </div>
     <button @click="signup"> Signup </button>
-  </div>
+  </div> -->
 </template>
 
 <script>

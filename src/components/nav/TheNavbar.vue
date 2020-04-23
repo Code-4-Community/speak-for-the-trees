@@ -5,7 +5,8 @@
             <b-dropdown-item href="/current-reservations">Current Reservations</b-dropdown-item>
             <b-dropdown-item href="/contact">Contact</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item href="/signup">Sign-Up</b-dropdown-item>
+    <!-- Put logic here to detect if logged-in already and changed account options accordingly -->
+            <b-dropdown-item href="/sign-up">Sign-Up</b-dropdown-item>
             <b-dropdown-item href="/login">Login</b-dropdown-item>
   </b-dropdown>
      <a href="/home" ><img class="header__logo" src="../../../assets/sftt-logo-text.jpg" /></a>
