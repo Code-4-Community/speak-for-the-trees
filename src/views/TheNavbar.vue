@@ -7,7 +7,6 @@
             <b-dropdown-item href="/create">Create Team</b-dropdown-item>
             <b-dropdown-item href="/contact">Contact</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-    <!-- Put logic here to detect if logged-in already and changed account options accordingly -->
             <b-dropdown-item href="/sign-up" v-if="!loggedIn">
             <strong>Sign-Up</strong></b-dropdown-item>
             <b-dropdown-item href="/login" v-if="!loggedIn">
@@ -15,7 +14,7 @@
             <b-dropdown-item href="/login" v-if="loggedIn">
             <strong>Logout</strong></b-dropdown-item>
   </b-dropdown>
-     <a href="/home" ><img class="header__logo" src="../../../assets/sftt-logo-text.jpg" /></a>
+     <a href="/home" ><img class="header__logo" src="../../assets/sftt-logo-text.jpg" /></a>
   </div>
 </template>
 
@@ -31,7 +30,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../../assets/color-constants.less';
+@import '../../assets/color-constants.less';
 
 .header-container {
     width: 98vw; /* setting this to 100vw pushes it

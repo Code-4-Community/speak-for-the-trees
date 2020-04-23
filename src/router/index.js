@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import AuthenticationView from '../views/AuthenticationView.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
-import Map from '../components/Map/Map.vue';
+import Map from '../views/Map.vue';
 import HomeView from '../views/HomeView.vue';
 import Leaderboard from '../views/Leaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
@@ -70,23 +70,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue'),
   },
-  {
-    path: '/reservations',
-    name: 'reservations',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */'../views/ReservationsView.vue'),
-  },
-  {
-    path: '/reserve-blocks',
-    name: 'reserve-blocks',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ReserveBlocksView.vue'),
-  },
-
   {
     path: '/*',
     redirect: '/',
