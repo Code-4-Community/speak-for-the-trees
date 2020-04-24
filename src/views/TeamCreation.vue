@@ -7,6 +7,7 @@
           id="input-username"
           v-model="teamName"
           type="text"
+          :state="teamNameValidator"
           required
           placeholder="Enter your team name"
         ></b-form-input>
@@ -34,19 +35,23 @@
 export default {
   name: 'TeamCreation',
   members: 1,
+  methods: {
+  },
   data: () => ({
     members: 1,
     memberEmails: [],
     teamName: '',
   }),
   computed: {
-
+    teamNameValidator() {
+      return this.teamName.length > 3;
+    },
   },
 };
 </script>
 
 <style>
-.team-creation {
-
+.input-member {
+  margin-top: 10px;
 }
 </style>

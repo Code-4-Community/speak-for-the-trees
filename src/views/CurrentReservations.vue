@@ -13,10 +13,7 @@
     @click="releaseStreet(street.name + ' ' + street.type)" variant="danger">
       Release</b-button>
   </b-row>
-</b-container>
-<b-toast id="example-toast" title="BootstrapVue" static no-auto-hide>
-      Hello, world! This is a toast message.
-    </b-toast>
+  </b-container>
 </div>
 </template>
 

@@ -11,7 +11,7 @@
             <strong>Sign-Up</strong></b-dropdown-item>
             <b-dropdown-item href="/login" v-if="!loggedIn">
             <strong>Login</strong></b-dropdown-item>
-            <b-dropdown-item href="/login" v-if="loggedIn">
+            <b-dropdown-item href="/logout" v-if="loggedIn">
             <strong>Logout</strong></b-dropdown-item>
   </b-dropdown>
      <a href="/home" ><img class="header__logo" src="../../assets/sftt-logo-text.jpg" /></a>
