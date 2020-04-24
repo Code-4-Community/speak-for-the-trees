@@ -1,5 +1,5 @@
 <template>
-  <div class='map'></div>
+  <div></div>
 </template>
 
 <script>
@@ -7,11 +7,30 @@ import { loadModules } from 'esri-loader';
 
 export default {
   name: 'map',
+  data: () => ({
+    modalShow: false,
+  }),
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    reserveSelectedStreet() {
+      /**
+       * Code goes here to submit street to cart!
+       *
+       *
+       *
+       */
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        // modal popup
+        this.$bvModal.show('street-confirmation-modal');
+      }
+    },
+  },
   mounted() {
     const reserveSegment = {
       title: 'Reserve',
       id: 'reserve-this',
-      image: 'https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/live/Measure_Distance16.png',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     const template = {
       // autocasts as new PopupTemplate()
@@ -80,6 +99,14 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
+        // eslint-disable-next-line no-unused-vars
+        // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
+        this.view.popup.on('trigger-action', (event) => {
+          // Execute the measureThis() function if the measure-this action is clicked
+          if (event.action.id === 'reserve-this') {
+            this.reserveSelectedStreet();
+          }
+        });
       });
   },
   // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#refresh
@@ -94,8 +121,10 @@ export default {
 </script>
 
 <style scoped>
-.map {
-  width: 98vw;
-  height: 90vh;
+div {
+    padding: 0;
+    margin: 0;
+    width: 98vw;
+    height: 85vh;
 }
 </style>
