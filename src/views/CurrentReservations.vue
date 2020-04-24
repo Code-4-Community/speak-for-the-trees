@@ -29,8 +29,8 @@ export default {
     ],
   }),
   methods: {
-    // eslint-disable-next-line no-unused-vars
     completeStreet(street) {
+      // TODO
       // if POST was successfull
       // this.$bvToast.toast(`Successful completion of ${street}`);
       // if POST was unsuccessfull

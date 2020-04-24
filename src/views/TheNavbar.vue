@@ -2,6 +2,7 @@
   <div class="header-container">
           <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
             <b-dropdown-item href="/">Home</b-dropdown-item>
+            <b-dropdown-item href="/profile">Profile</b-dropdown-item>
             <b-dropdown-item href="/map">Reserve Streets</b-dropdown-item>
             <b-dropdown-item href="/current-reservations">Current Reservations</b-dropdown-item>
             <b-dropdown-item href="/create">Create Team</b-dropdown-item>

@@ -14,7 +14,8 @@ export default {
     // eslint-disable-next-line no-unused-vars
     reserveSelectedStreet() {
       /**
-       * Code goes here to submit street to cart!
+       * TODO
+       * Code goes here to submit street as reserved!
        *
        *
        *
