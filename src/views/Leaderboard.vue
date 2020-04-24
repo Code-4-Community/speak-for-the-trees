@@ -27,7 +27,7 @@ import players from '../components/Leaderboard/Players.vue';
 import myProgress from '../components/Leaderboard/My progress.vue';
 
 export default {
-  name: 'leaderboard',
+  name: 'Leaderboard',
   components: {
     players,
     myProgress,
