@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import AuthenticationView from '../views/AuthenticationView.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
-import Map from '../views/Map.vue';
+import MapPage from '../views/MapPage.vue';
 import HomeView from '../views/HomeView.vue';
 import Leaderboard from '../views/Leaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/map',
     name: 'map',
-    component: Map,
+    component: MapPage,
   },
   {
     path: '/leaderboard',
