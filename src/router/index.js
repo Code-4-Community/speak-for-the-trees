@@ -38,6 +38,11 @@ const routes = [
     component: Map,
   },
   {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting
