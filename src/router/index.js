@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Authentication from '../components/Authentication/Authentication.vue';
+import AuthenticationView from '../views/AuthenticationView.vue';
 import Login from '../components/Authentication/Login/Login.vue';
 import SignUp from '../components/Authentication/SignUp/SignUp.vue';
 import Map from '../components/Map/Map.vue';
@@ -18,7 +17,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home,
+    component: () => import('../views/HomeView.vue'),
   },
   {
     path: '/map',
@@ -37,11 +36,11 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
   {
     path: '/authentication',
-    component: Authentication,
+    component: AuthenticationView,
     redirect: '/authentication/login',
     children: [
       {
@@ -56,6 +55,31 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/profile',
+    name: 'profile',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue'),
+  },
+  {
+    path: '/reservations',
+    name: 'reservations',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */'../views/ReservationsView.vue'),
+  },
+  {
+    path: '/reserve-blocks',
+    name: 'reserve-blocks',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/ReserveBlocksView.vue'),
+  },
+
   {
     path: '/*',
     redirect: '/',
