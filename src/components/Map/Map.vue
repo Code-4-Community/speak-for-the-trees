@@ -3,10 +3,16 @@
 </template>
 
 <script>
-import { loadModules } from 'esri-loader';
+import { loadModules, Editor } from 'esri-loader';
 
 export default {
   name: 'map',
+  props: {
+    reservedFilter: {
+      type: Number,
+      required: false,
+    },
+  },
   mounted() {
     const reserveSegment = {
       title: 'Reserve',
@@ -42,7 +48,12 @@ export default {
       },
       ],
     };
-    const sqlExpressions = ['*', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'"];
+    const sqlExpressions = [];
+    if (this.reservedFilter !== undefined) {
+      sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
+    } else {
+      sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
+    }
     const selectFilter = document.createElement('select');
     selectFilter.setAttribute('class', 'esri-widget esri-select');
     selectFilter.setAttribute('style', 'width: 275px; font-family: Avenir Next W00; font-size: 1em');
@@ -55,6 +66,7 @@ export default {
     // lazy load the required ArcGIS API for JavaScript modules and CSS
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
       .then(([ArcGISMap, MapView, FeatureLayer]) => {
+        console.log(this.reservedFilter);
         const map = new ArcGISMap({
           basemap: 'gray',
         });
@@ -72,7 +84,42 @@ export default {
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
         });
+        const reserveEditor = new Editor({
+          view: this.view,
+          container: document.createElement('div'),
+          allowedWorkflows: ['update'],
+          layerInfos: [
+            {
+              layer: streetSegments,
+              fieldConfig: [
+                {
+                  name: 'reserve',
+                  label: 'Reserve Block?',
+                  editable: true,
+                },
+              ],
+            },
+          ],
+        });
+        function reserveThis() {
+          if (!reserveEditor.viewModel.activeWorkflow) {
+            this.view.popup.visible = false;
+            reserveEditor.startUpdateWorkflowAtFeatureEdit(
+              this.view.popup.selectedFeature,
+            );
+            this.view.ui.add(reserveEditor, 'top-right');
+          }
+        }
+        this.view.popup.on('trigger-action', (event) => {
+          if (event.action.id === 'reserve-this') {
+            reserveThis();
+          }
+        });
         this.view.ui.add(selectFilter, 'bottom-right');
+        if (this.reservedFilter !== undefined) {
+          console.log(selectFilter.firstChild);
+          streetSegments.definitionExpression = selectFilter.firstChild.value;
+        }
         function setFeatureLayerFilter(expression) {
           streetSegments.definitionExpression = expression;
         }

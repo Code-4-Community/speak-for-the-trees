@@ -8,6 +8,12 @@ import Map from '../components/Map/Map.vue';
 
 Vue.use(VueRouter);
 
+function getReserveRoute(route) {
+  return {
+    reservedFilter: route.params.editmode === 'edit' ? 1 : 0,
+  };
+}
+
 const routes = [
   {
     path: '/',
@@ -18,6 +24,12 @@ const routes = [
     path: '/map',
     name: 'map',
     component: Map,
+  },
+  {
+    path: '/reserve/:editmode',
+    name: 'reserve',
+    component: Map,
+    props: getReserveRoute,
   },
   {
     path: '/about',
