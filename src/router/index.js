@@ -53,6 +53,7 @@ const routes = [
     name: 'reserve',
     component: MapPage,
     props: getReserveRoute,
+
   },
   {
     path: '/about',
