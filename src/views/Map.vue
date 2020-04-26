@@ -1,9 +1,9 @@
 <template>
-    <div class='map'></div>
+  <div></div>
 </template>
 
 <script>
-import { loadModules, Editor } from 'esri-loader';
+import { loadModules } from 'esri-loader';
 
 export default {
   name: 'map',
@@ -13,16 +13,41 @@ export default {
       required: false,
     },
   },
+  data: () => ({
+    modalShow: false,
+  }),
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    reserveSelectedStreet() {
+      /**
+       * TODO
+       * Code goes here to submit street as reserved!
+       *
+       *
+       *
+       */
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        // modal popup
+        this.$bvModal.show('street-confirmation-modal');
+      }
+    },
+  },
   mounted() {
     const reserveSegment = {
       title: 'Reserve',
       id: 'reserve-this',
-      image: 'https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/live/Measure_Distance16.png',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
+    function getModalContent() {
+      // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
+      // TODO: find way to perform function on ESRI data;
+      return '<b>ID:</b> {FID} <strong>RESERVED:</strong> {RESERVED}';
+    }
     const template = {
       // autocasts as new PopupTemplate()
       title: '{ST_NAME} {ST_TYPE}', // Show attribute value
-      content: '<b>ID:</b> {FID} <strong>RESERVED: {RESERVED}</strong>',
+      content: getModalContent(),
       actions: [reserveSegment],
     };
     const renderer = {
@@ -66,7 +91,6 @@ export default {
     // lazy load the required ArcGIS API for JavaScript modules and CSS
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
       .then(([ArcGISMap, MapView, FeatureLayer]) => {
-        console.log(this.reservedFilter);
         const map = new ArcGISMap({
           basemap: 'gray',
         });
@@ -84,40 +108,8 @@ export default {
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
         });
-        const reserveEditor = new Editor({
-          view: this.view,
-          container: document.createElement('div'),
-          allowedWorkflows: ['update'],
-          layerInfos: [
-            {
-              layer: streetSegments,
-              fieldConfig: [
-                {
-                  name: 'reserve',
-                  label: 'Reserve Block?',
-                  editable: true,
-                },
-              ],
-            },
-          ],
-        });
-        function reserveThis() {
-          if (!reserveEditor.viewModel.activeWorkflow) {
-            this.view.popup.visible = false;
-            reserveEditor.startUpdateWorkflowAtFeatureEdit(
-              this.view.popup.selectedFeature,
-            );
-            this.view.ui.add(reserveEditor, 'top-right');
-          }
-        }
-        this.view.popup.on('trigger-action', (event) => {
-          if (event.action.id === 'reserve-this') {
-            reserveThis();
-          }
-        });
         this.view.ui.add(selectFilter, 'bottom-right');
         if (this.reservedFilter !== undefined) {
-          console.log(selectFilter.firstChild);
           streetSegments.definitionExpression = selectFilter.firstChild.value;
         }
         function setFeatureLayerFilter(expression) {
@@ -127,6 +119,14 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
+        // eslint-disable-next-line no-unused-vars
+        // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
+        this.view.popup.on('trigger-action', (event) => {
+          // Execute the measureThis() function if the measure-this action is clicked
+          if (event.action.id === 'reserve-this') {
+            this.reserveSelectedStreet();
+          }
+        });
       });
   },
   // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#refresh
@@ -141,9 +141,10 @@ export default {
 </script>
 
 <style scoped>
-.map {
-  margin-left: 15%;
-  width: 70vw;
-  height: 70vh;
+div {
+    padding: 0;
+    margin: 0;
+    width: 98vw;
+    height: 85vh;
 }
 </style>

@@ -1,9 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthenticationView from '../views/AuthenticationView.vue';
-import Login from '../components/Authentication/Login/Login.vue';
-import SignUp from '../components/Authentication/SignUp/SignUp.vue';
-import Map from '../components/Map/Map.vue';
+import Login from '../views/Login.vue';
+import SignUp from '../views/SignUp.vue';
+import MapPage from '../views/MapPage.vue';
+import HomeView from '../views/HomeView.vue';
+import Leaderboard from '../views/Leaderboard.vue';
+import TeamCreation from '../views/TeamCreation.vue';
+import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
 
@@ -17,17 +21,37 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue'),
+    component: HomeView,
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
+  },
+  {
+    path: '/create',
+    name: 'TeamCreation',
+    component: TeamCreation,
+  },
+  {
+    path: '/current-reservations',
+    name: 'CurrentReservations',
+    component: CurrentReservations,
   },
   {
     path: '/map',
     name: 'map',
-    component: Map,
+    component: MapPage,
+  },
+  {
+    path: '/leaderboard',
+    name: 'leaderboard',
+    component: Leaderboard,
   },
   {
     path: '/reserve/:editmode',
     name: 'reserve',
-    component: Map,
+    component: MapPage,
     props: getReserveRoute,
   },
   {
@@ -63,23 +87,6 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue'),
   },
-  {
-    path: '/reservations',
-    name: 'reservations',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */'../views/ReservationsView.vue'),
-  },
-  {
-    path: '/reserve-blocks',
-    name: 'reserve-blocks',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ReserveBlocksView.vue'),
-  },
-
   {
     path: '/*',
     redirect: '/',
