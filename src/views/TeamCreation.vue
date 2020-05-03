@@ -87,11 +87,11 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       console.log(JSON.stringify({
-        teamName: this.form.teamName,
-        teamBio: this.form.teamBio,
-        teamGoal: Number(this.form.teamGoal),
-        teamDate: this.form.teamDate,
-        memberEmails: this.form.memberEmails,
+        name: this.form.teamName,
+        bio: this.form.teamBio,
+        goal: Number(this.form.teamGoal),
+        goalCompletionDate: this.form.teamDate,
+        inviteEmails: this.form.memberEmails,
       }));
       this.showAlert = true;
     },
