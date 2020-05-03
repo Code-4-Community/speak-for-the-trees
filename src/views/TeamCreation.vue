@@ -2,10 +2,10 @@
   <div class="container">
     <h1>Create a team</h1>
 
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-form-group>
         <b-form-input
-          v-model="teamName"
+          v-model="form.teamName"
           type="text"
           :state="teamNameValidator"
           required
@@ -14,18 +14,18 @@
       </b-form-group>
 
       <b-form-group>
-        <b-form-input
-          v-model="teamBio"
+        <b-form-textarea
+          v-model="form.teamBio"
           type="text"
           required
           placeholder="TEAM BIO"
-        ></b-form-input>
+        ></b-form-textarea>
       </b-form-group>
 
       <b-form-group class="goal">
         <b-form-input
           class="shortInput"
-          v-model="teamGoal"
+          v-model="form.teamGoal"
           type="number"
           required
           placeholder="TEAM GOAL #"
@@ -38,7 +38,7 @@
       <b-form-group>
         <b-form-input
           class="shortInput"
-          v-model="teamDate"
+          v-model="form.teamDate"
           type="date"
           required
         ></b-form-input>
@@ -48,7 +48,7 @@
         <b-form-input
           v-for="x in members" :key="x"
           class="member"
-          v-model="memberEmails[x]"
+          v-model="form.memberEmails[x - 1]"
           type="email"
           placeholder="MEMBER EMAIL"
         ></b-form-input>
@@ -66,24 +66,27 @@
 <script>
 export default {
   name: 'TeamCreation',
-  owners: 1,
-  members: 1,
-  visibility: '',
-  methods: {
+  data() {
+    return {
+      members: 1,
+      form: {
+        teamName: '',
+        teamBio: '',
+        teamGoal: Number,
+        teamDate: Date,
+        memberEmails: [],
+      },
+    };
   },
-  data: () => ({
-    members: 1,
-    owners: 1,
-    ownerEmails: [],
-    memberEmails: [],
-    teamName: '',
-    teamBio: '',
-    teamGoal: Number,
-    teamDate: Date,
-  }),
+  methods: {
+    onSubmit(evt) {
+      evt.preventDefault();
+      console.log(JSON.stringify(this.form));
+    },
+  },
   computed: {
     teamNameValidator() {
-      return this.teamName.length > 3;
+      return this.form.teamName.length > 3;
     },
   },
 };
@@ -94,13 +97,13 @@ fieldset.form-group {
   margin-bottom: 1.5rem;
 }
 
-input.form-control {
+input.form-control, textarea.form-control {
   border: 2px solid #C4C4C4;
   border-radius: 5px;
   float: left;
 }
 
-input.form-control::placeholder {
+input.form-control::placeholder, textarea.form-control::placeholder {
   color: #E5E5E5;
 }
 
@@ -141,7 +144,7 @@ button.add, button.add:hover, button.add:focus {
 
 button.create, button.create:hover, button.create:focus {
   background: #9AC356;
-  padding: 0.5em;
+  padding: 0.5rem 2rem 0.5rem 2rem;/* top right bottom left*/
   border-radius: 5px;
   border: none;
   color: white;
