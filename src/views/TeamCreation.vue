@@ -60,6 +60,10 @@
 
       <b-button class="create" type="submit">Create!</b-button>
     </b-form>
+
+    <b-alert v-model="showAlert" variant="success" dismissible>
+      You have succesfully created {{ this.form.teamName }}!
+    </b-alert>
   </div>
 </template>
 
@@ -69,6 +73,7 @@ export default {
   data() {
     return {
       members: 1,
+      showAlert: false,
       form: {
         teamName: '',
         teamBio: '',
@@ -81,7 +86,14 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      console.log(JSON.stringify(this.form));
+      console.log(JSON.stringify({
+        teamName: this.form.teamName,
+        teamBio: this.form.teamBio,
+        teamGoal: Number(this.form.teamGoal),
+        teamDate: this.form.teamDate,
+        memberEmails: this.form.memberEmails,
+      }));
+      this.showAlert = true;
     },
   },
   computed: {
@@ -150,5 +162,11 @@ button.create, button.create:hover, button.create:focus {
   color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   float: right;
+}
+
+.alert.alert-success {
+  background: #D4EDAA;
+  border-radius: 15px;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.25);
 }
 </style>
