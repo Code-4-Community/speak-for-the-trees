@@ -156,7 +156,7 @@ button.add, button.add:hover, button.add:focus {
 
 button.create, button.create:hover, button.create:focus {
   background: #9AC356;
-  padding: 0.5rem 2rem 0.5rem 2rem;/* top right bottom left*/
+  padding: 0.5rem 2rem 0.5rem 2rem;
   border-radius: 5px;
   border: none;
   color: white;
