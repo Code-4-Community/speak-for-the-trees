@@ -23,16 +23,16 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-remember-login">
+      <!-- <b-form-group id="input-remember-login">
         <b-form-checkbox-group id="checkboxes-4">
           <b-form-checkbox v-model="rememberLogIn">Remember for next time?</b-form-checkbox>
         </b-form-checkbox-group>
-      </b-form-group>
+      </b-form-group> -->
 
-      <a class="test" href="">FORGOT PASSWORD?<br><br></a>
+      <a href="">FORGOT PASSWORD?<br><br></a>
 
-      <p class="test">NEW TO SPEAK FOR THE TREES?<br>SIGN UP
-        <a class="test" href="./sign-up">HERE!</a>
+      <p>NEW TO SPEAK FOR THE TREES?<br>SIGN UP
+        <a href="./sign-up">HERE!</a>
       </p>
 
       <b-button @submit="submit" type="submit">Login</b-button>
@@ -55,11 +55,6 @@ export default {
     };
   },
   methods: {
-    resetInput() {
-      this.email = '';
-      this.password = '';
-      this.resetSubmit();
-    },
     resetSubmit() {
       this.submitted = false;
       this.error = '';
@@ -93,17 +88,42 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   text-align: left;
-  flex-grow: 1;
+  min-width: 75vw;
 }
 
-.test {
+p {
   font-size: 10px;
+  color: #AFAEAE;
+}
+
+a {
+  font-size: 10px;
+  color: #61802E;
 }
 
 input.form-control {
   height: 1.5rem;
+  border: 2px solid #C4C4C4;
+  border-radius: 5px;
+}
+
+input.form-control::placeholder, textarea.form-control::placeholder {
+  color: #E5E5E5;
+}
+
+input.form-control {
+  height: 1.5rem;
+}
+
+button {
+  background: #61802E;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
