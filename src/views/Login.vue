@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="container">
     <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <h1>Login</h1>
     <b-form>
       <b-form-group>
         <b-form-input
@@ -10,9 +11,9 @@
           required
           placeholder="Username"
         ></b-form-input>
-        </b-form-group>
+      </b-form-group>
 
-<b-form-group>
+      <b-form-group>
         <b-form-input
           id="input-password"
           v-model="password"
@@ -20,7 +21,7 @@
           required
           placeholder="Password"
         ></b-form-input>
-        </b-form-group>
+      </b-form-group>
 
       <b-form-group id="input-remember-login">
         <b-form-checkbox-group v-model="rememberLogIn" id="checkboxes-4">
@@ -28,29 +29,12 @@
         </b-form-checkbox-group>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <a href="">FORGOT PASSWORD?<br><br></a>
+
+      <p>NEW TO SPEAK FOR THE TREES?<br> SIGN UP <a href="./sign-up">HERE!</a></p>
+
+      <b-button @submit="submit" type="submit" variant="primary">Submit</b-button>
     </b-form>
-    <!-- <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
-    <h1>Sign in</h1>
-    <div class="auth-container">
-      <input v-model="email" @focus="resetSubmit" type="text" placeholder="Email Address" />
-      <input v-model="password" @focus="resetSubmit" type="password" placeholder="Password"/>
-    </div>
-    <div class="error">
-      <p v-if="submitted && !inputValid"> Enter an email and password </p>
-      <p v-if="submitted && error">{{error}}</p>
-    </div>
-    <div class="options">
-      <label for="rememberLogIn"> REMEMBER LOG-IN INFORMATION </label>
-      <input type="checkbox" id="rememberLogIn" v-model="rememberLogIn">
-    </div>
-    <button @click="submit"> Login </button>
-    <div class="links">
-      <a href="/"> FORGOT USERNAME? </a>
-      <a href="/"> FORGOT PASSWORD? </a>
-      <router-link to="sign-up" tag="a"> NEW TO SPEAK FOR THE TREES? SIGN UP HERE! </router-link>
-    </div> -->
   </div>
 </template>
 
@@ -108,6 +92,10 @@ export default {
 </script>
 
 <style>
+.container {
+  text-align: left;
+}
+
 .links {
   width: 100%;
   display: flex;
