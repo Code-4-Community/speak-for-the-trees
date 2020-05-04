@@ -24,16 +24,18 @@
       </b-form-group>
 
       <b-form-group id="input-remember-login">
-        <b-form-checkbox-group v-model="rememberLogIn" id="checkboxes-4">
-          <b-form-checkbox value="">Remember for next time?</b-form-checkbox>
+        <b-form-checkbox-group id="checkboxes-4">
+          <b-form-checkbox v-model="rememberLogIn">Remember for next time?</b-form-checkbox>
         </b-form-checkbox-group>
       </b-form-group>
 
-      <a href="">FORGOT PASSWORD?<br><br></a>
+      <a class="test" href="">FORGOT PASSWORD?<br><br></a>
 
-      <p>NEW TO SPEAK FOR THE TREES?<br> SIGN UP <a href="./sign-up">HERE!</a></p>
+      <p class="test">NEW TO SPEAK FOR THE TREES?<br>SIGN UP
+        <a class="test" href="./sign-up">HERE!</a>
+      </p>
 
-      <b-button @submit="submit" type="submit" variant="primary">Submit</b-button>
+      <b-button @submit="submit" type="submit">Login</b-button>
     </b-form>
   </div>
 </template>
@@ -94,13 +96,14 @@ export default {
 <style>
 .container {
   text-align: left;
+  flex-grow: 1;
 }
 
-.links {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.test {
+  font-size: 10px;
+}
+
+input.form-control {
+  height: 1.5rem;
 }
 </style>
