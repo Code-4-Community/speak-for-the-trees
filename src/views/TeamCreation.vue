@@ -87,11 +87,11 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       console.log(JSON.stringify({
-        teamName: this.form.teamName,
-        teamBio: this.form.teamBio,
-        teamGoal: Number(this.form.teamGoal),
-        teamDate: this.form.teamDate,
-        memberEmails: this.form.memberEmails,
+        name: this.form.teamName,
+        bio: this.form.teamBio,
+        goal: Number(this.form.teamGoal),
+        goalCompletionDate: this.form.teamDate,
+        inviteEmails: this.form.memberEmails,
       }));
       this.showAlert = true;
     },
@@ -156,7 +156,7 @@ button.add, button.add:hover, button.add:focus {
 
 button.create, button.create:hover, button.create:focus {
   background: #9AC356;
-  padding: 0.5rem 2rem 0.5rem 2rem;/* top right bottom left*/
+  padding: 0.5rem 2rem 0.5rem 2rem;
   border-radius: 5px;
   border: none;
   color: white;
