@@ -5,11 +5,11 @@
     <b-form>
       <b-form-group>
         <b-form-input
-          id="input-username"
-          v-model="username"
-          type="text"
+          id="input-email"
+          v-model="email"
+          type="email"
           required
-          placeholder="Username"
+          placeholder="EMAIL"
         ></b-form-input>
       </b-form-group>
 
@@ -19,7 +19,7 @@
           v-model="password"
           type="password"
           required
-          placeholder="Password"
+          placeholder="PASSWORD"
         ></b-form-input>
       </b-form-group>
 
@@ -47,7 +47,6 @@ export default {
     return {
       email: '',
       password: '',
-      rememberMe: '',
       submitted: false,
       inputValid: false,
       rememberLogIn: false,
@@ -55,10 +54,6 @@ export default {
     };
   },
   methods: {
-    resetSubmit() {
-      this.submitted = false;
-      this.error = '';
-    },
     validateInput() {
       this.inputValid = this.email && this.password;
       return this.inputValid;
@@ -112,10 +107,6 @@ input.form-control {
 
 input.form-control::placeholder, textarea.form-control::placeholder {
   color: #E5E5E5;
-}
-
-input.form-control {
-  height: 1.5rem;
 }
 
 button {

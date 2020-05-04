@@ -11,7 +11,7 @@
             v-model="firstName"
             type="text"
             required
-            placeholder="First name"
+            placeholder="FIRST NAME"
             ></b-form-input>
           </div>
           <div class="col">
@@ -20,7 +20,7 @@
             v-model="lastName"
             type="text"
             required
-            placeholder="Last name"
+            placeholder="LAST NAME"
             ></b-form-input>
           </div>
         </div>
@@ -32,7 +32,7 @@
           v-model="email"
           type="email"
           required
-          placeholder="Email"
+          placeholder="EMAIL"
         ></b-form-input>
       </b-form-group>
 
@@ -42,7 +42,7 @@
           v-model="username"
           type="text"
           required
-          placeholder="Username"
+          placeholder="USERNAME"
         ></b-form-input>
       </b-form-group>
 
@@ -52,7 +52,7 @@
           v-model="password[0]"
           type="password"
           required
-          placeholder="Password"
+          placeholder="PASSWORD"
         ></b-form-input>
       </b-form-group>
 
@@ -62,7 +62,7 @@
           v-model="password[1]"
           type="password"
           required
-          placeholder="Confirm Password"
+          placeholder="CONFIRM PASSWORD"
         ></b-form-input>
       </b-form-group>
 
@@ -97,7 +97,7 @@ export default {
     },
     validateUser() {
       if (!this.username) {
-        this.inputError.push('User name cannot be empty');
+        this.inputError.push('Username cannot be empty');
       } else {
         return true;
       }
@@ -109,7 +109,7 @@ export default {
       if (!this.email) {
         this.inputError.push('Email cannot be empty');
       } else if (!emailRegex.test(this.email)) {
-        this.inputError.push('Invalid Email');
+        this.inputError.push('Invalid email');
       } else {
         return true;
       }
@@ -134,7 +134,6 @@ export default {
           email: this.email,
           password: this.password[0],
           signUpForNewsLetter: this.signUpForNewsLetter,
-          rememberLogIn: this.rememberLogIn,
         };
         try {
           await this.$store.dispatch('signup', user);
@@ -156,10 +155,7 @@ export default {
 <style scoped>
 .container {
   text-align: left;
-}
-
-.form-group.name {
-  display: inline;
+  max-width: 75vw;
 }
 
 p {
