@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Map/>
+    <Map v-bind:reservedFilter="this.reservedFilter"/>
     <b-modal id="street-confirmation-modal" ok-only title="Success">
       <p>You reserved a street!</p>
     </b-modal>
@@ -18,6 +18,12 @@ export default {
   name: 'MapPage',
   components: {
     Map,
+  },
+  props: {
+    reservedFilter: {
+      type: Number,
+      required: false,
+    },
   },
 };
 </script>

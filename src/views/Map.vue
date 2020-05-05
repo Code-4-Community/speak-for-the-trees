@@ -7,6 +7,12 @@ import { loadModules } from 'esri-loader';
 
 export default {
   name: 'map',
+  props: {
+    reservedFilter: {
+      type: Number,
+      required: false,
+    },
+  },
   data: () => ({
     modalShow: false,
   }),
@@ -33,10 +39,15 @@ export default {
       id: 'reserve-this',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
+    function getModalContent() {
+      // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
+      // TODO: find way to perform function on ESRI data;
+      return '<b>ID:</b> {FID} <strong>RESERVED:</strong> {RESERVED}';
+    }
     const template = {
       // autocasts as new PopupTemplate()
       title: '{ST_NAME} {ST_TYPE}', // Show attribute value
-      content: '<b>ID:</b> {FID} <strong>RESERVED: {RESERVED}</strong>',
+      content: getModalContent(),
       actions: [reserveSegment],
     };
     const renderer = {
@@ -62,7 +73,12 @@ export default {
       },
       ],
     };
-    const sqlExpressions = ['*', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'"];
+    const sqlExpressions = [];
+    if (this.reservedFilter !== undefined) {
+      sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
+    } else {
+      sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
+    }
     const selectFilter = document.createElement('select');
     selectFilter.setAttribute('class', 'esri-widget esri-select');
     selectFilter.setAttribute('style', 'width: 275px; font-family: Avenir Next W00; font-size: 1em');
@@ -93,6 +109,9 @@ export default {
           // popupTemplate: template,
         });
         this.view.ui.add(selectFilter, 'bottom-right');
+        if (this.reservedFilter !== undefined) {
+          streetSegments.definitionExpression = selectFilter.firstChild.value;
+        }
         function setFeatureLayerFilter(expression) {
           streetSegments.definitionExpression = expression;
         }

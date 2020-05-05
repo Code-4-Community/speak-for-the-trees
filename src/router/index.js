@@ -11,6 +11,12 @@ import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
 
+function getReserveRoute(route) {
+  return {
+    reservedFilter: route.params.editmode === 'edit' ? 1 : 0,
+  };
+}
+
 const routes = [
   {
     path: '/',
@@ -41,6 +47,13 @@ const routes = [
     path: '/leaderboard',
     name: 'leaderboard',
     component: Leaderboard,
+  },
+  {
+    path: '/reserve/:editmode',
+    name: 'reserve',
+    component: MapPage,
+    props: getReserveRoute,
+
   },
   {
     path: '/about',
