@@ -104,7 +104,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 fieldset.form-group {
   margin-bottom: 1.5rem;
 }

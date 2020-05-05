@@ -1,79 +1,76 @@
 <template>
-  <div>
+  <div class="container">
     <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <h1>Sign up</h1>
     <b-form>
+      <b-form-group>
+        <div class="form-row">
+          <div class="col">
+            <b-form-input
+            id="input-first"
+            v-model="firstName"
+            type="text"
+            required
+            placeholder="FIRST NAME"
+            ></b-form-input>
+          </div>
+          <div class="col">
+            <b-form-input
+            id="input-last"
+            v-model="lastName"
+            type="text"
+            required
+            placeholder="LAST NAME"
+            ></b-form-input>
+          </div>
+        </div>
+      </b-form-group>
+
+      <b-form-group>
+        <b-form-input
+          id="input-email"
+          v-model="email"
+          type="email"
+          required
+          placeholder="EMAIL"
+        ></b-form-input>
+      </b-form-group>
+
       <b-form-group>
         <b-form-input
           id="input-username"
           v-model="username"
           type="text"
           required
-          placeholder="Username"
+          placeholder="USERNAME"
         ></b-form-input>
-        </b-form-group>
-<b-form-group
-          id="input-group-1"
-        label-for="input-1"
-        description="We'll never share your email with anyone else."
-        >
-        <b-form-input
-          id="input-email"
-          v-model="email"
-          type="email"
-          required
-          placeholder="Email"
-        ></b-form-input>
-        </b-form-group>
-<b-form-group>
+      </b-form-group>
+
+      <b-form-group>
         <b-form-input
           id="input-password"
           v-model="password[0]"
           type="password"
           required
-          placeholder="Password"
+          placeholder="PASSWORD"
         ></b-form-input>
-        </b-form-group>
-<b-form-group>
+      </b-form-group>
+
+      <b-form-group>
         <b-form-input
           id="input-password-confirm"
           v-model="password[1]"
           type="password"
           required
-          placeholder="Confirm Password"
+          placeholder="CONFIRM PASSWORD"
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-remember-login">
-        <b-form-checkbox-group v-model="rememberLogIn" id="checkboxes-4">
-          <b-form-checkbox value="">Remember for next time?</b-form-checkbox>
-        </b-form-checkbox-group>
-      </b-form-group>
+      <p>ALREADY HAVE AN ACCOUNT? <br>LOGIN <a href="./login">HERE!</a></p>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button type="submit">Sign Up</b-button>
     </b-form>
   </div>
-  <!-- <div>
-    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
-    <h1> Sign Up </h1>
-    <div class="auth-container">
-      <input v-model="username" type="text" placeholder="USERNAME">
-      <input v-model="email" type="text" placeholder="EMAIL">
-      <input v-model="password[0]" type="password" placeholder="PASSWORD">
-      <input v-model="password[1]" type="password" placeholder="CONFIRM PASSWORD">
-    </div>
-    <ul class="error">
-      <li v-for="(err, index) in inputError" :key="index"> {{err}} </li>
-      <li v-if="this.serverError"> {{this.serverError}} </li>
-    </ul>
-    <div class="options">
-      <label for="signUpForNewsLetter"> SIGN UP FOR SFFT NEWSLETTER?</label>
-      <input type="checkbox" id="signUpForNewsLetter" v-model="signUpForNewsLetter">
-      <label for="rememberLogIn"> REMEMBER LOG-IN INFORMATION </label>
-      <input type="checkbox" id="rememberLogIn" v-model="rememberLogIn">
-    </div>
-    <button @click="signup"> Signup </button>
-  </div> -->
 </template>
 
 <script>
@@ -81,23 +78,16 @@ export default {
   name: 'SignupForm',
   data() {
     return {
-      username: '',
+      firstName: '',
+      lastName: '',
       email: '',
+      username: '',
       password: ['', ''],
       inputError: [],
       serverError: '',
-      signUpForNewsLetter: false,
-      rememberLogIn: false,
     };
   },
   methods: {
-    resetInput() {
-      this.username = '';
-      this.email = '';
-      this.password = ['', ''];
-      this.inputError = [];
-      this.serverError = '';
-    },
     validate() {
       this.inputError = [];
       const err1 = this.validateUser();
@@ -107,7 +97,7 @@ export default {
     },
     validateUser() {
       if (!this.username) {
-        this.inputError.push('User name cannot be empty');
+        this.inputError.push('Username cannot be empty');
       } else {
         return true;
       }
@@ -119,7 +109,7 @@ export default {
       if (!this.email) {
         this.inputError.push('Email cannot be empty');
       } else if (!emailRegex.test(this.email)) {
-        this.inputError.push('Invalid Email');
+        this.inputError.push('Invalid email');
       } else {
         return true;
       }
@@ -144,7 +134,6 @@ export default {
           email: this.email,
           password: this.password[0],
           signUpForNewsLetter: this.signUpForNewsLetter,
-          rememberLogIn: this.rememberLogIn,
         };
         try {
           await this.$store.dispatch('signup', user);
@@ -162,3 +151,39 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  text-align: left;
+  max-width: 75vw;
+}
+
+p {
+  font-size: 10px;
+  color: #AFAEAE;
+}
+
+a {
+  font-size: 10px;
+  color: #61802E;
+}
+
+input.form-control {
+  height: 1.5rem;
+  border: 2px solid #C4C4C4;
+  border-radius: 5px;
+}
+
+input.form-control::placeholder, textarea.form-control::placeholder {
+  color: #E5E5E5;
+}
+
+button {
+  background: #61802E;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+</style>
