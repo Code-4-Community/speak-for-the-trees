@@ -86,6 +86,7 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
+      // eslint-disable-next-line
       console.log(JSON.stringify({
         name: this.form.teamName,
         bio: this.form.teamBio,
