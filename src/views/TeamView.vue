@@ -1,9 +1,11 @@
 <template>
   <div>
-      <h1>{{ name }}</h1>
+      <h1>{{ name }}  <img v-if="permission >= 2" src="../../assets/edit-icon.svg" alt="edit"></h1>
       <p class="basicText">{{ bio }}</p>
-      <p class="banner">TEAM GOAL</p>
-      <p class="basicText">Click on trophy to view team leaderboard</p>
+      <p class="banner">
+        TEAM GOAL  <img v-if="permission >= 2" src="../../assets/edit-icon.svg" alt="edit">
+      </p>
+      <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
           <p>{{ goal }} BLOCKS</p>
           <p>BY</p>
@@ -13,10 +15,13 @@
         <div class="progress">
           <div class="progress-bar"
           role="progressbar">
-          {{ progressBar }}%</div>
+          {{ progressPercent }}%</div>
         </div>
-        <img src="" alt="trophy">
+        <a href="">
+          <img src="../../assets/trophy.svg" alt="trophy">
+        </a>
       </div>
+      <p class="trophyProgress">{{ progress }}/{{ goal }}</p>
       <p class="members">MEMBERS</p>
       <div v-if="permission >= 1">
         <p
@@ -33,12 +38,12 @@ export default {
   data() {
     return {
       name: 'My Awesome Team',
-      bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
+      bio: 'Amazing team, count so many trees, all day long, preference for Sundays.',
       members: ['MEMBER 1', 'MEMBER 2', 'MEMBER 3', 'MEMBER 4'],
+      progress: 12,
       goal: 20,
       target: new Date('2020-03-25'),
       permission: 1, // 0 prospect, 1 member, 2 owner
-      progress: 12,
     };
   },
   computed: {
@@ -48,7 +53,7 @@ export default {
       const [{ value: mo },, { value: da },, { value: ye }] = dtf.formatToParts(this.target);
       return `${mo}/${da}/${ye}`;
     },
-    progressBar() {
+    progressPercent() {
       return this.progress / this.goal * 100;
     },
   },
@@ -56,22 +61,34 @@ export default {
 </script>
 
 <style scoped>
+.edit {
+  border: none;
+  background: none;
+}
 .test {
   display: flex;
 }
-.test img {
-  margin: 0 1rem;
+.test a {
+  margin: 0 auto 1.5rem 0;
+}
+.trophyProgress {
+  text-align: right;
+  margin: auto 2rem 1rem auto;
 }
 .banner {
-    background: #9AC356;
-    font-size: 14px;
-    padding: 0.5rem 0;
+  background: #9AC356;
+  font-size: 14px;
+  padding: 0.5rem 0;
+}
+.banner img {
+  margin: 0;
+  height: 100%;
 }
 .members {
-    background: #9AC356;
-    font-size: 14px;
-    padding: 0.5rem 0;
-    margin-bottom: 0;
+  background: #9AC356;
+  font-size: 14px;
+  padding: 0.5rem 0;
+  margin-bottom: 0;
 }
 .progress {
   margin: 0.5rem auto 2rem 10vw;
