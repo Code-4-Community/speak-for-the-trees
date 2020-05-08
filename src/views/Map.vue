@@ -11,6 +11,7 @@ export default {
     reservedFilter: {
       type: Number,
       required: false,
+      // currentSelection:
     },
   },
   data: () => ({
@@ -54,21 +55,21 @@ export default {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-UniqueValueRenderer.html
       type: 'unique-value',
-      field: 'ST_TYPE',
+      field: 'RESERVED',
       defaultSymbol: { type: 'simple-line' },
       uniqueValueInfos: [{
-        value: 'ST',
+        value: '0',
         symbol: {
           type: 'simple-line', // autocasts as new SimpleFillSymbol()
-          color: 'blue',
+          color: '#9AC356',
           width: '3px',
         },
       }, {
-        value: 'AVE',
+        value: '1',
         symbol: {
           type: 'simple-line', // autocasts as new SimpleFillSymbol()
-          color: 'purple',
-          width: '1px',
+          color: '#787272',
+          width: '3px',
         },
       },
       ],
@@ -99,6 +100,19 @@ export default {
           map,
           center: [-71.0892, 42.3398],
           zoom: 15,
+          popup: {
+            dockEnabled: true,
+            dockOptions: {
+              // Disables the dock button from the popup
+              buttonEnabled: false,
+              // Ignore the default sizes that trigger responsive docking
+              breakpoint: false,
+              // Set position of modal to bottom of the map
+              position: 'bottom-center',
+            },
+            // Condition to display
+            // visible: !!props.currentSelection
+          },
         });
         const streetSegments = new FeatureLayer({
           url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
