@@ -71,4 +71,7 @@ export default {
   color: lightgray;
 }
 
+.street-modal {
+  background-color: #9AC356;
+}
 </style>
