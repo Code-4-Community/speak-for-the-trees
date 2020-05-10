@@ -13,13 +13,17 @@ export default {
       required: false,
       // currentSelection:
     },
+    setStreet: {
+      type: Function,
+      required: false,
+    },
   },
   data: () => ({
     modalShow: false,
   }),
   methods: {
     // eslint-disable-next-line no-unused-vars
-    reserveSelectedStreet() {
+    reserveSelectedStreet(street) {
       /**
        * TODO
        * Code goes here to submit street as reserved!
@@ -27,17 +31,56 @@ export default {
        *
        *
        */
+      this.setStreet(street);
       // eslint-disable-next-line no-constant-condition
       if (true) {
         // modal popup
         this.$bvModal.show('street-confirmation-modal');
       }
     },
+    unreserveSelectedStreet(street) {
+      /**
+       * TODO
+       * Code goes here to submit street as unreserved!
+       *
+       *
+       *
+       */
+      this.setStreet(street);
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        // modal popup
+        this.$bvModal.show('street-unreserve-modal');
+      }
+    },
+    completeSelectedStreet(street) {
+      /**
+       * TODO
+       * Code goes here to submit street as completed!
+       *
+       */
+      this.setStreet(street);
+      // eslint-disable-next-line no-constant-condition
+      if (true) {
+        // modal popup
+        this.$bvModal.show('street-completed-modal');
+      }
+    },
   },
   mounted() {
     const reserveSegment = {
-      title: 'Reserve',
+      title: 'Add',
       id: 'reserve-this',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    const unreserveSegment = {
+      title: 'Remove',
+      id: 'unreserve-this',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    const completeSegment = {
+      title: 'Complete',
+      id: 'complete-this',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     function getModalContent() {
@@ -45,11 +88,17 @@ export default {
       // TODO: find way to perform function on ESRI data;
       return '<b>ID:</b> {FID} <strong>RESERVED:</strong> {RESERVED}';
     }
+    const actions = [];
+    if (this.reservedFilter === 1) {
+      actions.push([unreserveSegment, completeSegment]);
+    } else {
+      actions.push(reserveSegment);
+    }
     const template = {
       // autocasts as new PopupTemplate()
       title: '{ST_NAME} {ST_TYPE}', // Show attribute value
       content: getModalContent(),
-      actions: [reserveSegment],
+      actions,
     };
     const renderer = {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
@@ -117,7 +166,7 @@ export default {
         const streetSegments = new FeatureLayer({
           url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
           renderer,
-          outFields: ['SEGMENT_ID', 'ST_NAME'],
+          outFields: ['FID', 'ST_NAME'],
           popupTemplate: template,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
@@ -133,12 +182,21 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
+        function getStreet() {
+          // I don't know how to get values!!!!!!!!!
+          // return streetSegments.;
+          return '';
+        }
         // eslint-disable-next-line no-unused-vars
         // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
           if (event.action.id === 'reserve-this') {
-            this.reserveSelectedStreet();
+            this.reserveSelectedStreet(getStreet());
+          } else if (event.action.id === 'unreserve-this') {
+            this.unreserveSelectedStreet(getStreet());
+          } else if (event.action.id === 'complete-this') {
+            this.completeSelectedStreet(getStreet());
           }
         });
       });
@@ -154,7 +212,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 div {
     padding: 0;
     margin: 0;
