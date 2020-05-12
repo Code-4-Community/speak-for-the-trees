@@ -13,7 +13,7 @@ export default {
       required: false,
       // currentSelection:
     },
-    setStreet: {
+    pushStreet: {
       type: Function,
       required: false,
     },
@@ -22,22 +22,6 @@ export default {
     modalShow: false,
   }),
   methods: {
-    // eslint-disable-next-line no-unused-vars
-    reserveSelectedStreet(street) {
-      /**
-       * TODO
-       * Code goes here to submit street as reserved!
-       *
-       *
-       *
-       */
-      this.setStreet(street);
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        // modal popup
-        this.$bvModal.show('street-confirmation-modal');
-      }
-    },
     unreserveSelectedStreet(street) {
       /**
        * TODO
@@ -46,7 +30,7 @@ export default {
        *
        *
        */
-      this.setStreet(street);
+      this.pushStreet(street);
       // eslint-disable-next-line no-constant-condition
       if (true) {
         // modal popup
@@ -59,7 +43,7 @@ export default {
        * Code goes here to submit street as completed!
        *
        */
-      this.setStreet(street);
+      this.pushStreet(street);
       // eslint-disable-next-line no-constant-condition
       if (true) {
         // modal popup
@@ -182,22 +166,18 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
-        function getStreet() {
-          // I don't know how to get values!!!!!!!!!
-          // return streetSegments.;
-          return '';
-        }
         // eslint-disable-next-line no-unused-vars
         // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
           if (event.action.id === 'reserve-this') {
-            this.reserveSelectedStreet(getStreet());
-          } else if (event.action.id === 'unreserve-this') {
-            this.unreserveSelectedStreet(getStreet());
-          } else if (event.action.id === 'complete-this') {
-            this.completeSelectedStreet(getStreet());
+            this.pushStreet(event.target.selectedFeature.attributes.FID);
           }
+          // else if (event.action.id === 'unreserve-this') {
+          //   this.unreserveSelectedStreet(getStreet());
+          // } else if (event.action.id === 'complete-this') {
+          //   this.completeSelectedStreet(getStreet());
+          // }
         });
       });
   },
