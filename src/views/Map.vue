@@ -21,36 +21,6 @@ export default {
   data: () => ({
     modalShow: false,
   }),
-  methods: {
-    unreserveSelectedStreet(street) {
-      /**
-       * TODO
-       * Code goes here to submit street as unreserved!
-       *
-       *
-       *
-       */
-      this.pushStreet(street);
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        // modal popup
-        this.$bvModal.show('street-unreserve-modal');
-      }
-    },
-    completeSelectedStreet(street) {
-      /**
-       * TODO
-       * Code goes here to submit street as completed!
-       *
-       */
-      this.pushStreet(street);
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        // modal popup
-        this.$bvModal.show('street-completed-modal');
-      }
-    },
-  },
   mounted() {
     const reserveSegment = {
       title: 'Add',
