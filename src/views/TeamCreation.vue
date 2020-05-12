@@ -45,13 +45,26 @@
       </b-form-group>
 
       <b-form-group>
-        <b-form-input
-          v-for="x in members" :key="x"
-          class="member"
-          v-model="form.memberEmails[x - 1]"
-          type="email"
-          placeholder="MEMBER EMAIL"
-        ></b-form-input>
+        <div
+        class="form-row"
+        v-for="x in members" :key="x">
+          <div class="col">
+            <b-form-input
+            v-model="invites.memberNames[x - 1]"
+            type="text"
+            required
+            placeholder="NAME"
+            ></b-form-input>
+          </div>
+          <div class="col">
+            <b-form-input
+            v-model="invites.memberEmails[x - 1]"
+            type="email"
+            required
+            placeholder="MEMBER EMAIL"
+            ></b-form-input>
+          </div>
+        </div>
       </b-form-group>
 
       <b-form-group>
@@ -79,6 +92,9 @@ export default {
         teamBio: '',
         teamGoal: Number,
         teamDate: Date,
+      },
+      invites: {
+        memberNames: [],
         memberEmails: [],
       },
     };
@@ -91,9 +107,20 @@ export default {
         bio: this.form.teamBio,
         goal: Number(this.form.teamGoal),
         goalCompletionDate: this.form.teamDate,
-        inviteEmails: this.form.memberEmails,
+        inviteEmails: this.invites.memberEmails,
       }));
+      console.log(JSON.stringify(this.getInvites()));
       this.showAlert = true;
+    },
+    getInvites() {
+      const result = [];
+      let i = 0;
+      while (i < this.invites.memberNames.length) {
+        const invite = { name: this.invites.memberNames[i], email: this.invites.memberEmails[i] };
+        result[i] = invite;
+        i += 1;
+      }
+      return result;
     },
   },
   computed: {
@@ -126,12 +153,12 @@ input.form-control::placeholder, textarea.form-control::placeholder {
 
 p {
   text-align: left;
-  /* CREATE SPACE BETWEEN BOX AND 'BLOCKS' */
+  text-indent: 1em;
 }
 
 /* STYLE 'BY' */
 .text {
-  margin: 0 0 0 1rem;
+  margin: 0;
   text-align: left;
 }
 
@@ -139,11 +166,11 @@ fieldset.goal.form-group {
   margin-bottom: 0;
 }
 
-.member.form-control {
-  margin-bottom: 1rem;
+.form-row {
+  margin-bottom: 0.5rem;
 }
 
-.member.form-control:last-child {
+.form-row:last-child {
   margin-bottom: 0rem;
 }
 
