@@ -15,5 +15,21 @@ export const signup = async user => Axios.post(to(API_SIGNUP), user).then((respo
   Token.setAccessToken(response?.data?.accessToken);
   Token.setRefreshToken(response?.data?.refreshToken);
 }).catch(error => new Error(error));
-export const logout = async () => Axios.delete(to(API_LOGIN));
-export const refresh = async () => Axios.post(to(API_REFRESH_TOKEN));
+export const logout = async () => Axios.delete(to(API_LOGIN), {
+  headers: {
+    'X-Refresh-Token': Token.getRefreshToken(),
+  },
+}).then(() => {
+  Token.removeAccessToken();
+  Token.removeRefreshToken();
+});
+export const refresh = async () => Axios.post(to(API_REFRESH_TOKEN), null, {
+  headers: {
+    'X-Refresh-Token': Token.getRefreshToken(),
+  },
+}).then((response) => {
+  Token.setAccessToken(response?.data?.freshAccessToken);
+}).catch(() => {
+  Token.removeAccessToken();
+  Token.removeAccessToken();
+});
