@@ -7,6 +7,7 @@ import MapPage from '../views/MapPage.vue';
 import HomeView from '../views/HomeView.vue';
 import Leaderboard from '../views/Leaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
+import TeamView from '../views/TeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
@@ -34,6 +35,11 @@ const routes = [
     component: TeamCreation,
   },
   {
+    path: '/team',
+    name: 'TeamView',
+    component: TeamView,
+  },
+  {
     path: '/current-reservations',
     name: 'CurrentReservations',
     component: CurrentReservations,
@@ -53,7 +59,6 @@ const routes = [
     name: 'reserve',
     component: MapPage,
     props: getReserveRoute,
-
   },
   {
     path: '/about',
