@@ -20,7 +20,7 @@
           role="progressbar">
           {{ progressPercent }}%</div>
         </div>
-        <a href="">
+        <a href="/team-leaderboard">
           <img src="../../assets/trophy.svg" alt="trophy">
         </a>
       </div>

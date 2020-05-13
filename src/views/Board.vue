@@ -1,10 +1,11 @@
 <template>
   <div>
       <div
-      class="team"
-      v-for="individual in individuals"
-      :key="individual">
-        <p class="rank">1</p>
+      class="individual"
+      v-for="individual in individuals_with_ranking"
+      :key="individual.rank"
+      :individual="individual">
+        <p class="rank">{{ individual.rank }}</p>
         <p class="name">{{ individual.username }}</p>
         <p class="points">{{ individual.blocksCompleted }}</p>
       </div>
@@ -20,11 +21,28 @@ export default {
       required: true,
     },
   },
+  computed: {
+    individuals_with_ranking() {
+      const result = [];
+
+      let i = 0;
+
+      while (i < this.individuals.length) {
+        result.push({
+          rank: i + 1,
+          username: this.individuals[i].username,
+          blocksCompleted: this.individuals[i].blocksCompleted,
+        });
+        i += 1;
+      }
+      return result;
+    },
+  },
 };
 </script>
 
 <style scoped lang="less">
-.team {
+.individual {
     display: flex;
     background: #D4EDAA;
     padding: 0.5rem 0 0.5rem 0;

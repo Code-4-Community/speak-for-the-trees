@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>Volunteer Leaderboard</h1>
-    <p>Celebrate all the contributions of our Speak for the Trees volunteers!</p>
-    <Board v-bind:individuals="this.individuals" />
+    <h1>Team Leaderboard</h1>
+    <p>Celebrate your team’s progress and view individual member contribution</p>
+    <Board v-bind:individuals="this.members" />
   </div>
 </template>
 
@@ -10,13 +10,13 @@
 import Board from './Board.vue';
 
 export default {
-  name: 'VolunteerLeaderboard',
+  name: 'TeamLeaderboard',
   components: {
     Board,
   },
   data() {
     return {
-      individuals: [
+      members: [
         {
           id: 4,
           username: 'Delta',
