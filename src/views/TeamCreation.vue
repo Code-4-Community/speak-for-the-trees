@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { createTeam } from '../api/api';
 
 export default {
@@ -104,18 +105,22 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      try {
-        createTeam({
-          name: this.form.teamName,
-          bio: this.form.teamBio,
-          goal: this.form.teamGoal,
-          goalCompletionDate: new Date(this.form.teamDate),
-          invites: this.getInvites(),
-        });
-        this.alert = `You have succesfully created ${this.form.teamName}!`;
-      } catch (e) {
-        this.alert = e.message;
-      }
+      this.alert = 'hi';
+      createTeam({
+        name: this.form.teamName,
+        bio: this.form.teamBio,
+        goal: Number(this.form.teamGoal),
+        goalCompletionDate: moment(this.form.teamDate).format('YYYY-MM-DDTHH:mm'),
+        invites: this.getInvites(),
+      }).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        // TODO: probably this.$router.push(/newTeamHomepage)
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+        this.alert = error.message;
+      });
     },
     getInvites() {
       const result = [];
