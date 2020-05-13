@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <img class="auth-logo" src="../assets/sftt-logo-text.jpg" />
     <h1>Sign up</h1>
-    <b-form>
+    <b-form @submit="onSignUp">
       <b-form-group>
         <div class="form-row">
           <div class="col">
@@ -74,6 +74,8 @@
 </template>
 
 <script>
+import { signup } from '../auth/authAPI';
+
 export default {
   name: 'SignupForm',
   data() {
@@ -125,7 +127,8 @@ export default {
       }
       return false;
     },
-    async signup() {
+    onSignUp(e) {
+      e.preventDefault();
       this.submitted = true;
       this.serverError = '';
       if (this.validate()) {
@@ -133,11 +136,11 @@ export default {
           username: this.username,
           email: this.email,
           password: this.password[0],
-          signUpForNewsLetter: this.signUpForNewsLetter,
+          firstName: this.firstName,
+          lastName: this.lastName,
         };
         try {
-          await this.$store.dispatch('signup', user);
-          this.resetInput();
+          signup(user);
           this.$router.push('/home');
         } catch (error) {
           if (error.status === 409) {

@@ -74,19 +74,21 @@
       <b-button class="create" type="submit">Create!</b-button>
     </b-form>
 
-    <b-alert v-model="showAlert" variant="success" dismissible>
-      You have succesfully created {{ this.form.teamName }}!
+    <b-alert v-model="alert" variant="success" dismissible>
+      {{ this.form.alert }}
     </b-alert>
   </div>
 </template>
 
 <script>
+import { createTeam } from '../api/api';
+
 export default {
   name: 'TeamCreation',
   data() {
     return {
       members: 1,
-      showAlert: false,
+      alert: null,
       form: {
         teamName: '',
         teamBio: '',
@@ -102,15 +104,18 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      console.log(JSON.stringify({
-        name: this.form.teamName,
-        bio: this.form.teamBio,
-        goal: Number(this.form.teamGoal),
-        goalCompletionDate: this.form.teamDate,
-        inviteEmails: this.invites.memberEmails,
-      }));
-      console.log(JSON.stringify(this.getInvites()));
-      this.showAlert = true;
+      try {
+        createTeam({
+          name: this.form.teamName,
+          bio: this.form.teamBio,
+          goal: this.form.teamGoal,
+          goalCompletionDate: new Date(this.form.teamDate),
+          invites: this.getInvites(),
+        });
+        this.alert = `You have succesfully created ${this.form.teamName}!`;
+      } catch (e) {
+        this.alert = e.message;
+      }
     },
     getInvites() {
       const result = [];

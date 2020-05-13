@@ -15,7 +15,7 @@
             <b-dropdown-item href="/logout" v-if="loggedIn">
             <strong>Logout</strong></b-dropdown-item>
   </b-dropdown>
-     <a href="/home" ><img class="header__logo" src="../../assets/sftt-logo-text.jpg" /></a>
+     <a href="/home" ><img class="header__logo" src="../assets/sftt-logo-text.jpg" /></a>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../assets/color-constants.less';
+@import '../assets/color-constants.less';
 
 .header-container {
     width: 98vw; /* setting this to 100vw pushes it
