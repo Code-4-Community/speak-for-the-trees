@@ -5,7 +5,7 @@ import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
 import MapPage from '../views/MapPage.vue';
 import HomeView from '../views/HomeView.vue';
-import Leaderboard from '../views/Leaderboard.vue';
+import Leaderboard from '../views/VolunteerLeaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
 import TeamView from '../views/TeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
