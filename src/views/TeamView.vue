@@ -1,13 +1,16 @@
 <template>
   <div>
-      <h1>{{ name }}  <img v-if="permission >= 2" src="../../assets/edit-icon.svg" alt="edit"></h1>
+      <h1>
+        {{ name }}
+        <img v-if="permissionLevel == 2" src="../../assets/edit-icon.svg" alt="edit">
+      </h1>
       <p class="basicText">{{ bio }}</p>
       <p class="banner">
-        TEAM GOAL  <img v-if="permission >= 2" src="../../assets/edit-icon.svg" alt="edit">
+        TEAM GOAL  <img v-if="permissionLevel == 2" src="../../assets/edit-icon.svg" alt="edit">
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
-          <p>{{ blocksReserved }} BLOCKS</p>
+          <p>{{ goal }} BLOCKS</p>
           <p>BY</p>
           <p>{{ formattedTargetDate }}</p>
       </div>
@@ -21,9 +24,9 @@
           <img src="../../assets/trophy.svg" alt="trophy">
         </a>
       </div>
-      <p class="trophyProgress">{{ blocksCompleted }}/{{ blocksReserved }}</p>
+      <p class="trophyProgress">{{ blocksCompleted }}/{{ goal }}</p>
       <p class="members">MEMBERS</p>
-      <div v-if="permission >= 1">
+      <div v-if="permissionLevel == 1 || permissionLevel == 2">
         <div
         v-for="member in members"
         :key="member">
@@ -39,8 +42,13 @@ export default {
   name: 'TeamView',
   data() {
     return {
+      id: 100,
       name: 'My Awesome Team',
       bio: 'Amazing team, count so many trees, all day long, preference for Sundays.',
+      goal: 20,
+      goalCompleteDate: new Date('2020-03-25'),
+      blocksCompleted: 12,
+      blocksReserved: 18,
       members: [{
         id: 1,
         username: 'member 1',
@@ -69,21 +77,23 @@ export default {
         blocksReserved: 5,
         teamRole: 1,
       }],
-      blocksCompleted: 12,
-      blocksReserved: 20,
-      target: new Date('2020-03-25'),
-      permission: 1, // 0 prospect, 1 member, 2 owner
+      prospect: 0,
+      member: 1,
+      owner: 2,
+      permissionLevel: 1,
     };
   },
   computed: {
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
-      const [{ value: mo },, { value: da },, { value: ye }] = dtf.formatToParts(this.target);
+      const [{ value: mo },,
+        { value: da },,
+        { value: ye }] = dtf.formatToParts(this.goalCompleteDate);
       return `${mo}/${da}/${ye}`;
     },
     progressPercent() {
-      return this.blocksCompleted / this.blocksReserved * 100;
+      return this.blocksCompleted / this.goal * 100;
     },
   },
 };
