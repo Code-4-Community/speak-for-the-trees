@@ -22,13 +22,17 @@ const INVALID_ACCESS_TOKEN = 'Given access token is expired or invalid';
 AxiosInstance.interceptors.response.use(
   response => response,
   (error) => {
-    console.log('HELLO WORLD! Oouttsidejdoiejw');
-    console.log(typeof error.response.status);
-    console.log(typeof error.response.data);
+    const originalRequest = error.config;
     if (error?.response?.status === 401
-      && error?.response?.data === INVALID_ACCESS_TOKEN) {
-      refresh();
+      && error?.response?.data === INVALID_ACCESS_TOKEN
+      && !originalRequest.retry) {
+      originalRequest.retry = true;
+      refresh().then(() => {
+        AxiosInstance.defaults.headers['X-Access-Token'] = tokenService.getAccessToken();
+        return AxiosInstance(originalRequest);
+      });
     }
+    return error;
   },
 );
 
