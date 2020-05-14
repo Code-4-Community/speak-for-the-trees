@@ -6,7 +6,7 @@
       :to="{ name: 'TeamView' }"
       v-for="team in teams"
       :key="team">
-        <p class="team">hi</p>
+        <p class="team">{{ team.name }}</p>
       </router-link>
       <b-button class="create" @click="createTeam">Create New Team</b-button>
   </div>
