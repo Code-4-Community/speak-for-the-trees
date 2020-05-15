@@ -2,7 +2,7 @@
   <div>
       <div
       class="individual"
-      v-for="individual in individuals_with_ranking"
+      v-for="individual in individuals"
       :key="individual.rank"
       :individual="individual">
         <p class="rank">{{ individual.rank }}</p>
@@ -21,22 +21,18 @@ export default {
       required: true,
     },
   },
-  computed: {
-    individuals_with_ranking() {
-      const result = [];
-
-      let i = 0;
-
-      while (i < this.individuals.length) {
-        result.push({
-          rank: i + 1,
-          username: this.individuals[i].username,
-          blocksCompleted: this.individuals[i].blocksCompleted,
-        });
+  methods: {
+    addRanking() {
+      let i = 1;
+      this.individuals.forEach((element) => {
+        // eslint-disable-next-line
+        element.rank = i;
         i += 1;
-      }
-      return result;
+      });
     },
+  },
+  beforeMount() {
+    this.addRanking();
   },
 };
 </script>
