@@ -21,7 +21,7 @@
           {{ progressPercent }}%</div>
         </div>
         <router-link to="/team-leaderboard">
-          <img src="../../assets/trophy.svg" alt="trophy">
+          <img src="../assets/trophy.svg" alt="trophy">
         </router-link>
       </div>
       <p class="trophyProgress">{{ blocksCompleted }}/{{ goal }}</p>
