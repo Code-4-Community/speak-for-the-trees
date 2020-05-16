@@ -17,6 +17,7 @@
       <div class="progressWrapper">
         <div class="progress">
           <div class="progress-bar"
+          :style="barStyle"
           role="progressbar">
           {{ progressPercent }}%</div>
         </div>
@@ -95,6 +96,11 @@ export default {
     progressPercent() {
       return this.blocksCompleted / this.goal * 100;
     },
+    barStyle() {
+      return {
+        '--barWidth': `${this.progressPercent}%`,
+      };
+    },
   },
 };
 </script>
@@ -129,7 +135,7 @@ export default {
 }
 .progress-bar {
   background-color: #9AC356;
-  width: 60%;
+  width: var(--barWidth);
 }
 .basicText {
   color: #C4C4C4;
