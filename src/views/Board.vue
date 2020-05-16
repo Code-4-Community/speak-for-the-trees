@@ -23,15 +23,11 @@ export default {
   },
   computed: {
     individualsWithRank() {
-      let i = 0;
-      return this.individuals.map((element) => {
-        i += 1;
-        return {
-          username: element.username,
-          blocksCompleted: element.blocksCompleted,
-          rank: i,
-        };
-      });
+      return this.individuals.map((element, index) => ({
+        username: element.username,
+        blocksCompleted: element.blocksCompleted,
+        rank: index + 1,
+      }));
     },
   },
 };
