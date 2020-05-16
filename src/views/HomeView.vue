@@ -2,7 +2,6 @@
   <div class="home">
     <h1>Home Page</h1>
     <router-link to="/reserve/new"><b-button class="active">Reserve New</b-button></router-link>
-    <router-link to="/reserve/edit"><b-button class="active">See Reserved</b-button></router-link>
     <about/>
     <leaderboard v-if="loggedIn" />
   </div>

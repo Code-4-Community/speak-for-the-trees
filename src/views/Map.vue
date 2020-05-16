@@ -17,6 +17,10 @@ export default {
       type: Function,
       required: false,
     },
+    fids: {
+      type: Array,
+      required: false,
+    },
   },
   data: () => ({
     modalShow: false,
@@ -44,7 +48,7 @@ export default {
     }
     const actions = [];
     if (this.reservedFilter === 1) {
-      actions.push([unreserveSegment, completeSegment]);
+      actions.push(unreserveSegment, completeSegment);
     } else {
       actions.push(reserveSegment);
     }
@@ -78,8 +82,11 @@ export default {
       ],
     };
     const sqlExpressions = [];
-    if (this.reservedFilter !== undefined) {
+    const reservedFidsFilter = `FID = ${this.fids.join(' OR FID = ')}`;
+    if (this.reservedFilter === 0) {
       sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
+    } else if (this.fids.length > 0) {
+      sqlExpressions.push(reservedFidsFilter);
     } else {
       sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
     }
@@ -120,15 +127,13 @@ export default {
         const streetSegments = new FeatureLayer({
           url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
           renderer,
-          outFields: ['FID', 'ST_NAME'],
+          outFields: ['ST_NAME'],
           popupTemplate: template,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
         });
         this.view.ui.add(selectFilter, 'bottom-right');
-        if (this.reservedFilter !== undefined) {
-          streetSegments.definitionExpression = selectFilter.firstChild.value;
-        }
+        streetSegments.definitionExpression = selectFilter.firstChild.value;
         function setFeatureLayerFilter(expression) {
           streetSegments.definitionExpression = expression;
         }
@@ -141,13 +146,12 @@ export default {
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
           if (event.action.id === 'reserve-this') {
-            this.pushStreet(event.target.selectedFeature.attributes.FID);
+            this.pushStreet(event.target.selectedFeature.attributes.FID, 'reserve');
+          } else if (event.action.id === 'unreserve-this') {
+            this.pushStreet(event.target.selectedFeature.attributes.FID, 'unreserve');
+          } else if (event.action.id === 'complete-this') {
+            this.pushStreet(event.target.selectedFeature.attributes.FID, 'complete');
           }
-          // else if (event.action.id === 'unreserve-this') {
-          //   this.unreserveSelectedStreet(getStreet());
-          // } else if (event.action.id === 'complete-this') {
-          //   this.completeSelectedStreet(getStreet());
-          // }
         });
       });
   },
