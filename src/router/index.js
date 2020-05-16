@@ -68,7 +68,12 @@ const routes = [
   },
   {
     path: '/reserve/:editmode',
-    name: 'reserve',
+    name: 'ReserveNew',
+    component: MapPage,
+  },
+  {
+    path: '/reserve/:editmode',
+    name: 'ReserveEdit',
     component: MapPage,
     props: true,
   },

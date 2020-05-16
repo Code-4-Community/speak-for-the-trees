@@ -12,9 +12,8 @@
     <b-button class="reservation-item"
     @click="releaseStreet(street.name + ' ' + street.type)" variant="danger">
       Release</b-button>
-    <router-link :to="{path: '/reserve/edit', props: { activeStreetFid: street.FID }}">
-      <b-button class="active">Edit reservation</b-button>
-    </router-link>
+    <b-button class="reservation-item" @click="() => toEditReservations(street.FID)">
+      Edit reservation</b-button>
   </b-row>
   </b-container>
 </div>
@@ -32,6 +31,10 @@ export default {
     },
   },
   methods: {
+    // sends to the user to the map to edit a reservation
+    toEditReservations(fid) {
+      this.$router.push({ name: 'ReserveEdit', params: { activeStreetFid: fid, editmode: 'edit' } });
+    },
     completeStreet(street) {
       // TODO
       // if POST was successfull

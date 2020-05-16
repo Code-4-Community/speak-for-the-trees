@@ -20,7 +20,7 @@
     <div class="header-bar">
       <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button>
       <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button>
-      <h3 v-if="reservedFilter === 1">Block {{this.activeStreetFid}}</h3>
+      <h3 v-if="reservedFilter === 1 && !!activeStreetFid">Block {{this.activeStreetFid}}</h3>
     </div>
 
     <Map
