@@ -10,7 +10,6 @@ import TeamLeaderboard from '../views/TeamLeaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
 import TeamView from '../views/TeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
-import AvailableTeams from '../views/AvailableTeams.vue';
 
 Vue.use(VueRouter);
 
@@ -60,11 +59,6 @@ const routes = [
     path: '/leaderboard',
     name: 'leaderboard',
     component: Leaderboard,
-  },
-  {
-    path: '/available-teams',
-    name: 'AvailableTeams',
-    component: AvailableTeams,
   },
   {
     path: '/reserve/:editmode',
