@@ -105,7 +105,6 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.alert = 'hi';
       createTeam({
         name: this.form.teamName,
         bio: this.form.teamBio,

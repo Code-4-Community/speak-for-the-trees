@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <h1>Home Page</h1>
-    <router-link to="/reserve/new" tag="button" class="active">Reserve New Streets</router-link>
+    <router-link to="/reserve/new"><b-button class="active">Reserve New</b-button></router-link>
+    <router-link to="/reserve/edit"><b-button class="active">See Reserved</b-button></router-link>
     <about/>
     <leaderboard v-if="loggedIn" />
   </div>
@@ -33,12 +34,11 @@ export default {
 button {
   position: relative;
   top: 30%;
-  background: #9AC356;
   box-sizing: border-box;
   padding: 0 1em;
   font-size: 100%;
   font-weight: bold;
-  color: #FFFFFF;
+  background-color: #9AC356;
 }
 
 .active {

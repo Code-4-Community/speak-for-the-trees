@@ -11,32 +11,30 @@ export default {
     reservedFilter: {
       type: Number,
       required: false,
+      // currentSelection:
+    },
+    pushStreet: {
+      type: Function,
+      required: false,
     },
   },
   data: () => ({
     modalShow: false,
   }),
-  methods: {
-    // eslint-disable-next-line no-unused-vars
-    reserveSelectedStreet() {
-      /**
-       * TODO
-       * Code goes here to submit street as reserved!
-       *
-       *
-       *
-       */
-      // eslint-disable-next-line no-constant-condition
-      if (true) {
-        // modal popup
-        this.$bvModal.show('street-confirmation-modal');
-      }
-    },
-  },
   mounted() {
     const reserveSegment = {
-      title: 'Reserve',
+      title: 'Add',
       id: 'reserve-this',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    const unreserveSegment = {
+      title: 'Remove',
+      id: 'unreserve-this',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    const completeSegment = {
+      title: 'Complete',
+      id: 'complete-this',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     function getModalContent() {
@@ -44,31 +42,37 @@ export default {
       // TODO: find way to perform function on ESRI data;
       return '<b>ID:</b> {FID} <strong>RESERVED:</strong> {RESERVED}';
     }
+    const actions = [];
+    if (this.reservedFilter === 1) {
+      actions.push([unreserveSegment, completeSegment]);
+    } else {
+      actions.push(reserveSegment);
+    }
     const template = {
       // autocasts as new PopupTemplate()
       title: '{ST_NAME} {ST_TYPE}', // Show attribute value
       content: getModalContent(),
-      actions: [reserveSegment],
+      actions,
     };
     const renderer = {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-UniqueValueRenderer.html
       type: 'unique-value',
-      field: 'ST_TYPE',
+      field: 'RESERVED',
       defaultSymbol: { type: 'simple-line' },
       uniqueValueInfos: [{
-        value: 'ST',
+        value: '0',
         symbol: {
           type: 'simple-line', // autocasts as new SimpleFillSymbol()
-          color: 'blue',
+          color: '#9AC356',
           width: '3px',
         },
       }, {
-        value: 'AVE',
+        value: '1',
         symbol: {
           type: 'simple-line', // autocasts as new SimpleFillSymbol()
-          color: 'purple',
-          width: '1px',
+          color: '#787272',
+          width: '3px',
         },
       },
       ],
@@ -99,11 +103,24 @@ export default {
           map,
           center: [-71.0892, 42.3398],
           zoom: 15,
+          popup: {
+            dockEnabled: true,
+            dockOptions: {
+              // Disables the dock button from the popup
+              buttonEnabled: false,
+              // Ignore the default sizes that trigger responsive docking
+              breakpoint: false,
+              // Set position of modal to bottom of the map
+              position: 'bottom-center',
+            },
+            // Condition to display
+            // visible: !!props.currentSelection
+          },
         });
         const streetSegments = new FeatureLayer({
           url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
           renderer,
-          outFields: ['SEGMENT_ID', 'ST_NAME'],
+          outFields: ['FID', 'ST_NAME'],
           popupTemplate: template,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
@@ -124,8 +141,13 @@ export default {
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
           if (event.action.id === 'reserve-this') {
-            this.reserveSelectedStreet();
+            this.pushStreet(event.target.selectedFeature.attributes.FID);
           }
+          // else if (event.action.id === 'unreserve-this') {
+          //   this.unreserveSelectedStreet(getStreet());
+          // } else if (event.action.id === 'complete-this') {
+          //   this.completeSelectedStreet(getStreet());
+          // }
         });
       });
   },
@@ -140,7 +162,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang='scss' scoped>
 div {
     padding: 0;
     margin: 0;
