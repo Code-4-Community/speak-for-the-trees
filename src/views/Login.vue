@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <img class="auth-logo" src="../../assets/sftt-logo-text.jpg" />
+    <img class="auth-logo" src="../assets/sftt-logo-text.jpg" />
     <h1>Login</h1>
-    <b-form>
+    <b-form @submit="onLogin">
       <b-form-group>
         <b-form-input
           id="input-email"
@@ -35,12 +35,14 @@
         <a href="./sign-up">HERE!</a>
       </p>
 
-      <b-button @submit="submit" type="submit">Login</b-button>
+      <b-button type="submit">Login</b-button>
     </b-form>
   </div>
 </template>
 
 <script>
+import { login } from '../auth/authAPI';
+
 export default {
   name: 'login',
   data() {
@@ -58,25 +60,18 @@ export default {
       this.inputValid = this.email && this.password;
       return this.inputValid;
     },
-    async submit() {
+    onLogin(e) {
+      e.preventDefault();
       this.submitted = true;
       if (this.validateInput()) {
         const user = {
           email: this.email,
           password: this.password,
-          rememberLogIn: this.rememberLogIn,
         };
-        try {
-          await this.$store.dispatch('login', user);
-          this.resetInput();
-          this.$router.push('/');
-        } catch (error) {
-          if (error.status === 401) {
-            this.error = `Incorrect Email/Password: ${error.message}.`;
-          } else {
-            this.error = 'Bad request.';
-          }
-        }
+        login(user).then(() => this.$router.push('/'))
+          .catch((error) => {
+            this.error = error?.message;
+          });
       }
     },
   },

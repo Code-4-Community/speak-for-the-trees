@@ -2,11 +2,11 @@
   <div>
       <h1>
         {{ name }}
-        <img v-if="permissionLevel == 2" src="../../assets/edit-icon.svg" alt="edit">
+        <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
       </h1>
       <p class="basicText">{{ bio }}</p>
       <p class="banner">
-        TEAM GOAL  <img v-if="permissionLevel == 2" src="../../assets/edit-icon.svg" alt="edit">
+        TEAM GOAL  <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
