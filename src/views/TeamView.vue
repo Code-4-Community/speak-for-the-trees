@@ -17,6 +17,7 @@
       <div class="progressWrapper">
         <div class="progress">
           <div class="progress-bar"
+          :style="barStyle"
           role="progressbar">
           {{ progressPercent }}%</div>
         </div>
@@ -92,8 +93,15 @@ export default {
         { value: ye }] = dtf.formatToParts(this.goalCompleteDate);
       return `${mo}/${da}/${ye}`;
     },
+    // calculates the percentage of blocks completed
     progressPercent() {
       return this.blocksCompleted / this.goal * 100;
+    },
+    // calculates the width of the progress bar
+    barStyle() {
+      return {
+        '--barWidth': `${this.progressPercent}%`,
+      };
     },
   },
 };
@@ -129,7 +137,7 @@ export default {
 }
 .progress-bar {
   background-color: #9AC356;
-  width: 60%;
+  width: var(--barWidth);
 }
 .basicText {
   color: #C4C4C4;
