@@ -10,12 +10,12 @@ const to = route => `${process.env.VUE_APP_API_DOMAIN}${route}`;
 export const login = async user => Axios.post(to(API_LOGIN), user).then((response) => {
   Token.setAccessToken(response?.data?.accessToken);
   Token.setRefreshToken(response?.data?.refreshToken);
-}).catch(error => new Error(error));
+});
 
 export const signup = async user => Axios.post(to(API_SIGNUP), user).then((response) => {
   Token.setAccessToken(response?.data?.accessToken);
   Token.setRefreshToken(response?.data?.refreshToken);
-}).catch(error => new Error(error));
+});
 
 export const logout = async () => Axios.delete(to(API_LOGIN), {
   headers: {

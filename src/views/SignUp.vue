@@ -139,16 +139,10 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
         };
-        try {
-          signup(user);
-          this.$router.push('/home');
-        } catch (error) {
-          if (error.status === 409) {
-            this.serverError = 'Email has already been registered.';
-          } else {
-            this.serverError = 'Bad Request.';
-          }
-        }
+        signup(user).then(() => this.$router.push('/'))
+          .catch((error) => {
+            this.error = error?.message;
+          });
       }
     },
   },

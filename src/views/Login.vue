@@ -68,16 +68,10 @@ export default {
           email: this.email,
           password: this.password,
         };
-        try {
-          login(user);
-          this.$router.push('/');
-        } catch (error) {
-          if (error.status === 401) {
-            this.error = `Incorrect Email/Password: ${error.message}.`;
-          } else {
-            this.error = 'Bad request.';
-          }
-        }
+        login(user).then(() => this.$router.push('/'))
+          .catch((error) => {
+            this.error = error?.message;
+          });
       }
     },
   },
