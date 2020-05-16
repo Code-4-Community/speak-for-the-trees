@@ -52,7 +52,6 @@
             <b-form-input
             v-model="invites.memberNames[x - 1]"
             type="text"
-            required
             placeholder="NAME"
             ></b-form-input>
           </div>
@@ -60,7 +59,6 @@
             <b-form-input
             v-model="invites.memberEmails[x - 1]"
             type="email"
-            required
             placeholder="MEMBER EMAIL"
             ></b-form-input>
           </div>
@@ -88,7 +86,7 @@ export default {
   name: 'TeamCreation',
   data() {
     return {
-      members: 1,
+      members: 0,
       alert: null,
       form: {
         teamName: '',
