@@ -10,7 +10,7 @@
 
 <script>
 
-import Leaderboard from './Leaderboard.vue';
+import Leaderboard from './VolunteerLeaderboard.vue';
 import About from './AboutView.vue';
 
 export default {
