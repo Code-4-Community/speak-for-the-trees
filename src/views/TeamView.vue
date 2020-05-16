@@ -93,9 +93,11 @@ export default {
         { value: ye }] = dtf.formatToParts(this.goalCompleteDate);
       return `${mo}/${da}/${ye}`;
     },
+    // calculates the percentage of blocks completed
     progressPercent() {
       return this.blocksCompleted / this.goal * 100;
     },
+    // calculates the width of the progress bar
     barStyle() {
       return {
         '--barWidth': `${this.progressPercent}%`,

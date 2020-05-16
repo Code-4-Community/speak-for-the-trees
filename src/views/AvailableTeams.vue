@@ -52,6 +52,7 @@ export default {
     };
   },
   methods: {
+    // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
     },

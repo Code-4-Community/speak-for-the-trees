@@ -119,6 +119,7 @@ export default {
         this.alert = error.message;
       });
     },
+    // creates an object holding the names and email addresses of the invitees
     getInvites() {
       const result = [];
       let i = 0;
@@ -131,6 +132,7 @@ export default {
     },
   },
   computed: {
+    // ensures the team name is longer than 3 characters
     teamNameValidator() {
       return this.form.teamName.length > 3;
     },

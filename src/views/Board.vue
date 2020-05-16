@@ -22,6 +22,7 @@ export default {
     },
   },
   computed: {
+    // creates a copy of the individuals array and adds a rank
     individualsWithRank() {
       return this.individuals.map((element, index) => ({
         username: element.username,
