@@ -18,7 +18,7 @@ export default {
 };
 </script>
 <style lang="less">
-@import '../assets/color-constants.less';
+@import './assets/color-constants.less';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

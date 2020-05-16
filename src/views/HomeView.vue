@@ -1,47 +1,60 @@
 <template>
   <div class="home">
-    <h1>Home Page</h1>
-    <router-link to="/reserve/new"><b-button class="active">Reserve New</b-button></router-link>
-    <about/>
-    <leaderboard v-if="loggedIn" />
+    <h1>Welcome back, {{ this.username }}!</h1>
+    <b-button-group vertical>
+      <b-button @click="toNewReservations">New Reservations</b-button>
+      <b-button @click="toCurrentReservations">Current Reservations</b-button>
+      <b-button @click="toTeams">View Teams</b-button>
+    </b-button-group>
+    <router-link class="trophy" to="/leaderboard">
+      <img src="../assets/trophy.svg" alt="trophy">
+    </router-link>
   </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import Leaderboard from './Leaderboard.vue';
-import About from './AboutView.vue';
+Vue.use(VueRouter);
 
 export default {
   name: 'home',
-  components: {
-    Leaderboard,
-    About,
+  data() {
+    return {
+      username: 'Betty',
+    };
   },
-  data: () => ({
-    loggedIn: true,
-  }),
+  methods: {
+    // sends to the user to the map to make a reservation
+    toNewReservations() {
+      this.$router.push('/reserve/new');
+    },
+    // sends the user to their current reservations
+    toCurrentReservations() {
+      this.$router.push('/current-reservations');
+    },
+    // sends the teams page, either available teams or their own team page
+    toTeams() {
+      this.$router.push('/team');
+    },
+  },
 };
 </script>
 
 <style scoped>
-.individual-button {
-  margin-top: 3em;
-  margin-bottom: 3em;
-}
-
 button {
-  position: relative;
-  top: 30%;
-  box-sizing: border-box;
-  padding: 0 1em;
-  font-size: 100%;
-  font-weight: bold;
-  background-color: #9AC356;
+  background: #9AC554;
+  color: white;
+  padding: 0.75rem;
+  margin-top: 8vh !important;
+  border-radius: 5px !important;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
 }
-
-.active {
-  border: 2px solid #D4EDAA;
-  border-radius: 100px;
+.trophy {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
 }
 </style>
