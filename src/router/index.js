@@ -54,19 +54,14 @@ const routes = [
     name: 'leaderboard',
     component: Leaderboard,
   },
-  {
-    path: '/available-teams',
-    name: 'AvailableTeams',
-    component: AvailableTeams,
-  },
   // editmode can either be set to 'new' if filtering for unreserved streets
   // or can be set to 'edit' if using a provided list of streets
-//   {
-    // editmode will be set to 'new'
-//     path: '/reserve/:editmode',
-//     name: 'ReserveNew',
-//     component: MapPage,
-//   },
+  //   {
+  // editmode will be set to 'new'
+  //     path: '/reserve/:editmode',
+  //     name: 'ReserveNew',
+  //     component: MapPage,
+  //   },
   {
     path: '/reserve/:editmode',
     name: 'ReserveEdit',
