@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-navbar/>
+    <Header/>
     <div id="app">
       <router-view/>
     </div>
@@ -9,12 +9,13 @@
 
 <script>
 import { mapMutations } from 'vuex';
-import TheNavbar from './views/TheNavbar.vue';
+import Header from './components/Header.vue';
+import { refresh } from './auth/authAPI';
 
 export default {
   name: 'app',
   components: {
-    TheNavbar,
+    Header,
   },
   methods: {
     ...mapMutations({
@@ -22,7 +23,9 @@ export default {
     }),
   },
   mounted() {
-    this.setUser();
+    refresh().finally(() => {
+      this.setUser();
+    });
   },
 };
 </script>
