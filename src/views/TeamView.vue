@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="inTeam">
       <h1>
         {{ name }}
         <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
@@ -35,14 +36,22 @@
           <p v-else class="member">{{ member.username }}</p>
         </div>
       </div>
+    </div>
+    <available-teams v-if="!inTeam"/>
   </div>
 </template>
 
 <script>
+import AvailableTeams from './AvailableTeams.vue';
+
 export default {
   name: 'TeamView',
+  components: {
+    AvailableTeams,
+  },
   data() {
     return {
+      inTeam: true,
       id: 100,
       name: 'My Awesome Team',
       bio: 'Amazing team, count so many trees, all day long, preference for Sundays.',
