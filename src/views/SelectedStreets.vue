@@ -1,8 +1,10 @@
 <template>
     <div>
-        <p class="street-list" v-if="streets.length > 0">
-            Currently selected: {{ this.streets.join(', ') }}
-        </p>
+        <div>
+          <p class="street-list" v-if="streets.length > 0">
+              Currently selected: {{ this.streets.join(', ') }}
+          </p>
+        </div>
         <b-button v-on:click="this.onClick" :disabled="streets.length === 0">
             {{this.title}}
         </b-button>

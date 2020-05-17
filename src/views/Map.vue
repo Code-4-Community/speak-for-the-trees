@@ -153,7 +153,9 @@ export default {
           // Execute the measureThis() function if the measure-this action is clicked
           // If the event id matches one of the ids defined as an action for selecting a street
           // then add to the list with a corresonding id
-          if (event.action.id === 'reserve' || event.action.id === 'unreserve' || event.action.id === 'complete') {
+          if (event.action.id === 'reserve'
+            || event.action.id === 'unreserve'
+            || event.action.id === 'complete') {
             this.pushStreet(event.target.selectedFeature.attributes.FID, event.action.id);
           }
         });

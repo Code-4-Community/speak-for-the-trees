@@ -156,7 +156,17 @@ export default {
 .streets-container {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
+  margin-left: auto;
+  width:60%;
+  align-items: baseline;
   padding: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+  .streets-container {
+    width: 100%;
+    margin-left: 5px;
+  }
 }
 </style>
