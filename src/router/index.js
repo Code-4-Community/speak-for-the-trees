@@ -13,12 +13,6 @@ import CurrentReservations from '../views/CurrentReservations.vue';
 
 Vue.use(VueRouter);
 
-function getReserveRoute(route) {
-  return {
-    reservedFilter: route.params.editmode === 'edit' ? 1 : 0,
-  };
-}
-
 const routes = [
   {
     path: '/',
@@ -60,11 +54,19 @@ const routes = [
     name: 'leaderboard',
     component: Leaderboard,
   },
+  // editmode can either be set to 'new' if filtering for unreserved streets
+  // or can be set to 'edit' if using a provided list of streets
+  {
+    // editmode will be set to 'new'
+    path: '/reserve/:editmode',
+    name: 'ReserveNew',
+    component: MapPage,
+  },
   {
     path: '/reserve/:editmode',
-    name: 'reserve',
+    name: 'ReserveEdit',
     component: MapPage,
-    props: getReserveRoute,
+    props: true,
   },
   {
     path: '/about',
