@@ -26,7 +26,8 @@
     <Map
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
-      v-bind:fids="getFids()"/>
+      v-bind:fids="getFids()"
+      v-bind:activeStreetFid="this.activeStreetFid"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
       <p>You have successfuly reserved</p>
@@ -99,7 +100,6 @@ export default {
   },
   methods: {
     pushStreet(street, selection) {
-      console.log(selection);
       if (this.streetsToReserve.includes(street)
       || this.streetsToUnreserve.includes(street)
       || this.streetsToComplete.includes(street)) {

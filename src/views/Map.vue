@@ -21,6 +21,10 @@ export default {
       type: Array,
       required: false,
     },
+    activeStreetFid: {
+      type: Number,
+      required: false,
+    },
   },
   data: () => ({
     modalShow: false,
@@ -146,6 +150,25 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
+        // Opens a popup with the street information that corresponds with the given FID
+        this.view.when(() => {
+          if (this.activeStreetFid !== undefined) {
+            // Create a query where the FID equals the given FID
+            const query = streetSegments.createQuery();
+            query.where = `FID = ${this.activeStreetFid}`;
+            streetSegments.queryFeatures(query)
+              .then((response) => {
+                // FID is a key so there should only be one item in the
+                // features array that is returned
+                const streetFeatures = response.features;
+                // Sets what the popup should look like
+                streetFeatures[0].popupTemplate = template;
+                this.view.popup.open({
+                  features: streetFeatures,
+                });
+              });
+          }
+        });
         // eslint-disable-next-line no-unused-vars
         // Determine to which list the street in the popup will be added
         // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
