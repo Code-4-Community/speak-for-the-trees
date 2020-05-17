@@ -29,11 +29,12 @@
         </b-form-checkbox-group>
       </b-form-group> -->
 
-      <a href="">FORGOT PASSWORD?<br><br></a>
+      <b-alert v-model="error" variant="danger" dismissible>
+        {{ errorMessage }}
+      </b-alert>
 
-      <p>NEW TO SPEAK FOR THE TREES?<br>SIGN UP
-        <a href="./sign-up">HERE!</a>
-      </p>
+      <p>NEW TO SPEAK FOR THE TREES?
+      SIGN UP <router-link class="link" to="signup">HERE!</router-link></p>
 
       <b-button type="submit">Login</b-button>
     </b-form>
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import { login } from '../auth/authAPI';
 
 export default {
@@ -52,10 +54,14 @@ export default {
       submitted: false,
       inputValid: false,
       rememberLogIn: false,
-      error: '',
+      error: false,
+      errorMessage: '',
     };
   },
   methods: {
+    ...mapMutations({
+      setUser: 'setUser',
+    }),
     validateInput() {
       this.inputValid = this.email && this.password;
       return this.inputValid;
@@ -68,9 +74,13 @@ export default {
           email: this.email,
           password: this.password,
         };
-        login(user).then(() => this.$router.push('/'))
-          .catch((error) => {
-            this.error = error?.message;
+        login(user)
+          .catch(() => {
+            this.error = true;
+            this.errorMessage = 'Sorry, we were unable to verify your account';
+          }).finally(() => {
+            this.setUser();
+            this.$router.push('/');
           });
       }
     },
@@ -79,18 +89,33 @@ export default {
 </script>
 
 <style scoped>
+.auth-logo {
+  width: 204px;
+  height: 168px;
+  display: block;
+  margin: auto;
+  margin-bottom: 10%;
+}
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
+  margin-top: 10%;
   text-align: left;
   min-width: 75vw;
 }
 
 p {
-  font-size: 10px;
+  font-size: 12px;
   color: #AFAEAE;
 }
 
-a {
-  font-size: 10px;
+.link {
+  font-size: 12px;
   color: #61802E;
 }
 

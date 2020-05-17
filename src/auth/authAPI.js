@@ -21,7 +21,7 @@ export const logout = async () => Axios.delete(to(API_LOGIN), {
   headers: {
     'X-Refresh-Token': Token.getRefreshToken(),
   },
-}).then(() => {
+}).finally(() => {
   Token.removeAccessToken();
   Token.removeRefreshToken();
 });
