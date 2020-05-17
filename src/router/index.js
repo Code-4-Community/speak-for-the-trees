@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Login from '../views/Login.vue';
-import SignUp from '../views/SignUp.vue';
-import MapPage from '../views/MapPage.vue';
+import Login from '../views/LoginView.vue';
+import SignUp from '../views/SignUpView.vue';
+import MapView from '../views/MapView.vue';
 import HomeView from '../views/HomeView.vue';
-import Leaderboard from '../views/VolunteerLeaderboard.vue';
-import TeamLeaderboard from '../views/TeamLeaderboard.vue';
-import TeamCreation from '../views/TeamCreation.vue';
-import TeamView from '../views/TeamView.vue';
+import Leaderboard from '../views/VolunteersLeaderboardView.vue';
+import TeamLeaderboard from '../views/TeamsLeaderboardView.vue';
+import TeamCreation from '../views/TeamCreationView.vue';
+import TeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
 import tokenService from '../auth/token';
@@ -58,7 +58,7 @@ const routes = [
   {
     path: '/map',
     name: 'Map',
-    component: MapPage,
+    component: MapView,
   },
   {
     path: '/available-teams',
@@ -71,21 +71,14 @@ const routes = [
     // editmode will be set to 'new'
     path: '/reserve/:editmode',
     name: 'ReserveNew',
-    component: MapPage,
+    component: MapView,
+    props: true,
   },
   {
     path: '/reserve/:editmode',
     name: 'ReserveEdit',
-    component: MapPage,
+    component: MapView,
     props: true,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
   {
     path: '/profile',

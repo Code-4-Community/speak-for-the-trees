@@ -36,7 +36,7 @@ export default {
     },
     // sends the teams page, either available teams or their own team page
     toTeams() {
-      this.$router.push('/team');
+      this.$router.push('/available-teams');
     },
   },
 };

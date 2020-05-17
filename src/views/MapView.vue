@@ -52,8 +52,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import Map from './Map.vue';
-import SelectedStreets from './SelectedStreets.vue';
+import Map from '../components/Map.vue';
+import SelectedStreets from '../components/SelectedStreets.vue';
 
 export default {
   name: 'MapPage',

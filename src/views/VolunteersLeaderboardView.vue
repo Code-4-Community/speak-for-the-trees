@@ -1,22 +1,22 @@
 <template>
   <div>
-    <h1>Team Leaderboard</h1>
-    <p>Celebrate your team’s progress and view individual member contribution</p>
-    <Board v-bind:individuals="this.members" />
+    <h1>Volunteer Leaderboard</h1>
+    <p>Celebrate all the contributions of our Speak for the Trees volunteers!</p>
+    <Board v-bind:individuals="this.individuals" />
   </div>
 </template>
 
 <script>
-import Board from './Board.vue';
+import Board from '../components/Board.vue';
 
 export default {
-  name: 'TeamLeaderboard',
+  name: 'VolunteerLeaderboard',
   components: {
     Board,
   },
   data() {
     return {
-      members: [
+      individuals: [
         {
           id: 4,
           username: 'Delta',

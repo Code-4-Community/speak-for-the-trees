@@ -62,7 +62,7 @@ export default {
 
 <style scoped>
 .cont {
-  width: 100vw;
+  width: 100%;
 }
 
 .basicText {
@@ -76,7 +76,7 @@ export default {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   align-self: left;
-  width: 95vw;
+  width: 100%;
 }
 
 button.create, button.create:hover, button.create:focus {
