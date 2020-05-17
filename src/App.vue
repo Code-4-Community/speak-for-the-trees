@@ -1,13 +1,14 @@
 <template>
-<div>
-<the-navbar />
-  <div id="app">
-  <router-view/>
+  <div>
+    <the-navbar/>
+    <div id="app">
+      <router-view/>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 import TheNavbar from './views/TheNavbar.vue';
 
 export default {
@@ -15,8 +16,17 @@ export default {
   components: {
     TheNavbar,
   },
+  methods: {
+    ...mapMutations({
+      setUser: 'setUser',
+    }),
+  },
+  mounted() {
+    this.setUser();
+  },
 };
 </script>
+
 <style lang="less">
 @import './assets/color-constants.less';
 

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import AuthenticationView from '../views/AuthenticationView.vue';
 import Login from '../views/Login.vue';
 import SignUp from '../views/SignUp.vue';
 import MapPage from '../views/MapPage.vue';
@@ -10,18 +9,30 @@ import TeamLeaderboard from '../views/TeamLeaderboard.vue';
 import TeamCreation from '../views/TeamCreation.vue';
 import TeamView from '../views/TeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
+import AvailableTeams from '../views/AvailableTeams.vue';
+import tokenService from '../auth/token';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView,
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp,
+  },
+  {
     path: '/leaderboard',
-    name: 'leaderboard',
+    name: 'Leaderboard',
     component: Leaderboard,
   },
   {
@@ -46,13 +57,13 @@ const routes = [
   },
   {
     path: '/map',
-    name: 'map',
+    name: 'Map',
     component: MapPage,
   },
   {
-    path: '/leaderboard',
-    name: 'leaderboard',
-    component: Leaderboard,
+    path: '/available-teams',
+    name: 'AvailableTeams',
+    component: AvailableTeams,
   },
   // editmode can either be set to 'new' if filtering for unreserved streets
   // or can be set to 'edit' if using a provided list of streets
@@ -70,32 +81,15 @@ const routes = [
   },
   {
     path: '/about',
-    name: 'about',
+    name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
   {
-    path: '/authentication',
-    component: AuthenticationView,
-    redirect: '/authentication/login',
-    children: [
-      {
-        path: '/login',
-        name: 'login',
-        component: Login,
-      },
-      {
-        path: '/sign-up',
-        name: 'sign-up',
-        component: SignUp,
-      },
-    ],
-  },
-  {
     path: '/profile',
-    name: 'profile',
+    name: 'Profile',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -111,6 +105,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (tokenService.getPrivilegeLevel() < 0) {
+    if (to.name === 'Login' || to.name === 'Signup') next();
+    else next({ name: 'Login' });
+  } else next();
 });
 
 export default router;

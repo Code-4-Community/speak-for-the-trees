@@ -1,31 +1,42 @@
 <template>
-  <div class="header-container">
-          <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
-            <b-dropdown-item href="/">Home</b-dropdown-item>
-            <b-dropdown-item href="/profile">Profile</b-dropdown-item>
-            <b-dropdown-item href="/map">Reserve Streets</b-dropdown-item>
-            <b-dropdown-item href="/current-reservations">Current Reservations</b-dropdown-item>
-            <b-dropdown-item href="/create">Create Team</b-dropdown-item>
-            <b-dropdown-item href="/contact">Contact</b-dropdown-item>
-            <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item href="/sign-up" v-if="!loggedIn">
-            <strong>Sign-Up</strong></b-dropdown-item>
-            <b-dropdown-item href="/login" v-if="!loggedIn">
-            <strong>Login</strong></b-dropdown-item>
-            <b-dropdown-item href="/logout" v-if="loggedIn">
-            <strong>Logout</strong></b-dropdown-item>
-  </b-dropdown>
-     <a href="/home" ><img class="header__logo" src="../assets/sftt-logo-text.jpg" /></a>
+  <div class="header-container" v-show="showNavbar">
+    <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
+      <b-dropdown-item to="/home">Home</b-dropdown-item>
+      <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+      <b-dropdown-item to="/map">Reserve Streets</b-dropdown-item>
+      <b-dropdown-item to="current-reservations">Current Reservations</b-dropdown-item>
+      <b-dropdown-item to="/create">Create Team</b-dropdown-item>
+      <!-- <b-dropdown-item to="/contact">Contact</b-dropdown-item> -->
+      <b-dropdown-divider />
+      <b-dropdown-item v-on:click="logout">
+        <strong>Logout</strong>
+      </b-dropdown-item>
+    </b-dropdown>
+    <router-link to="/home">
+      <img class="header__logo" src="../assets/sftt-logo-text.jpg" />
+    </router-link>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
+import { logout } from '../auth/authAPI';
+
 export default {
   name: 'Header',
-  components: {
+  methods: {
+    ...mapMutations({
+      setUser: 'setUser',
+    }),
+    logout() {
+      logout().finally(() => {
+        this.setUser();
+        this.$router.push('/login');
+      });
+    },
   },
-  data: () => ({
-    loggedIn: true,
+  computed: mapState({
+    showNavbar: 'isUserAuthenticated',
   }),
 };
 </script>

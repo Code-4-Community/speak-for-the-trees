@@ -24,6 +24,9 @@ export const logout = async () => Axios.delete(to(API_LOGIN), {
 }).then(() => {
   Token.removeAccessToken();
   Token.removeRefreshToken();
+}).catch(() => {
+  Token.removeAccessToken();
+  Token.removeRefreshToken();
 });
 
 export const refresh = async () => Axios.post(to(API_REFRESH_TOKEN), null, {
