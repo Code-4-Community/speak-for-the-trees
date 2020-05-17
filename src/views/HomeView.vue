@@ -28,7 +28,7 @@ export default {
   methods: {
     // sends to the user to the map to make a reservation
     toNewReservations() {
-      this.$router.push('/map');
+      this.$router.push('/reserve/new');
     },
     // sends the user to their current reservations
     toCurrentReservations() {

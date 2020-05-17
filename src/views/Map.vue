@@ -17,6 +17,14 @@ export default {
       type: Function,
       required: false,
     },
+    fids: {
+      type: Array,
+      required: false,
+    },
+    activeStreetFid: {
+      type: Number,
+      required: false,
+    },
   },
   data: () => ({
     modalShow: false,
@@ -24,17 +32,17 @@ export default {
   mounted() {
     const reserveSegment = {
       title: 'Add',
-      id: 'reserve-this',
+      id: 'reserve',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     const unreserveSegment = {
       title: 'Remove',
-      id: 'unreserve-this',
+      id: 'unreserve',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     const completeSegment = {
       title: 'Complete',
-      id: 'complete-this',
+      id: 'complete',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     function getModalContent() {
@@ -44,7 +52,7 @@ export default {
     }
     const actions = [];
     if (this.reservedFilter === 1) {
-      actions.push([unreserveSegment, completeSegment]);
+      actions.push(unreserveSegment, completeSegment);
     } else {
       actions.push(reserveSegment);
     }
@@ -78,9 +86,17 @@ export default {
       ],
     };
     const sqlExpressions = [];
-    if (this.reservedFilter !== undefined) {
+    // Creates a filter from the given list of FIDs so that only the given
+    // streets will appear on the map
+    const reservedFidsFilter = `FID = ${this.fids.join(' OR FID = ')}`;
+    if (this.reservedFilter === 0) {
+      // If reserving new streets, only show streets that are not reserved
       sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
+    } else if (this.fids.length > 0) {
+      // If there are given FIDs, have the map only show the given streets
+      sqlExpressions.push(reservedFidsFilter);
     } else {
+      // Otherwise have default filters which show every street in the database (temporary)
       sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
     }
     const selectFilter = document.createElement('select');
@@ -120,15 +136,13 @@ export default {
         const streetSegments = new FeatureLayer({
           url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
           renderer,
-          outFields: ['FID', 'ST_NAME'],
+          outFields: ['ST_NAME'],
           popupTemplate: template,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
         });
         this.view.ui.add(selectFilter, 'bottom-right');
-        if (this.reservedFilter !== undefined) {
-          streetSegments.definitionExpression = selectFilter.firstChild.value;
-        }
+        streetSegments.definitionExpression = selectFilter.firstChild.value;
         function setFeatureLayerFilter(expression) {
           streetSegments.definitionExpression = expression;
         }
@@ -136,18 +150,37 @@ export default {
           setFeatureLayerFilter(event.target.value);
         });
         map.add(streetSegments);
+        // Opens a popup with the street information that corresponds with the given FID
+        this.view.when(() => {
+          if (this.activeStreetFid !== undefined) {
+            // Create a query where the FID equals the given FID
+            const query = streetSegments.createQuery();
+            query.where = `FID = ${this.activeStreetFid}`;
+            streetSegments.queryFeatures(query)
+              .then((response) => {
+                // FID is a key so there should only be one item in the
+                // features array that is returned
+                const streetFeatures = response.features;
+                // Sets what the popup should look like
+                streetFeatures[0].popupTemplate = template;
+                this.view.popup.open({
+                  features: streetFeatures,
+                });
+              });
+          }
+        });
         // eslint-disable-next-line no-unused-vars
+        // Determine to which list the street in the popup will be added
         // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
-          if (event.action.id === 'reserve-this') {
-            this.pushStreet(event.target.selectedFeature.attributes.FID);
+          // If the event id matches one of the ids defined as an action for selecting a street
+          // then add to the list with a corresonding id
+          if (event.action.id === 'reserve'
+            || event.action.id === 'unreserve'
+            || event.action.id === 'complete') {
+            this.pushStreet(event.target.selectedFeature.attributes.FID, event.action.id);
           }
-          // else if (event.action.id === 'unreserve-this') {
-          //   this.unreserveSelectedStreet(getStreet());
-          // } else if (event.action.id === 'complete-this') {
-          //   this.completeSelectedStreet(getStreet());
-          // }
         });
       });
   },
