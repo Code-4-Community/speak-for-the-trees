@@ -28,17 +28,17 @@ export default {
   mounted() {
     const reserveSegment = {
       title: 'Add',
-      id: 'reserve-this',
+      id: 'reserve',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     const unreserveSegment = {
       title: 'Remove',
-      id: 'unreserve-this',
+      id: 'unreserve',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     const completeSegment = {
       title: 'Complete',
-      id: 'complete-this',
+      id: 'complete',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
     function getModalContent() {
@@ -82,12 +82,17 @@ export default {
       ],
     };
     const sqlExpressions = [];
+    // Creates a filter from the given list of FIDs so that only the given
+    // streets will appear on the map
     const reservedFidsFilter = `FID = ${this.fids.join(' OR FID = ')}`;
     if (this.reservedFilter === 0) {
+      // If reserving new streets, only show streets that are not reserved
       sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
     } else if (this.fids.length > 0) {
+      // If there are given FIDs, have the map only show the given streets
       sqlExpressions.push(reservedFidsFilter);
     } else {
+      // Otherwise have default filters which show every street in the database (temporary)
       sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
     }
     const selectFilter = document.createElement('select');
@@ -142,15 +147,14 @@ export default {
         });
         map.add(streetSegments);
         // eslint-disable-next-line no-unused-vars
+        // Determine to which list the street in the popup will be added
         // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
         this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
-          if (event.action.id === 'reserve-this') {
-            this.pushStreet(event.target.selectedFeature.attributes.FID, 'reserve');
-          } else if (event.action.id === 'unreserve-this') {
-            this.pushStreet(event.target.selectedFeature.attributes.FID, 'unreserve');
-          } else if (event.action.id === 'complete-this') {
-            this.pushStreet(event.target.selectedFeature.attributes.FID, 'complete');
+          // If the event id matches one of the ids defined as an action for selecting a street
+          // then add to the list with a corresonding id
+          if (event.action.id === 'reserve' || event.action.id === 'unreserve' || event.action.id === 'complete') {
+            this.pushStreet(event.target.selectedFeature.attributes.FID, event.action.id);
           }
         });
       });

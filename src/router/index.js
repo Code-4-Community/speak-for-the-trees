@@ -14,12 +14,6 @@ import AvailableTeams from '../views/AvailableTeams.vue';
 
 Vue.use(VueRouter);
 
-// function getReserveRoute(route) {
-//   return {
-//     reservedFilter: route.params.editmode === 'new' ? 0 : 1,
-//   };
-// }
-
 const routes = [
   {
     path: '/',
@@ -66,12 +60,16 @@ const routes = [
     name: 'AvailableTeams',
     component: AvailableTeams,
   },
+  // editmode can either be set to 'new' if filtering for unreserved streets
+  // or can be set to 'edit' if using a provided list of streets
   {
+    // editmode will be set to 'new'
     path: '/reserve/:editmode',
     name: 'ReserveNew',
     component: MapPage,
   },
   {
+    // editmode will be set to 'edit'
     path: '/reserve/:editmode',
     name: 'ReserveEdit',
     component: MapPage,
