@@ -6,15 +6,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: {
-      isLoggedIn: false,
-      privilegeLevel: -1,
-    },
+    isUserAuthenticated: false,
+    privilegeLevel: -1,
   },
   mutations: {
     setUser(state) {
-      state.user.isLoggedIn = !!(tokenService.getPrivilegeLevel() > -1);
-      state.user.privilegeLevel = tokenService.getPrivilegeLevel();
+      state.isUserAuthenticated = !!(tokenService.getPrivilegeLevel() > -1);
+      state.privilegeLevel = tokenService.getPrivilegeLevel();
     },
   },
   actions: {

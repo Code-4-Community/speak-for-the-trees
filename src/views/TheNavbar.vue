@@ -1,5 +1,5 @@
 <template>
-  <div class="header-container" v-show="loggedIn">
+  <div class="header-container" v-show="showNavbar">
     <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
       <b-dropdown-item to="/home">Home</b-dropdown-item>
       <b-dropdown-item to="/profile">Profile</b-dropdown-item>
@@ -21,7 +21,6 @@
 <script>
 import { mapMutations, mapState } from 'vuex';
 import { logout } from '../auth/authAPI';
-import tokenService from '../auth/token';
 
 export default {
   name: 'Header',
@@ -30,18 +29,14 @@ export default {
       setUser: 'setUser',
     }),
     logout() {
-      logout();
-      this.setUser();
-      this.$router.push('/login');
+      logout().finally(() => {
+        this.setUser();
+        this.$router.push('/login');
+      });
     },
   },
-  data() {
-    return {
-      loggedIn: tokenService.getPrivilegeLevel() > -1,
-    };
-  },
   computed: mapState({
-    isLoggedIn: 'user.isLoggedIn',
+    showNavbar: 'isUserAuthenticated',
   }),
 };
 </script>
