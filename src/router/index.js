@@ -14,12 +14,6 @@ import tokenService from '../auth/token';
 
 Vue.use(VueRouter);
 
-function getReserveRoute(route) {
-  return {
-    reservedFilter: route.params.editmode === 'edit' ? 1 : 0,
-  };
-}
-
 const routes = [
   {
     path: '/',
@@ -71,11 +65,20 @@ const routes = [
     name: 'AvailableTeams',
     component: AvailableTeams,
   },
+  // editmode can either be set to 'new' if filtering for unreserved streets
+  // or can be set to 'edit' if using a provided list of streets
+  {
+    // editmode will be set to 'new'
+    path: '/reserve/:editmode',
+    name: 'ReserveNew',
+    component: MapView,
+    props: true,
+  },
   {
     path: '/reserve/:editmode',
-    name: 'Reserve',
+    name: 'ReserveEdit',
     component: MapView,
-    props: getReserveRoute,
+    props: true,
   },
   {
     path: '/profile',
