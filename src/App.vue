@@ -11,6 +11,7 @@
 import { mapMutations } from 'vuex';
 import Header from './components/Header.vue';
 import { refresh } from './auth/authAPI';
+import tokenService from './auth/token';
 
 export default {
   name: 'app',
@@ -23,9 +24,11 @@ export default {
     }),
   },
   mounted() {
-    refresh().finally(() => {
-      this.setUser();
-    });
+    if (tokenService.getRefreshToken()) {
+      refresh().finally(() => {
+        this.setUser();
+      });
+    }
   },
 };
 </script>
