@@ -103,7 +103,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (tokenService.getPrivilegeLevel() < 0) {
-    if (to.name === 'Login' || to.name === 'Signup') next();
+    if (to.name === 'Login' || to.name === 'SignUp') next();
     else next({ name: 'Login' });
   } else next();
 });
