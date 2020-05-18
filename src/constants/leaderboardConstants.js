@@ -1,0 +1,9 @@
+const ALL_TEAMS_LEADERBOARD = 'AllTeamsLeaderboard';
+const ALL_VOLUNTEERS_LEADERBOARD = 'AllVolunteersLeaderboard';
+const INDIVIDUAL_TEAM_LEADERBOARD = 'IndividualTeamLeaderboard';
+
+export default {
+  ALL_TEAMS_LEADERBOARD,
+  ALL_VOLUNTEERS_LEADERBOARD,
+  INDIVIDUAL_TEAM_LEADERBOARD,
+};

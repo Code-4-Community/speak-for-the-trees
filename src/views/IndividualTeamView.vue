@@ -25,9 +25,7 @@
           role="progressbar">
           {{ progressPercent }}%</div>
         </div>
-        <router-link to="/teams-leaderboard">
-          <img src="../assets/trophy.svg" alt="trophy">
-        </router-link>
+          <img src="../assets/trophy.svg" alt="trophy" @click='toThisTeamLeaderboard'>
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
@@ -45,6 +43,7 @@
 <script>
 import { getTeam } from '../api/api';
 import tokenService from '../auth/token';
+import leaderboardConstants from '../constants/leaderboardConstants';
 
 export default {
   name: 'TeamView',
@@ -67,7 +66,7 @@ export default {
     },
     // calculates the percentage of blocks completed
     progressPercent() {
-      return this.team.blocksCompleted / this.team.goal * 100;
+      return Math.round(this.team.blocksCompleted / this.team.goal * 100, 2);
     },
     // calculates the width of the progress bar
     barStyle() {
@@ -88,6 +87,16 @@ export default {
       this.errorMessage = 'Error: The requested team does not exist';
       this.loaded = true;
     });
+  },
+  methods: {
+    toThisTeamLeaderboard() {
+      this.$router.push({
+        name: leaderboardConstants.INDIVIDUAL_TEAM_LEADERBOARD,
+        params: {
+          id: this.$route.params.id,
+        },
+      });
+    },
   },
 };
 </script>
