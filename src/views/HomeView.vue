@@ -39,10 +39,6 @@ export default {
       this.$router.push('/available-teams');
     },
   },
-  mounted() {
-    this.$store.dispatch('getUserData');
-    this.$store.dispatch('getUserTeam');
-  },
 };
 </script>
 

@@ -27,6 +27,8 @@ export default {
     if (tokenService.getRefreshToken()) {
       refresh().finally(() => {
         this.setUser();
+        this.$store.dispatch('getUserData');
+        this.$store.dispatch('getUserTeam');
       });
     }
   },
