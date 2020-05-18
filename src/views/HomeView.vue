@@ -6,7 +6,7 @@
       <b-button @click="toCurrentReservations">Current Reservations</b-button>
       <b-button @click="toTeams">View Teams</b-button>
     </b-button-group>
-    <router-link class="trophy" to="/volunteers-leaderboard">
+    <router-link class="trophy" to="/all-teams-leaderboard">
       <img src="../assets/trophy.svg" alt="trophy">
     </router-link>
   </div>

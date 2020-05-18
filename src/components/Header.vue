@@ -6,8 +6,8 @@
       <b-dropdown-item to="/current-reservations">Current Reservations</b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/available-teams">View All Teams</b-dropdown-item>
-      <b-dropdown-item to="/teams-leaderboard">Team Leaderboard</b-dropdown-item>
-      <b-dropdown-item to="/volunteers-leaderboard">Volunteer Leaderboard</b-dropdown-item>
+      <b-dropdown-item to="/all-teams-leaderboard">All Teams Leaderboard</b-dropdown-item>
+      <b-dropdown-item to="/all-volunteers-leaderboard">All Volunteers Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/profile">Profile</b-dropdown-item>
