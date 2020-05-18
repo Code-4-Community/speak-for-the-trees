@@ -1,16 +1,19 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
 import Login from '../views/LoginView.vue';
 import SignUp from '../views/SignUpView.vue';
 import MapView from '../views/MapView.vue';
 import HomeView from '../views/HomeView.vue';
-import VolunteersLeaderboard from '../views/VolunteersLeaderboardView.vue';
-import TeamsLeaderboard from '../views/TeamsLeaderboardView.vue';
+import LeaderboardView from '../views/LeaderboardView.vue';
 import TeamCreation from '../views/TeamCreationView.vue';
 import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
+
 import tokenService from '../auth/token';
+
+import leaderboardConstants from '../constants/leaderboardConstants';
 
 Vue.use(VueRouter);
 
@@ -31,14 +34,19 @@ const routes = [
     component: SignUp,
   },
   {
-    path: '/volunteers-leaderboard',
-    name: 'VolunteersLeaderboard',
-    component: VolunteersLeaderboard,
+    path: '/all-volunteers-leaderboard',
+    name: leaderboardConstants.ALL_VOLUNTEERS_LEADERBOARD,
+    component: LeaderboardView,
   },
   {
-    path: '/teams-leaderboard',
-    name: 'TeamsLeaderboard',
-    component: TeamsLeaderboard,
+    path: '/all-teams-leaderboard',
+    name: leaderboardConstants.ALL_TEAMS_LEADERBOARD,
+    component: LeaderboardView,
+  },
+  {
+    path: '/team-leaderboard/:id',
+    name: leaderboardConstants.INDIVIDUAL_TEAM_LEADERBOARD,
+    component: LeaderboardView,
   },
   {
     path: '/create',

@@ -12,7 +12,7 @@ export default new Vuex.Store({
     isUserAuthenticated: false,
     privilegeLevel: -1,
     userData: {},
-    userTeam: {},
+    userTeam: null,
     reservedStreets: [
       { name: 'Forsyth', type: 'ST', FID: 19079 },
       { name: 'Hemenway', type: 'ST', FID: 14494 },
@@ -20,8 +20,8 @@ export default new Vuex.Store({
       { name: 'Parker', type: 'AVE', FID: 16373 },
     ],
     teams: [],
-    teamsLeaderboard: [],
-    volunteersLeaderboard: [],
+    allTeamsLeaderboard: [],
+    allVolunteersLeaderboard: [],
   },
   getters: {
     GET_RESERVED_STREETS: state => state.reservedStreets,
@@ -38,10 +38,10 @@ export default new Vuex.Store({
       state.teams = teams;
     },
     setTeamsLeaderboard(state, { teams }) {
-      state.teamsLeaderboard = teams;
+      state.allTeamsLeaderboard = teams;
     },
     setVolunteersLeaderboard(state, { individuals }) {
-      state.volunteersLeaderboard = individuals;
+      state.allVolunteersLeaderboard = individuals;
     },
     setUserData(state, userData) {
       state.userData = userData;
@@ -60,9 +60,11 @@ export default new Vuex.Store({
       });
     },
     async getUserTeam({ commit }) {
-      getTeam(tokenService.getTeamID()).then((response) => {
-        commit('setUserTeam', response.data);
-      });
+      if (tokenService.getTeamID() >= 0) {
+        getTeam(tokenService.getTeamID()).then((response) => {
+          commit('setUserTeam', response.data);
+        });
+      }
     },
     async getUserData({ commit }) {
       getUserData().then((response) => {

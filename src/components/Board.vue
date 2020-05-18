@@ -6,7 +6,7 @@
       :key="individual.rank"
       :individual="individual">
         <p class="rank">{{ individual.rank }}</p>
-        <p class="name">{{ individual.username }}</p>
+        <p class="name">{{ individual.name }}</p>
         <p class="points">{{ individual.blocksCompleted }}</p>
       </div>
       <h3 v-if="individualsWithRank.length < 1">
@@ -27,8 +27,11 @@ export default {
   computed: {
     // creates a copy of the individuals array and adds a rank
     individualsWithRank() {
-      return this.individuals.map((element, index) => ({
-        username: element.username,
+      const copy = [...this.individuals];
+      copy.sort((a, b) => a.blocksCompleted > b.blocksCompleted);
+      return copy.map((element, index) => ({
+        ...element,
+        name: element.name || element.username,
         blocksCompleted: element.blocksCompleted,
         rank: index + 1,
       }));
