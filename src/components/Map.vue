@@ -134,7 +134,7 @@ export default {
           },
         });
         const streetSegments = new FeatureLayer({
-          url: 'https://services7.arcgis.com/iIw2JoTaLFMnHLgW/ArcGIS/rest/services/boston_street_segments_1/FeatureServer/0',
+          url: process.env.VUE_APP_ARCGIS_URL,
           renderer,
           outFields: ['ST_NAME'],
           popupTemplate: template,

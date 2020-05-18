@@ -32,7 +32,7 @@ AxiosInstance.interceptors.response.use(
         return AxiosInstance(originalRequest);
       });
     }
-    return error;
+    return Promise.reject(error);
   },
 );
 

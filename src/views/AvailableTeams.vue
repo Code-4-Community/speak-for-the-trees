@@ -1,12 +1,15 @@
 <template>
   <div class="cont">
-      <h1>Available Teams</h1>
-      <p class="basicText">You do not currently belong to any team</p>
+      <h1>All Teams</h1>
+      <p v-if="!userTeam">You aren't on a team yet, check out some below!</p>
+      <p v-else>You're on the team: {{ userTeam.name }}</p>
       <router-link
-      :to="{ name: 'TeamView' }"
-      v-for="team in teams"
-      :key="team">
-        <p class="team">{{ team.name }}</p>
+        v-for="team in teams"
+        :to="`/team/${team.id}`"
+        :key="team.id">
+        <p class="team">
+          {{ team.name }}
+        </p>
       </router-link>
       <b-button class="create" @click="createTeam">Create New Team</b-button>
   </div>
@@ -15,47 +18,24 @@
 <script>
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { mapState } from 'vuex';
 
 Vue.use(VueRouter);
 
 export default {
   name: 'availableTeams',
-  data() {
-    return {
-      teams: [
-        {
-          id: 1,
-          name: 'team1',
-          memberCount: 5,
-        },
-        {
-          id: 2,
-          name: 'team2',
-          memberCount: 5,
-        },
-        {
-          id: 3,
-          name: 'team3',
-          memberCount: 5,
-        },
-        {
-          id: 4,
-          name: 'team4',
-          memberCount: 5,
-        },
-        {
-          id: 5,
-          name: 'team5',
-          memberCount: 5,
-        },
-      ],
-    };
-  },
+  computed: mapState({
+    teams: 'teams',
+    userTeam: 'userTeam',
+  }),
   methods: {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
     },
+  },
+  mounted() {
+    if (this.teams?.length < 1) this.$store.dispatch('getAllTeams');
   },
 };
 </script>

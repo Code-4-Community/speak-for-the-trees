@@ -112,7 +112,7 @@ export default {
       }).then((response) => {
         // eslint-disable-next-line
         console.log(response);
-        // TODO: probably this.$router.push(/newTeamHomepage)
+        this.$router.push(`/team/${response.data.id}`);
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);

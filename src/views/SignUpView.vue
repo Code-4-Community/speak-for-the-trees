@@ -109,10 +109,13 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
         };
-        signup(user).then(() => {
-          this.setUser();
-          this.$router.push('/');
-        })
+        signup(user)
+          .then(() => {
+            this.setUser();
+            this.$router.push('/');
+            this.$store.dispatch('getUserData');
+            this.$store.dispatch('getUserTeam');
+          })
           .catch((error) => {
             this.error = true;
             this.errorMessage = `${error.response.data}`;

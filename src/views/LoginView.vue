@@ -75,12 +75,15 @@ export default {
           password: this.password,
         };
         login(user)
+          .then(() => {
+            this.setUser();
+            this.$router.push('/');
+            this.$store.dispatch('getUserData');
+            this.$store.dispatch('getUserTeam');
+          })
           .catch(() => {
             this.error = true;
             this.errorMessage = 'Sorry, we were unable to verify your account';
-          }).finally(() => {
-            this.setUser();
-            this.$router.push('/');
           });
       }
     },

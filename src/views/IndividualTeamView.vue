@@ -1,17 +1,20 @@
 <template>
   <div>
-    <div v-if="inTeam">
+    <div v-if="error">
+      <h3>{{ errorMessage }}</h3>
+    </div>
+    <div v-if="!error && loaded">
       <h1>
-        {{ name }}
+        {{ team.name }}
         <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
       </h1>
-      <p class="basicText">{{ bio }}</p>
+      <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
         TEAM GOAL  <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
-          <p>{{ goal }} BLOCKS</p>
+          <p>{{ team.goal }} BLOCKS</p>
           <p>BY</p>
           <p>{{ formattedTargetDate }}</p>
       </div>
@@ -26,71 +29,31 @@
           <img src="../assets/trophy.svg" alt="trophy">
         </router-link>
       </div>
-      <p class="trophyProgress">{{ blocksCompleted }}/{{ goal }}</p>
+      <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
-      <div v-if="permissionLevel == 1 || permissionLevel == 2">
-        <div
-        v-for="member in members"
-        :key="member">
-          <p v-if="member.teamRole >= 2" class="member">{{ member.username }} (Owner)</p>
-          <p v-else class="member">{{ member.username }}</p>
-        </div>
+      <div
+      v-for="member in team.members"
+      :key="member.id">
+        <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
+        <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
+        <p v-else class="member">{{ member.username }}</p>
       </div>
     </div>
-    <available-teams v-if="!inTeam"/>
   </div>
 </template>
 
 <script>
-import AvailableTeams from './AvailableTeams.vue';
+import { getTeam } from '../api/api';
+import tokenService from '../auth/token';
 
 export default {
   name: 'TeamView',
-  components: {
-    AvailableTeams,
-  },
   data() {
     return {
-      inTeam: true,
-      id: 100,
-      name: 'My Awesome Team',
-      bio: 'Amazing team, count so many trees, all day long, preference for Sundays.',
-      goal: 20,
-      goalCompleteDate: new Date('2020-03-25'),
-      blocksCompleted: 12,
-      blocksReserved: 18,
-      members: [{
-        id: 1,
-        username: 'member 1',
-        blocksCompleted: 0,
-        blocksReserved: 5,
-        teamRole: 1,
-      },
-      {
-        id: 2,
-        username: 'member 2',
-        blocksCompleted: 3,
-        blocksReserved: 5,
-        teamRole: 2,
-      },
-      {
-        id: 3,
-        username: 'member 3',
-        blocksCompleted: 4,
-        blocksReserved: 5,
-        teamRole: 1,
-      },
-      {
-        id: 4,
-        username: 'member 4',
-        blocksCompleted: 5,
-        blocksReserved: 5,
-        teamRole: 1,
-      }],
-      prospect: 0,
-      member: 1,
-      owner: 2,
-      permissionLevel: 1,
+      team: {},
+      loaded: false,
+      error: false,
+      errorMessage: '',
     };
   },
   computed: {
@@ -99,12 +62,12 @@ export default {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
       const [{ value: mo },,
         { value: da },,
-        { value: ye }] = dtf.formatToParts(this.goalCompleteDate);
+        { value: ye }] = dtf.formatToParts(this.team.goalCompleteDate);
       return `${mo}/${da}/${ye}`;
     },
     // calculates the percentage of blocks completed
     progressPercent() {
-      return this.blocksCompleted / this.goal * 100;
+      return this.team.blocksCompleted / this.team.goal * 100;
     },
     // calculates the width of the progress bar
     barStyle() {
@@ -112,6 +75,19 @@ export default {
         '--barWidth': `${this.progressPercent}%`,
       };
     },
+    currentUserID() {
+      return tokenService.getUserID();
+    },
+  },
+  mounted() {
+    getTeam(this.$route.params.id).then((response) => {
+      this.team = response.data;
+      this.loaded = true;
+    }).catch(() => {
+      this.error = true;
+      this.errorMessage = 'Error: The requested team does not exist';
+      this.loaded = true;
+    });
   },
 };
 </script>

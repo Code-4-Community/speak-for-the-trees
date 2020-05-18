@@ -1,6 +1,8 @@
 const ACCESS_TOKEN_KEY = 'access_token';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
+const getTokenPayload = () => JSON.parse(atob(localStorage.getItem(ACCESS_TOKEN_KEY).split('.')[1]));
+
 const tokenService = {
   getAccessToken() {
     return localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -22,8 +24,24 @@ const tokenService = {
   },
   getPrivilegeLevel() {
     try {
-      const payload = JSON.parse(atob(localStorage.getItem(ACCESS_TOKEN_KEY).split('.')[1]));
+      const payload = getTokenPayload();
       return payload.privilegeLevel;
+    } catch (e) {
+      return -1;
+    }
+  },
+  getUserID() {
+    try {
+      const payload = getTokenPayload();
+      return payload.userId;
+    } catch (e) {
+      return -1;
+    }
+  },
+  getTeamID() {
+    try {
+      const payload = getTokenPayload();
+      return payload.teamId;
     } catch (e) {
       return -1;
     }

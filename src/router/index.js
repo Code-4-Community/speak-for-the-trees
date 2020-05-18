@@ -7,7 +7,7 @@ import HomeView from '../views/HomeView.vue';
 import VolunteersLeaderboard from '../views/VolunteersLeaderboardView.vue';
 import TeamsLeaderboard from '../views/TeamsLeaderboardView.vue';
 import TeamCreation from '../views/TeamCreationView.vue';
-import TeamView from '../views/IndividualTeamView.vue';
+import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
 import tokenService from '../auth/token';
@@ -46,9 +46,10 @@ const routes = [
     component: TeamCreation,
   },
   {
-    path: '/team',
-    name: 'TeamView',
-    component: TeamView,
+    path: '/team/:id',
+    name: 'IndividualTeamView',
+    component: IndividualTeamView,
+    props: true,
   },
   {
     path: '/current-reservations',
@@ -102,7 +103,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (tokenService.getPrivilegeLevel() < 0) {
-    if (to.name === 'Login' || to.name === 'Signup') next();
+    if (to.name === 'Login' || to.name === 'SignUp') next();
     else next({ name: 'Login' });
   } else next();
 });
