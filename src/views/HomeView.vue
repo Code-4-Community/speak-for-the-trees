@@ -23,6 +23,7 @@ export default {
   name: 'home',
   computed: mapState({
     userData: 'userData',
+    userTeam: 'userTeam',
   }),
   methods: {
     // sends to the user to the map to make a reservation
@@ -37,6 +38,10 @@ export default {
     toTeams() {
       this.$router.push('/available-teams');
     },
+  },
+  mounted() {
+    this.$store.dispatch('getUserData');
+    this.$store.dispatch('getUserTeam');
   },
 };
 </script>
