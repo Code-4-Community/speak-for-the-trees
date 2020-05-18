@@ -3,10 +3,12 @@
       <h1>Available Teams</h1>
       <p class="basicText">You do not currently belong to any team</p>
       <router-link
-      :to="{ name: 'TeamView' }"
-      v-for="team in teams"
-      :key="team">
-        <p class="team">{{ team.name }}</p>
+        v-for="team in teams"
+        :to="`/team/${team.id}`"
+        :key="team.id">
+        <p class="team">
+          {{ team.name }}
+        </p>
       </router-link>
       <b-button class="create" @click="createTeam">Create New Team</b-button>
   </div>
