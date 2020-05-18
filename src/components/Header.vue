@@ -4,7 +4,7 @@
       <b-dropdown-item to="/home">Home</b-dropdown-item>
       <b-dropdown-item to="/profile">Profile</b-dropdown-item>
       <b-dropdown-item to="/map">Reserve Streets</b-dropdown-item>
-      <b-dropdown-item to="current-reservations">Current Reservations</b-dropdown-item>
+      <b-dropdown-item to="/current-reservations">Current Reservations</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
       <b-dropdown-item to="/available-teams">All Teams</b-dropdown-item>
       <b-dropdown-divider />

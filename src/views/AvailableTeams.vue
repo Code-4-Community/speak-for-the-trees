@@ -17,47 +17,23 @@
 <script>
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { mapState } from 'vuex';
 
 Vue.use(VueRouter);
 
 export default {
   name: 'availableTeams',
-  data() {
-    return {
-      teams: [
-        {
-          id: 1,
-          name: 'team1',
-          memberCount: 5,
-        },
-        {
-          id: 2,
-          name: 'team2',
-          memberCount: 5,
-        },
-        {
-          id: 3,
-          name: 'team3',
-          memberCount: 5,
-        },
-        {
-          id: 4,
-          name: 'team4',
-          memberCount: 5,
-        },
-        {
-          id: 5,
-          name: 'team5',
-          memberCount: 5,
-        },
-      ],
-    };
-  },
+  computed: mapState({
+    teams: 'teams',
+  }),
   methods: {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
     },
+  },
+  mounted() {
+    if (this.teams?.length < 1) this.$store.dispatch('getAllTeams');
   },
 };
 </script>
