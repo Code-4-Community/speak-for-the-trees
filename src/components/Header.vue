@@ -2,12 +2,15 @@
   <div class="header-container" v-show="showNavbar">
     <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
       <b-dropdown-item to="/home">Home</b-dropdown-item>
-      <b-dropdown-item to="/profile">Profile</b-dropdown-item>
       <b-dropdown-item to="/map">Reserve Streets</b-dropdown-item>
       <b-dropdown-item to="/current-reservations">Current Reservations</b-dropdown-item>
-      <b-dropdown-item to="/create">Create Team</b-dropdown-item>
-      <b-dropdown-item to="/available-teams">All Teams</b-dropdown-item>
       <b-dropdown-divider />
+      <b-dropdown-item to="/available-teams">View All Teams</b-dropdown-item>
+      <b-dropdown-item to="/teams-leaderboard">Team Leaderboard</b-dropdown-item>
+      <b-dropdown-item to="/volunteers-leaderboard">Volunteer Leaderboard</b-dropdown-item>
+      <b-dropdown-item to="/create">Create Team</b-dropdown-item>
+      <b-dropdown-divider />
+      <b-dropdown-item to="/profile">Profile</b-dropdown-item>
       <b-dropdown-item v-on:click="logout">
         <strong>Logout</strong>
       </b-dropdown-item>

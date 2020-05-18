@@ -28,6 +28,8 @@ export default {
       refresh().finally(() => {
         this.setUser();
       });
+      this.$store.dispatch('getUserTeam');
+      this.$store.dispatch('getUserData');
     }
   },
 };

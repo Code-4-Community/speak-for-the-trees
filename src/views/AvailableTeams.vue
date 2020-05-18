@@ -1,7 +1,8 @@
 <template>
   <div class="cont">
-      <h1>Available Teams</h1>
-      <p class="basicText">You do not currently belong to any team</p>
+      <h1>All Teams</h1>
+      <p v-if="!userTeam">You aren't on a team yet, check out some below!</p>
+      <p v-else>You're on the team: {{ userTeam.name }}</p>
       <router-link
         v-for="team in teams"
         :to="`/team/${team.id}`"
@@ -25,6 +26,7 @@ export default {
   name: 'availableTeams',
   computed: mapState({
     teams: 'teams',
+    userTeam: 'userTeam',
   }),
   methods: {
     // sends the user to the create team page

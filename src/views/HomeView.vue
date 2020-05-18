@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Welcome back, {{ this.username }}!</h1>
+    <h1>Welcome back, {{ userData.firstName }}!</h1>
     <b-button-group vertical>
       <b-button @click="toNewReservations">New Reservations</b-button>
       <b-button @click="toCurrentReservations">Current Reservations</b-button>
@@ -15,16 +15,15 @@
 <script>
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { mapState } from 'vuex';
 
 Vue.use(VueRouter);
 
 export default {
   name: 'home',
-  data() {
-    return {
-      username: 'Betty',
-    };
-  },
+  computed: mapState({
+    userData: 'userData',
+  }),
   methods: {
     // sends to the user to the map to make a reservation
     toNewReservations() {
