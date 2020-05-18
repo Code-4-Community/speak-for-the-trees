@@ -6,7 +6,7 @@
       <b-dropdown-item to="/map">Reserve Streets</b-dropdown-item>
       <b-dropdown-item to="current-reservations">Current Reservations</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
-      <!-- <b-dropdown-item to="/contact">Contact</b-dropdown-item> -->
+      <b-dropdown-item to="/available-teams">All Teams</b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item v-on:click="logout">
         <strong>Logout</strong>

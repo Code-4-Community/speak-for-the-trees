@@ -34,7 +34,7 @@
       </b-alert>
 
       <p>NEW TO SPEAK FOR THE TREES?
-      SIGN UP <router-link class="link" to="signup">HERE!</router-link></p>
+      SIGN UP <router-link class="link" to="/signup">HERE!</router-link></p>
 
       <b-button type="submit">Login</b-button>
     </b-form>

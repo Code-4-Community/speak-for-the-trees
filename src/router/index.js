@@ -4,8 +4,8 @@ import Login from '../views/LoginView.vue';
 import SignUp from '../views/SignUpView.vue';
 import MapView from '../views/MapView.vue';
 import HomeView from '../views/HomeView.vue';
-import Leaderboard from '../views/VolunteersLeaderboardView.vue';
-import TeamLeaderboard from '../views/TeamsLeaderboardView.vue';
+import VolunteersLeaderboard from '../views/VolunteersLeaderboardView.vue';
+import TeamsLeaderboard from '../views/TeamsLeaderboardView.vue';
 import TeamCreation from '../views/TeamCreationView.vue';
 import TeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
@@ -31,14 +31,14 @@ const routes = [
     component: SignUp,
   },
   {
-    path: '/leaderboard',
-    name: 'Leaderboard',
-    component: Leaderboard,
+    path: '/volunteers-leaderboard',
+    name: 'VolunteersLeaderboard',
+    component: VolunteersLeaderboard,
   },
   {
-    path: '/team-leaderboard',
-    name: 'TeamLeaderboard',
-    component: TeamLeaderboard,
+    path: '/teams-leaderboard',
+    name: 'TeamsLeaderboard',
+    component: TeamsLeaderboard,
   },
   {
     path: '/create',
