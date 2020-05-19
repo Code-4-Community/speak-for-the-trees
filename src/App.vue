@@ -76,7 +76,7 @@ export default {
 .auth-container {
   margin-top: 5vh;
   text-align: left;
-  min-width: 30vw;
+  width: 500px;
 }
 
 @media only screen and (max-width: 600px) {
