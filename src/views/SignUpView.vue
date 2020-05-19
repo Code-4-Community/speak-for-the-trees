@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="auth-container">
     <img class="auth-logo" src="../assets/sftt-logo-text.jpg" />
     <h1>Sign Up</h1>
     <b-form @submit="onSignUp">
@@ -7,6 +7,7 @@
         <div class="form-row">
           <div class="col">
             <b-form-input
+            class="auth-input"
             id="input-first"
             v-model="firstName"
             type="text"
@@ -16,6 +17,7 @@
           </div>
           <div class="col">
             <b-form-input
+            class="auth-input"
             id="input-last"
             v-model="lastName"
             type="text"
@@ -28,6 +30,7 @@
 
       <b-form-group>
         <b-form-input
+          class="auth-input"
           id="input-email"
           v-model="email"
           type="email"
@@ -38,6 +41,7 @@
 
       <b-form-group>
         <b-form-input
+          class="auth-input"
           id="input-username"
           v-model="username"
           type="text"
@@ -48,6 +52,7 @@
 
       <b-form-group>
         <b-form-input
+          class="auth-input"
           id="input-password"
           v-model="password[0]"
           type="password"
@@ -58,6 +63,7 @@
 
       <b-form-group>
         <b-form-input
+          class="auth-input"
           id="input-password-confirm"
           v-model="password[1]"
           type="password"
@@ -70,9 +76,10 @@
         {{ errorMessage }}
       </b-alert>
 
-      <p>ALREADY HAVE AN ACCOUNT? <br>LOGIN <router-link to="/login">HERE!</router-link></p>
+      <p class="auth-footer">ALREADY HAVE AN ACCOUNT?
+      <br>LOGIN <router-link class="footer-link" to="/login">HERE!</router-link></p>
 
-      <b-button type="submit">Sign Up</b-button>
+      <b-button class="auth-submit" type="submit">Sign Up</b-button>
     </b-form>
   </div>
 </template>
@@ -129,53 +136,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.auth-logo {
-  width: 204px;
-  height: 168px;
-  display: block;
-  margin: auto;
-}
-.auth-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.container {
-  margin-top: 10%;
-  text-align: left;
-  max-width: 75vw;
-}
-
-p {
-  font-size: 10px;
-  color: #AFAEAE;
-}
-
-a {
-  font-size: 10px;
-  color: #61802E;
-}
-
-input.form-control {
-  height: 1.5rem;
-  border: 2px solid #C4C4C4;
-  border-radius: 5px;
-}
-
-input.form-control::placeholder, textarea.form-control::placeholder {
-  color: #E5E5E5;
-}
-
-button {
-  background: #61802E;
-  padding: 0.5rem 2rem 0.5rem 2rem;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-</style>
+<style scoped />
