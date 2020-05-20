@@ -60,4 +60,58 @@ export default {
     }
   }
 }
+
+/*
+  login and signup form styling
+*/
+
+.auth-logo {
+  width: 204px;
+  height: 168px;
+  display: block;
+  margin: auto;
+  margin-bottom: 10vh;
+}
+
+.auth-container {
+  margin-top: 5vh;
+  text-align: left;
+  width: 500px;
+}
+
+@media only screen and (max-width: 600px) {
+  .auth-container {
+    width: 80vw;
+  }
+}
+
+button.auth-submit {
+  background: #61802E;
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.auth-footer {
+  font-size: 12px;
+  color: #AFAEAE;
+}
+
+.footer-link {
+  font-size: 12px;
+  color: #61802E;
+}
+
+.auth-input.form-control {
+  height: 1.5rem;
+  border: 2px solid #C4C4C4;
+  border-radius: 5px;
+}
+
+.auth-input.form-control::placeholder, textarea.form-control::placeholder {
+  color: #E5E5E5;
+}
+
 </style>
