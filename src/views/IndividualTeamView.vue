@@ -6,8 +6,10 @@
     <div v-if="!error && loaded">
       <h1>
         {{ team.name }}
-        <!-- <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit"> -->
-        <img v-if="permissionLevel == constants.NONE"
+        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
+        src="../assets/edit-icon.svg"
+        alt="edit"> -->
+        <img v-if="userTeamRole == teamConstants.NONE"
         src="../assets/plus-icon.svg"
         alt="join"
         @click="joinThisTeam">
@@ -15,7 +17,9 @@
       <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
         TEAM GOAL
-        <!-- <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit"> -->
+        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
+        src="../assets/edit-icon.svg"
+        alt="edit"> -->
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
@@ -34,7 +38,8 @@
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
-      <div v-if="permissionLevel == constants.MEMBER || permissionLevel == constants.LEADER">
+      <div
+      v-if="userTeamRole == teamConstants.MEMBER || userTeamRole == teamConstants.LEADER">
         <div
         class="memberContainer"
         v-for="member in team.members"
@@ -44,7 +49,7 @@
           <p v-else class="member">{{ member.username }}</p>
           <b-dropdown
           id="member-actions"
-          v-if="permissionLevel == constants.MEMBER && member.id === currentUserID"
+          v-if="userTeamRole == teamConstants.MEMBER && member.id === currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -57,7 +62,7 @@
           </b-dropdown>
           <b-dropdown
           id="owner-actions"
-          v-if="permissionLevel == constants.LEADER && member.id != currentUserID"
+          v-if="userTeamRole == teamConstants.LEADER && member.id != currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -70,7 +75,7 @@
           </b-dropdown>
           <b-dropdown
           id="owner-actions"
-          v-if="permissionLevel == constants.LEADER && member.id == currentUserID"
+          v-if="userTeamRole == teamConstants.LEADER && member.id == currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -101,23 +106,14 @@ export default {
   data() {
     return {
       team: {},
+      userTeamRole: '',
       loaded: false,
       error: false,
       errorMessage: '',
-      constants: teamConstants,
+      teamConstants,
     };
   },
   computed: {
-    permissionLevel() {
-      const result = this.team.members.filter(member => member.id === this.currentUserID);
-      if (result.length === 0) {
-        return 'NONE';
-      }
-      if (result[0].role === this.constants.MEMBER) {
-        return 'MEMBER';
-      }
-      return 'LEADER';
-    },
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -143,6 +139,7 @@ export default {
   mounted() {
     getTeam(this.$route.params.id).then((response) => {
       this.team = response.data;
+      this.userTeamRole = response.data.userTeamRole;
       this.loaded = true;
     }).catch(() => {
       this.error = true;
@@ -160,17 +157,14 @@ export default {
       });
     },
     joinThisTeam() {
-      joinTeam(this.$route.params.id).then((response) => {
+      joinTeam(this.$route.params.id).then((response1) => {
         // eslint-disable-next-line
-        console.log(response);
-        getTeam(this.$route.params.id).then((responseTwo) => {
-          this.team = responseTwo.data;
-          this.loaded = true;
-        }).catch(() => {
-          this.error = true;
-          this.errorMessage = 'Error: The requested team does not exist';
-          this.loaded = true;
-        });
+        console.log(response1);
+        return getTeam(this.$route.params.id);
+      }).then((response2) => {
+        this.team = response2.data;
+        this.userTeamRole = response2.data.userTeamRole;
+        this.loaded = true;
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
@@ -190,14 +184,10 @@ export default {
       kickMember(this.$route.params.id, member).then((response) => {
         // eslint-disable-next-line
         console.log(response);
-        getTeam(this.$route.params.id).then((responseTwo) => {
-          this.team = responseTwo.data;
-          this.loaded = true;
-        }).catch(() => {
-          this.error = true;
-          this.errorMessage = 'Error: The requested team does not exist';
-          this.loaded = true;
-        });
+        return getTeam(this.$route.params.id);
+      }).then((response2) => {
+        this.team = response2.data;
+        this.loaded = true;
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
