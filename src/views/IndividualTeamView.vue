@@ -7,6 +7,10 @@
       <h1>
         {{ team.name }}
         <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
+        <img v-if="permissionLevel == 0"
+        src="../assets/plus-icon.svg"
+        alt="join"
+        @click="joinThisTeam">
       </h1>
       <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
@@ -29,19 +33,22 @@
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
-      <div
-      v-for="member in team.members"
-      :key="member.id">
-        <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
-        <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
-        <p v-else class="member">{{ member.username }}</p>
+      <div v-if="permissionLevel >= 1">
+        <div
+        v-for="member in team.members"
+        :key="member.id">
+          <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
+          <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
+          <p v-else class="member">{{ member.username }}</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getTeam } from '../api/api';
+import { getTeam, joinTeam } from '../api/api';
+
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
 
@@ -56,6 +63,9 @@ export default {
     };
   },
   computed: {
+    permissionLevel() {
+      return 2;
+    },
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -95,6 +105,16 @@ export default {
         params: {
           id: this.$route.params.id,
         },
+      });
+    },
+    joinThisTeam() {
+      joinTeam(this.$route.params.id).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.$router.push('/home');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
       });
     },
   },
