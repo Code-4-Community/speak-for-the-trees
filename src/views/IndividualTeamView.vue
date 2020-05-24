@@ -106,7 +106,6 @@ export default {
   data() {
     return {
       team: {},
-      userTeamRole: '',
       loaded: false,
       error: false,
       errorMessage: '',
@@ -114,6 +113,9 @@ export default {
     };
   },
   computed: {
+    userTeamRole() {
+      return this.team.userTeamRole;
+    },
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -139,7 +141,6 @@ export default {
   mounted() {
     getTeam(this.$route.params.id).then((response) => {
       this.team = response.data;
-      this.userTeamRole = response.data.userTeamRole;
       this.loaded = true;
     }).catch(() => {
       this.error = true;
@@ -163,7 +164,6 @@ export default {
         return getTeam(this.$route.params.id);
       }).then((response2) => {
         this.team = response2.data;
-        this.userTeamRole = response2.data.userTeamRole;
         this.loaded = true;
       }).catch((error) => {
         // eslint-disable-next-line
