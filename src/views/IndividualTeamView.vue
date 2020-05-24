@@ -7,7 +7,7 @@
       <h1>
         {{ team.name }}
         <!-- <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit"> -->
-        <img v-if="permissionLevel == 0"
+        <img v-if="permissionLevel == constants.NONE"
         src="../assets/plus-icon.svg"
         alt="join"
         @click="joinThisTeam">
@@ -34,7 +34,7 @@
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
-      <div v-if="permissionLevel >= 1">
+      <div v-if="permissionLevel == constants.MEMBER || permissionLevel == constants.LEADER">
         <div
         class="memberContainer"
         v-for="member in team.members"
@@ -44,7 +44,7 @@
           <p v-else class="member">{{ member.username }}</p>
           <b-dropdown
           id="member-actions"
-          v-if="permissionLevel == 1 && member.id === currentUserID"
+          v-if="permissionLevel == constants.MEMBER && member.id === currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -57,7 +57,7 @@
           </b-dropdown>
           <b-dropdown
           id="owner-actions"
-          v-if="permissionLevel == 2 && member.id != currentUserID"
+          v-if="permissionLevel == constants.LEADER && member.id != currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -70,7 +70,7 @@
           </b-dropdown>
           <b-dropdown
           id="owner-actions"
-          v-if="permissionLevel == 2 && member.id == currentUserID"
+          v-if="permissionLevel == constants.LEADER && member.id == currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -94,6 +94,7 @@ import {
 
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
+import teamConstants from '../constants/teamConstants';
 
 export default {
   name: 'TeamView',
@@ -103,11 +104,19 @@ export default {
       loaded: false,
       error: false,
       errorMessage: '',
+      constants: teamConstants,
     };
   },
   computed: {
     permissionLevel() {
-      return 0;
+      const result = this.team.members.filter(member => member.id === this.currentUserID);
+      if (result.length === 0) {
+        return 'NONE';
+      }
+      if (result[0].role === this.constants.MEMBER) {
+        return 'MEMBER';
+      }
+      return 'LEADER';
     },
     // format the target date into the appropriate format
     formattedTargetDate() {
