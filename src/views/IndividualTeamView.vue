@@ -6,7 +6,7 @@
     <div v-if="!error && loaded">
       <h1>
         {{ team.name }}
-        <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
+        <!-- <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit"> -->
         <img v-if="permissionLevel == 0"
         src="../assets/plus-icon.svg"
         alt="join"
@@ -14,7 +14,8 @@
       </h1>
       <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
-        TEAM GOAL  <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
+        TEAM GOAL
+        <!-- <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit"> -->
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
@@ -65,7 +66,7 @@
             <template v-slot:button-content>
               <img src="../assets/ellipsis-icon.svg" alt="actions">
             </template>
-            <b-dropdown-item @click="kickThisMember">Kick out</b-dropdown-item>
+            <b-dropdown-item @click="kickThisMember(member.id)">Kick out</b-dropdown-item>
           </b-dropdown>
           <b-dropdown
           id="owner-actions"
@@ -88,7 +89,7 @@
 
 <script>
 import {
-  getTeam, joinTeam, leaveTeam, disbandTeam,
+  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam,
 } from '../api/api';
 
 import tokenService from '../auth/token';
@@ -106,7 +107,7 @@ export default {
   },
   computed: {
     permissionLevel() {
-      return 2;
+      return 0;
     },
     // format the target date into the appropriate format
     formattedTargetDate() {
@@ -164,6 +165,15 @@ export default {
         // eslint-disable-next-line
         console.log(response);
         this.$router.push('/available-teams');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    kickThisMember(member) {
+      kickMember(this.$route.params.id, member).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
