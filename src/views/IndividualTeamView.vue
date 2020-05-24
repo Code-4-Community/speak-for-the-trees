@@ -42,6 +42,8 @@
           <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
           <p v-else class="member">{{ member.username }}</p>
           <b-dropdown
+          id="member-actions"
+          v-if="permissionLevel == 1 && member.id === currentUserID"
           size="sm"
           dropleft
           variant="link"
@@ -52,6 +54,32 @@
             </template>
             <b-dropdown-item @click="leaveThisTeam">Leave team</b-dropdown-item>
           </b-dropdown>
+          <b-dropdown
+          id="owner-actions"
+          v-if="permissionLevel == 2 && member.id != currentUserID"
+          size="sm"
+          dropleft
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret>
+            <template v-slot:button-content>
+              <img src="../assets/ellipsis-icon.svg" alt="actions">
+            </template>
+            <b-dropdown-item @click="kickThisMember">Kick out</b-dropdown-item>
+          </b-dropdown>
+          <b-dropdown
+          id="owner-actions"
+          v-if="permissionLevel == 2 && member.id == currentUserID"
+          size="sm"
+          dropleft
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret>
+            <template v-slot:button-content>
+              <img src="../assets/ellipsis-icon.svg" alt="actions">
+            </template>
+            <b-dropdown-item @click="disbandThisTeam">Disband team</b-dropdown-item>
+          </b-dropdown>
         </div>
       </div>
     </div>
@@ -59,7 +87,9 @@
 </template>
 
 <script>
-import { getTeam, joinTeam, leaveTeam } from '../api/api';
+import {
+  getTeam, joinTeam, leaveTeam, disbandTeam,
+} from '../api/api';
 
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
@@ -131,6 +161,16 @@ export default {
     },
     leaveThisTeam() {
       leaveTeam(this.$route.params.id).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.$router.push('/available-teams');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    disbandThisTeam() {
+      disbandTeam(this.$route.params.id).then((response) => {
         // eslint-disable-next-line
         console.log(response);
         this.$router.push('/available-teams');
