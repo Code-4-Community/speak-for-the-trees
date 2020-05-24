@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>{{ this.header.headerVal }}</h1>
+  <div class="map-view-container">
+    <h2>{{ this.header.headerVal }}</h2>
     <p class="sub-title">{{ this.header.subTitle }}</p>
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 0"
@@ -20,15 +20,15 @@
     <div class="header-bar">
       <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button>
       <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button>
-      <h3 v-if="reservedFilter === 1 && !!activeStreetFid">Block {{this.activeStreetFid}}</h3>
+      <h4 v-if="reservedFilter === 1 && !!activeStreetFid">Block {{this.activeStreetFid}}</h4>
     </div>
-
-    <Map
-      v-bind:reservedFilter="this.reservedFilter"
-      v-bind:pushStreet="this.pushStreet"
-      v-bind:fids="getFids()"
-      v-bind:activeStreetFid="this.activeStreetFid"/>
-
+    <div class="map-container">
+      <Map
+        v-bind:reservedFilter="this.reservedFilter"
+        v-bind:pushStreet="this.pushStreet"
+        v-bind:fids="getFids()"
+        v-bind:activeStreetFid="this.activeStreetFid"/>
+    </div>
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
       <p>You have successfuly reserved</p>
       <p>Blocks {{ this.streetsToReserve.join(', ') }}</p>
@@ -146,11 +146,8 @@ export default {
 .header-bar {
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
-  margin: auto;
   background-color: #9AC356;
   padding: 5px;
-  margin: 10px;
 }
 
 .streets-container {
@@ -168,5 +165,17 @@ export default {
     width: 100%;
     margin-left: 5px;
   }
+}
+
+.map-view-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.map-container {
+  flex-grow: 1;
+  height: 55vh;
 }
 </style>

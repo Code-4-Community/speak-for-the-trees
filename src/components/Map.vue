@@ -134,7 +134,7 @@ export default {
           },
         });
         const streetSegments = new FeatureLayer({
-          url: process.env.VUE_APP_ARCGIS_URL,
+          url: 'https://api.mapbox.com/styles/v1/snlussier/cjddyatpre2wi2rnu5mq57tyt/wmts?access_token=pk.eyJ1Ijoic25sdXNzaWVyIiwiYSI6ImNqbGcxM2diODEycm8zcWxxcjc0dDdseDQifQ.1jQGlp5BEIYlYVNhF867QA',
           renderer,
           outFields: ['ST_NAME'],
           popupTemplate: template,
@@ -197,9 +197,7 @@ export default {
 
 <style lang='scss' scoped>
 div {
-    padding: 0;
-    margin: 0;
-    width: 98vw;
-    height: 85vh;
+    width: 100%;
+    height: 100%;
 }
 </style>
