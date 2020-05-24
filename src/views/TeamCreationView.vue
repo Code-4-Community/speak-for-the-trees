@@ -112,6 +112,7 @@ export default {
       }).then((response) => {
         // eslint-disable-next-line
         console.log(response);
+        this.$store.dispatch('getAllTeams');
         this.$router.push(`/team/${response.data.id}`);
       }).catch((error) => {
         // eslint-disable-next-line

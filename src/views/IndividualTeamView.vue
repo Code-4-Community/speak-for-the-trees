@@ -163,7 +163,14 @@ export default {
       joinTeam(this.$route.params.id).then((response) => {
         // eslint-disable-next-line
         console.log(response);
-        this.$router.push('/home');
+        getTeam(this.$route.params.id).then((responseTwo) => {
+          this.team = responseTwo.data;
+          this.loaded = true;
+        }).catch(() => {
+          this.error = true;
+          this.errorMessage = 'Error: The requested team does not exist';
+          this.loaded = true;
+        });
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
@@ -183,6 +190,14 @@ export default {
       kickMember(this.$route.params.id, member).then((response) => {
         // eslint-disable-next-line
         console.log(response);
+        getTeam(this.$route.params.id).then((responseTwo) => {
+          this.team = responseTwo.data;
+          this.loaded = true;
+        }).catch(() => {
+          this.error = true;
+          this.errorMessage = 'Error: The requested team does not exist';
+          this.loaded = true;
+        });
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
@@ -192,6 +207,7 @@ export default {
       disbandTeam(this.$route.params.id).then((response) => {
         // eslint-disable-next-line
         console.log(response);
+        this.$store.dispatch('getAllTeams');
         this.$router.push('/available-teams');
       }).catch((error) => {
         // eslint-disable-next-line
