@@ -6,11 +6,20 @@
     <div v-if="!error && loaded">
       <h1>
         {{ team.name }}
-        <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
+        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
+        src="../assets/edit-icon.svg"
+        alt="edit"> -->
+        <img v-if="userTeamRole == teamConstants.NONE"
+        src="../assets/plus-icon.svg"
+        alt="join"
+        @click="joinThisTeam">
       </h1>
       <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
-        TEAM GOAL  <img v-if="permissionLevel == 2" src="../assets/edit-icon.svg" alt="edit">
+        TEAM GOAL
+        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
+        src="../assets/edit-icon.svg"
+        alt="edit"> -->
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
@@ -30,20 +39,67 @@
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
       <div
-      v-for="member in team.members"
-      :key="member.id">
-        <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
-        <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
-        <p v-else class="member">{{ member.username }}</p>
+      v-if="userTeamRole == teamConstants.MEMBER || userTeamRole == teamConstants.LEADER">
+        <div
+        class="memberContainer"
+        v-for="member in team.members"
+        :key="member.id">
+          <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
+          <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
+          <p v-else class="member">{{ member.username }}</p>
+          <b-dropdown
+          id="member-actions"
+          v-if="userTeamRole == teamConstants.MEMBER && member.id === currentUserID"
+          size="sm"
+          dropleft
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret>
+            <template v-slot:button-content>
+              <img src="../assets/ellipsis-icon.svg" alt="actions">
+            </template>
+            <b-dropdown-item @click="leaveThisTeam">Leave team</b-dropdown-item>
+          </b-dropdown>
+          <b-dropdown
+          id="owner-actions"
+          v-if="userTeamRole == teamConstants.LEADER && member.id != currentUserID"
+          size="sm"
+          dropleft
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret>
+            <template v-slot:button-content>
+              <img src="../assets/ellipsis-icon.svg" alt="actions">
+            </template>
+            <b-dropdown-item @click="kickThisMember(member.id)">Kick out</b-dropdown-item>
+          </b-dropdown>
+          <b-dropdown
+          id="owner-actions"
+          v-if="userTeamRole == teamConstants.LEADER && member.id == currentUserID"
+          size="sm"
+          dropleft
+          variant="link"
+          toggle-class="text-decoration-none"
+          no-caret>
+            <template v-slot:button-content>
+              <img src="../assets/ellipsis-icon.svg" alt="actions">
+            </template>
+            <b-dropdown-item @click="disbandThisTeam">Disband team</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getTeam } from '../api/api';
+import {
+  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam,
+} from '../api/api';
+
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
+import teamConstants from '../constants/teamConstants';
 
 export default {
   name: 'TeamView',
@@ -53,9 +109,13 @@ export default {
       loaded: false,
       error: false,
       errorMessage: '',
+      teamConstants,
     };
   },
   computed: {
+    userTeamRole() {
+      return this.team.userTeamRole;
+    },
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -97,11 +157,58 @@ export default {
         },
       });
     },
+    joinThisTeam() {
+      joinTeam(this.$route.params.id).then((response1) => {
+        // eslint-disable-next-line
+        console.log(response1);
+        return getTeam(this.$route.params.id);
+      }).then((response2) => {
+        this.team = response2.data;
+        this.loaded = true;
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    leaveThisTeam() {
+      leaveTeam(this.$route.params.id).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.$router.push('/available-teams');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    kickThisMember(member) {
+      kickMember(this.$route.params.id, member).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        return getTeam(this.$route.params.id);
+      }).then((response2) => {
+        this.team = response2.data;
+        this.loaded = true;
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    disbandThisTeam() {
+      disbandTeam(this.$route.params.id).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.$store.dispatch('getAllTeams');
+        this.$router.push('/available-teams');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .edit {
   border: none;
   background: none;
@@ -148,11 +255,16 @@ export default {
   padding: 0.5rem 0;
   margin-bottom: 0;
 }
-.member {
-  text-align: left;
+.memberContainer {
+  display: flex;
   background: #D4EDAA;
-  margin: 0;
-  padding: 0.5rem 0 0.5rem 1.5rem;
+  padding: 0.5rem 0 0.5rem 0;
   border-bottom: 1px solid white;
+  div {
+    margin: 0 1rem 0 auto;
+  }
+  .member {
+    margin: auto 0 auto 1rem;
+  }
 }
 </style>
