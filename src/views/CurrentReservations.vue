@@ -9,11 +9,11 @@
           <img src="../assets/ellipsis-icon.svg" alt="actions" />
         </template>
         <b-dropdown-item
-        @click="completeStreet(street.name + ' ' + street.type)">
+        @click="completeStreet(street)">
           Complete
         </b-dropdown-item>
         <b-dropdown-item
-        @click="releaseStreet(street.name + ' ' + street.type)">
+        @click="releaseStreet(street)">
           Release
         </b-dropdown-item>
         <b-dropdown-item
@@ -27,6 +27,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+  finishBlocks, releaseBlocks,
+} from '../api/api';
 
 export default {
   name: 'CurrentReservations',
@@ -45,21 +48,30 @@ export default {
       });
     },
     completeStreet(street) {
-      // TODO
-      // if POST was successfull
-      // this.$bvToast.toast(`Successful completion of ${street}`);
-      // if POST was unsuccessfull
-      this.$bvToast.toast(
-        `Error in completion of ${street}. Please try again.`,
-      );
+      finishBlocks([JSON.stringify(street.FID)]).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        // call GET blocks to update view
+        this.$bvToast.toast(`Successful completion of ${street.name}`);
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+        this.$bvToast.toast(`Error in completion of ${street.name}.`);
+      });
     },
     releaseStreet(street) {
-      // if POST was unsuccessfull
-      // this.$bvToast.toast(`Error in completing ${street}`);
-      // if POST was successfull
-      this.$bvToast.toast(
-        `Successful release of ${street}. You are no longer responsible for this street`,
-      );
+      releaseBlocks([JSON.stringify(street.FID)]).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        // call GET blocks to update view
+        this.$bvToast.toast(
+          `Successful release of ${street.name}. You are no longer responsible for this street`,
+        );
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+        this.$bvToast.toast(`Error in releasing of ${street.name}.`);
+      });
     },
   },
 };
