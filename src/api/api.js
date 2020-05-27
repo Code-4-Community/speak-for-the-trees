@@ -14,6 +14,7 @@ export const reserveBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERV
 export const finishBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/finish`, blocks);
 export const releaseBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/release`, blocks);
 export const resetBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reset`, blocks);
+export const getReservedBlocks = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved`);
 
 const BLOCKS_LEADERBOARD = '/api/v1/blocks/leaderboard';
 export const getBlocksLeaderboard = async () => AxiosInstance.get(BLOCKS_LEADERBOARD);

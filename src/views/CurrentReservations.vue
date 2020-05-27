@@ -1,9 +1,14 @@
 <template>
   <div>
     <h1>Current Reservations</h1>
-    <p class="basicText">Press the ellipsis to complete, release or view your reservation</p>
-    <div class="streetContainer" v-for="street in reservedStreets" :key="street.name">
-      <p class="street">{{ street.name + ' ' + street.type }}</p>
+    <p
+    v-if="currentReservations.length > 0"
+    class="basicText">
+      Press the ellipsis to complete, release or view your reservation
+    </p>
+    <p v-else class="basicText">You currently don't have any reservations</p>
+    <div class="streetContainer" v-for="street in currentReservations" :key="street">
+      <p class="street">{{ street }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>
         <template v-slot:button-content>
           <img src="../assets/ellipsis-icon.svg" alt="actions" />
@@ -17,7 +22,7 @@
           Release
         </b-dropdown-item>
         <b-dropdown-item
-        @click="viewReservation(street.FID)">
+        @click="viewReservation(street)">
           View reservation
         </b-dropdown-item>
       </b-dropdown>
@@ -26,18 +31,16 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import {
-  finishBlocks, releaseBlocks,
+  finishBlocks, releaseBlocks, getReservedBlocks,
 } from '../api/api';
 
 export default {
   name: 'CurrentReservations',
-  computed: {
-    ...mapState(['reservedStreets']),
-    reservedStreets() {
-      return this.$store.getters.GET_RESERVED_STREETS;
-    },
+  data() {
+    return {
+      currentReservations: [],
+    };
   },
   methods: {
     // sends to the user to the map to edit a reservation
@@ -48,31 +51,49 @@ export default {
       });
     },
     completeStreet(street) {
-      finishBlocks([JSON.stringify(street.FID)]).then((response) => {
+      finishBlocks({ blocks: [street] }).then((response1) => {
         // eslint-disable-next-line
-        console.log(response);
-        // call GET blocks to update view
-        this.$bvToast.toast(`Successful completion of ${street.name}`);
+        console.log(response1);
+        this.$bvToast.toast(`Successful completion of ${street}`);
+        return getReservedBlocks();
+      }).then((response2) => {
+        this.currentReservations = response2.data;
+        // eslint-disable-next-line
+        console.log(response2);
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
-        this.$bvToast.toast(`Error in completion of ${street.name}.`);
+        this.$bvToast.toast(`Error in completion of ${street}.`);
       });
     },
     releaseStreet(street) {
-      releaseBlocks([JSON.stringify(street.FID)]).then((response) => {
+      releaseBlocks({ blocks: [street] }).then((response1) => {
         // eslint-disable-next-line
-        console.log(response);
-        // call GET blocks to update view
+        console.log(response1);
         this.$bvToast.toast(
-          `Successful release of ${street.name}. You are no longer responsible for this street`,
+          `Successful release of ${street}. You are no longer responsible for this street`,
         );
+        return getReservedBlocks();
+      }).then((response2) => {
+        this.currentReservations = response2.data;
+        // eslint-disable-next-line
+        console.log(response2);
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
-        this.$bvToast.toast(`Error in releasing of ${street.name}.`);
+        this.$bvToast.toast(`Error in releasing of ${street}.`);
       });
     },
+  },
+  mounted() {
+    getReservedBlocks().then((response) => {
+      this.currentReservations = response.data;
+      // eslint-disable-next-line
+      console.log(response);
+    }).catch((error) => {
+      // eslint-disable-next-line
+      console.log(error.message);
+    });
   },
 };
 </script>
