@@ -54,6 +54,9 @@
 import { mapState } from 'vuex';
 import Map from '../components/Map.vue';
 import SelectedStreets from '../components/SelectedStreets.vue';
+import {
+  reserveBlocks,
+} from '../api/api';
 
 export default {
   name: 'MapPage',
@@ -107,7 +110,7 @@ export default {
         return;
       }
       if (selection === 'reserve') {
-        this.streetsToReserve.push(street);
+        this.streetsToReserve.push(JSON.stringify(street));
       } else if (selection === 'unreserve') {
         this.streetsToUnreserve.push(street);
       } else if (selection === 'complete') {
@@ -122,9 +125,14 @@ export default {
       return fids;
     },
     async reserveStreets() {
-      // reserve streets backend call
-      // .then(
-      this.$bvModal.show('street-confirmation-modal');
+      reserveBlocks({ blocks: this.streetsToReserve }).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.$bvModal.show('street-confirmation-modal');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
     },
     async unreserveStreets() {
       // reserve streets backend call

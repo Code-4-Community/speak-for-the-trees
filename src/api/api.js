@@ -9,6 +9,13 @@ export const disbandTeam = async id => AxiosInstance.post(`${TEAM}/${id}/disband
 export const getTeam = async id => AxiosInstance.get(`${TEAM}/${id}`);
 export const getAllTeams = async () => AxiosInstance.get(`${TEAM}`);
 
+const BLOCKS_RESERVATION = '/api/v1/protected/blocks';
+export const reserveBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reserve`, blocks);
+export const finishBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/finish`, blocks);
+export const releaseBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/release`, blocks);
+export const resetBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reset`, blocks);
+export const getReservedBlocks = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved`);
+
 const BLOCKS_LEADERBOARD = '/api/v1/blocks/leaderboard';
 export const getBlocksLeaderboard = async () => AxiosInstance.get(BLOCKS_LEADERBOARD);
 
