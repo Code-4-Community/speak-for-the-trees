@@ -2,11 +2,8 @@
   <div>
     <h1>Current Reservations</h1>
     <p
-    v-if="currentReservations.length > 0"
-    class="basicText">
-      Press the ellipsis to complete, release or view your reservation
-    </p>
-    <p v-else class="basicText">You currently don't have any reservations</p>
+    v-if="currentReservations.length == 0"
+    class="basicText">You currently don't have any reservations</p>
     <div class="streetContainer" v-for="street in currentReservations" :key="street">
       <p class="street">{{ street }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>
@@ -51,49 +48,32 @@ export default {
       });
     },
     completeStreet(street) {
-      finishBlocks({ blocks: [street] }).then((response1) => {
-        // eslint-disable-next-line
-        console.log(response1);
+      finishBlocks({ blocks: [street] }).then(() => {
         this.$bvToast.toast(`Successful completion of ${street}`);
         return getReservedBlocks();
-      }).then((response2) => {
-        this.currentReservations = response2.data;
-        // eslint-disable-next-line
-        console.log(response2);
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+      }).then((reservedBlocks) => {
+        this.currentReservations = reservedBlocks.data;
+      }).catch(() => {
         this.$bvToast.toast(`Error in completion of ${street}.`);
       });
     },
     releaseStreet(street) {
-      releaseBlocks({ blocks: [street] }).then((response1) => {
-        // eslint-disable-next-line
-        console.log(response1);
+      releaseBlocks({ blocks: [street] }).then(() => {
         this.$bvToast.toast(
           `Successful release of ${street}. You are no longer responsible for this street`,
         );
         return getReservedBlocks();
-      }).then((response2) => {
-        this.currentReservations = response2.data;
-        // eslint-disable-next-line
-        console.log(response2);
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+      }).then((reservedBlocks) => {
+        this.currentReservations = reservedBlocks.data;
+      }).catch(() => {
         this.$bvToast.toast(`Error in releasing of ${street}.`);
       });
     },
   },
   mounted() {
-    getReservedBlocks().then((response) => {
-      this.currentReservations = response.data;
-      // eslint-disable-next-line
-      console.log(response);
-    }).catch((error) => {
-      // eslint-disable-next-line
-      console.log(error.message);
-    });
+    getReservedBlocks().then((reservedBlocks) => {
+      this.currentReservations = reservedBlocks.data;
+    }).catch(() => {});
   },
 };
 </script>
