@@ -26,7 +26,6 @@
     <Map
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
-      v-bind:fids="getFids()"
       v-bind:activeStreetFid="this.activeStreetFid"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
@@ -51,7 +50,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Map from '../components/Map.vue';
 import SelectedStreets from '../components/SelectedStreets.vue';
 import {
@@ -73,12 +71,11 @@ export default {
   },
   props: {
     activeStreetFid: {
-      type: Number,
+      type: String,
       required: false,
     },
   },
   computed: {
-    ...mapState(['reservedStreets']),
     header() {
       let headerVal = '';
       let subTitle = '';
@@ -97,9 +94,6 @@ export default {
     reservedFilter() {
       return this.$route.params.editmode === 'edit' ? 1 : 0;
     },
-    reservedStreets() {
-      return this.$store.getters.GET_RESERVED_STREETS;
-    },
   },
   methods: {
     pushStreet(street, selection) {
@@ -117,13 +111,13 @@ export default {
         this.streetsToComplete.push(street);
       }
     },
-    getFids() {
-      const fids = [];
-      this.reservedStreets.forEach((street) => {
-        fids.push(street.FID);
-      });
-      return fids;
-    },
+    // getFids() {
+    //   const fids = [];
+    //   this.currentReservations.forEach((street) => {
+    //     fids.push(+street.fid);
+    //   });
+    //   return fids;
+    // },
     async reserveStreets() {
       reserveBlocks({ blocks: this.streetsToReserve }).then((response) => {
         // eslint-disable-next-line

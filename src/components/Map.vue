@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { loadModules } from 'esri-loader';
 
 export default {
@@ -17,19 +18,23 @@ export default {
       type: Function,
       required: false,
     },
-    fids: {
-      type: Array,
-      required: false,
-    },
     activeStreetFid: {
-      type: Number,
+      type: String,
       required: false,
     },
   },
   data: () => ({
     modalShow: false,
   }),
+  computed: {
+    ...mapState({
+      reservedBlocks: 'reservedBlocks',
+    }),
+  },
   mounted() {
+    if (this.reservedFilter === 1) {
+      this.$store.dispatch('getReservedBlocks');
+    }
     const reserveSegment = {
       title: 'Add',
       id: 'reserve',
@@ -90,26 +95,17 @@ export default {
       },
       ],
     };
-    const sqlExpressions = [];
+    let sqlExpression = '1=0';
     // Creates a filter from the given list of FIDs so that only the given
     // streets will appear on the map
-    const reservedFidsFilter = `FID = ${this.fids.join(' OR FID = ')}`;
+    const reservedFidsFilter = `FID = ${this.reservedBlocks.join(' OR FID = ')}`;
     if (this.reservedFilter === 0) {
       // If reserving new streets, only show streets that are not reserved
-      sqlExpressions.push(`RESERVED = ${this.reservedFilter}`);
-    } else if (this.fids.length > 0) {
+      sqlExpression = `RESERVED = ${this.reservedFilter}`;
+    } else if (this.reservedBlocks.length > 0) {
       // If there are given FIDs, have the map only show the given streets
-      sqlExpressions.push(reservedFidsFilter);
+      sqlExpression = reservedFidsFilter;
     }
-    const selectFilter = document.createElement('select');
-    selectFilter.setAttribute('class', 'esri-widget esri-select');
-    selectFilter.setAttribute('style', 'width: 275px; font-family: Avenir Next W00; font-size: 1em');
-    sqlExpressions.forEach((sql) => {
-      const option = document.createElement('option');
-      option.value = sql;
-      option.innerHTML = sql;
-      selectFilter.appendChild(option);
-    });
     // lazy load the required ArcGIS API for JavaScript modules and CSS
     loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
       .then(([ArcGISMap, MapView, FeatureLayer]) => {
@@ -143,14 +139,7 @@ export default {
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
         });
-        this.view.ui.add(selectFilter, 'bottom-right');
-        streetSegments.definitionExpression = selectFilter.firstChild.value;
-        function setFeatureLayerFilter(expression) {
-          streetSegments.definitionExpression = expression;
-        }
-        selectFilter.addEventListener('change', (event) => {
-          setFeatureLayerFilter(event.target.value);
-        });
+        streetSegments.definitionExpression = sqlExpression;
         map.add(streetSegments);
         // Opens a popup with the street information that corresponds with the given FID
         this.view.when(() => {

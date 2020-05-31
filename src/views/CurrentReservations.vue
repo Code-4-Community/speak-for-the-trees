@@ -2,9 +2,9 @@
   <div>
     <h1>Current Reservations</h1>
     <p
-    v-if="currentReservations.length == 0"
+    v-if="reservedBlocks.length == 0"
     class="basicText">You currently don't have any reservations</p>
-    <div class="streetContainer" v-for="street in currentReservations" :key="street">
+    <div class="streetContainer" v-for="street in reservedBlocks" :key="street">
       <p class="street">{{ street }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>
         <template v-slot:button-content>
@@ -28,16 +28,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks, getReservedBlocks,
 } from '../api/api';
 
 export default {
   name: 'CurrentReservations',
-  data() {
-    return {
-      currentReservations: [],
-    };
+  computed: {
+    ...mapState({
+      reservedBlocks: 'reservedBlocks',
+    }),
   },
   methods: {
     // sends to the user to the map to edit a reservation
@@ -52,7 +53,7 @@ export default {
         this.$bvToast.toast(`Successful completion of ${street}`);
         return getReservedBlocks();
       }).then((reservedBlocks) => {
-        this.currentReservations = reservedBlocks.data;
+        this.reservedBlocks = reservedBlocks.data;
       }).catch(() => {
         this.$bvToast.toast(`Error in completion of ${street}.`);
       });
@@ -64,16 +65,14 @@ export default {
         );
         return getReservedBlocks();
       }).then((reservedBlocks) => {
-        this.currentReservations = reservedBlocks.data;
+        this.reservedBlocks = reservedBlocks.data;
       }).catch(() => {
         this.$bvToast.toast(`Error in releasing of ${street}.`);
       });
     },
   },
   mounted() {
-    getReservedBlocks().then((reservedBlocks) => {
-      this.currentReservations = reservedBlocks.data;
-    }).catch(() => {});
+    this.$store.dispatch('getReservedBlocks');
   },
 };
 </script>
