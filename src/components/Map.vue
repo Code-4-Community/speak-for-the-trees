@@ -134,7 +134,7 @@ export default {
           },
         });
         const streetSegments = new FeatureLayer({
-          url: 'https://api.mapbox.com/styles/v1/snlussier/cjddyatpre2wi2rnu5mq57tyt/wmts?access_token=pk.eyJ1Ijoic25sdXNzaWVyIiwiYSI6ImNqbGcxM2diODEycm8zcWxxcjc0dDdseDQifQ.1jQGlp5BEIYlYVNhF867QA',
+          url: process.env.VUE_APP_ARCGIS_URL,
           renderer,
           outFields: ['ST_NAME'],
           popupTemplate: template,
