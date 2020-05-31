@@ -1,10 +1,27 @@
 <template>
   <div class="cont">
-      <h1>All Teams</h1>
-      <p v-if="!userTeam">You aren't on a team yet, check out some below!</p>
-      <p v-else>You're on the team: {{ userTeam.name }}</p>
+      <h1>Your teams</h1>
+      <p
+      class="basicText"
+      v-if="myTeams.length == 0">
+        You aren't on a team yet, check out some below!
+      </p>
       <router-link
-        v-for="team in teams"
+        v-for="team in myTeams"
+        :to="`/team/${team.id}`"
+        :key="team.id">
+        <p class="team">
+          {{ team.name }}
+        </p>
+      </router-link>
+      <h1>Available teams</h1>
+      <p
+      class="basicText"
+      v-if="availableTeams.length == 0">
+        There are no other teams to join.
+      </p>
+      <router-link
+        v-for="team in availableTeams"
         :to="`/team/${team.id}`"
         :key="team.id">
         <p class="team">
@@ -24,10 +41,17 @@ Vue.use(VueRouter);
 
 export default {
   name: 'availableTeams',
-  computed: mapState({
-    teams: 'teams',
-    userTeam: 'userTeam',
-  }),
+  computed: {
+    ...mapState({
+      teams: 'teams',
+    }),
+    myTeams() {
+      return this.teams.filter(e => e.userTeamRole !== 'NONE');
+    },
+    availableTeams() {
+      return this.teams.filter(e => e.userTeamRole === 'NONE');
+    },
+  },
   methods: {
     // sends the user to the create team page
     createTeam() {

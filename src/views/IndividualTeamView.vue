@@ -161,6 +161,7 @@ export default {
       joinTeam(this.$route.params.id).then((response1) => {
         // eslint-disable-next-line
         console.log(response1);
+        this.$store.dispatch('getAllTeams');
         return getTeam(this.$route.params.id);
       }).then((response2) => {
         this.team = response2.data;
@@ -174,6 +175,7 @@ export default {
       leaveTeam(this.$route.params.id).then((response) => {
         // eslint-disable-next-line
         console.log(response);
+        this.$store.dispatch('getAllTeams');
         this.$router.push('/available-teams');
       }).catch((error) => {
         // eslint-disable-next-line
