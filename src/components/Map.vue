@@ -58,7 +58,7 @@ export default {
     }
     const template = {
       // autocasts as new PopupTemplate()
-      title: '{ST_NAME} {ST_TYPE}', // Show attribute value
+      title: '{BLOCK}', // Show attribute value
       content: getModalContent(),
       actions,
     };
@@ -71,16 +71,21 @@ export default {
       uniqueValueInfos: [{
         value: '0',
         symbol: {
-          type: 'simple-line', // autocasts as new SimpleFillSymbol()
+          type: 'simple-fill', // autocasts as new SimpleFillSymbol()
           color: '#9AC356',
-          width: '3px',
         },
       }, {
         value: '1',
         symbol: {
-          type: 'simple-line', // autocasts as new SimpleFillSymbol()
+          type: 'simple-fill', // autocasts as new SimpleFillSymbol()
           color: '#787272',
-          width: '3px',
+        },
+      },
+      {
+        value: '2',
+        symbol: {
+          type: 'simple-fill', // autocasts as new SimpleFillSymbol()
+          color: '#186221',
         },
       },
       ],
@@ -95,9 +100,6 @@ export default {
     } else if (this.fids.length > 0) {
       // If there are given FIDs, have the map only show the given streets
       sqlExpressions.push(reservedFidsFilter);
-    } else {
-      // Otherwise have default filters which show every street in the database (temporary)
-      sqlExpressions.push('1=1', "ST_TYPE = 'ST'", "ST_TYPE = 'AVE'", "ST_TYPE = 'PL'");
     }
     const selectFilter = document.createElement('select');
     selectFilter.setAttribute('class', 'esri-widget esri-select');
@@ -136,7 +138,7 @@ export default {
         const streetSegments = new FeatureLayer({
           url: process.env.VUE_APP_ARCGIS_URL,
           renderer,
-          outFields: ['ST_NAME'],
+          outFields: ['BLOCK'],
           popupTemplate: template,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
@@ -197,9 +199,7 @@ export default {
 
 <style lang='scss' scoped>
 div {
-    padding: 0;
-    margin: 0;
-    width: 98vw;
-    height: 85vh;
+    width: 100%;
+    height: 100%;
 }
 </style>
