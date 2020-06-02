@@ -23,7 +23,7 @@ export default {
       setUser: 'setUser',
     }),
   },
-  mounted() {
+  beforeCreate() {
     if (tokenService.getRefreshToken()) {
       refresh().finally(() => {
         this.setUser();
