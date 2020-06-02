@@ -9,7 +9,7 @@
         <p class="name">{{ individual.name }}</p>
         <p class="points">{{ individual.blocksCompleted }}</p>
       </div>
-      <h3 v-if="individualsWithRank.length < 1">
+      <h3 v-if="individualsWithRank.length <= 0">
         There's no leaderboard quite yet, check back soon!
       </h3>
   </div>

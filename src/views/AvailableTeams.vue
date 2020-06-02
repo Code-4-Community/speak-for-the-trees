@@ -59,7 +59,7 @@ export default {
     },
   },
   mounted() {
-    if (this.teams?.length < 1) this.$store.dispatch('getAllTeams');
+    if (this.teams?.length === 0) this.$store.dispatch('getAllTeams');
   },
 };
 </script>
