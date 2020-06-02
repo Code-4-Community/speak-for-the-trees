@@ -10,6 +10,7 @@ import TeamCreation from '../views/TeamCreationView.vue';
 import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
+import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
 
@@ -32,6 +33,11 @@ const routes = [
     path: '/signup',
     name: 'SignUp',
     component: SignUp,
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
   },
   {
     path: '/all-volunteers-leaderboard',
@@ -89,14 +95,14 @@ const routes = [
     component: MapView,
     props: true,
   },
-  {
-    path: '/profile',
-    name: 'Profile',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue'),
-  },
+  // {
+  //   path: '/profile',
+  //   name: 'Profile',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/ProfileView.vue'),
+  // },
   {
     path: '/*',
     redirect: '/',
