@@ -28,7 +28,7 @@ export default {
     // creates a copy of the individuals array and adds a rank
     individualsWithRank() {
       const copy = [...this.individuals];
-      copy.sort((a, b) => a.blocksCompleted > b.blocksCompleted);
+      copy.sort((a, b) => a.blocksCompleted < b.blocksCompleted);
       return copy.map((element, index) => ({
         ...element,
         name: element.name || element.username,
