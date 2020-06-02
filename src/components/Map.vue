@@ -187,10 +187,5 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-div {
-    padding: 0;
-    margin: 0;
-    width: 98vw;
-    height: 85vh;
-}
+
 </style>
