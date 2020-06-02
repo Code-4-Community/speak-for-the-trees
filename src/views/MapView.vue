@@ -9,12 +9,12 @@
       v-bind:title="'Reserve'"/>
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 1"
-      v-bind:onClick="() => this.$bvModal.show('street-unreserve-modal')"
+      v-bind:onClick="unreserveStreets"
       v-bind:streets="streetsToUnreserve"
       v-bind:title="'Unreserve'"/>
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 1"
-      v-bind:onClick="() => this.$bvModal.show('street-completed-modal')"
+      v-bind:onClick="completeStreets"
       v-bind:streets="streetsToComplete"
       v-bind:title="'Complete'"/>
     <div class="header-bar">
@@ -26,36 +26,25 @@
     <Map
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
-      v-bind:fids="getFids()"
       v-bind:activeStreetFid="this.activeStreetFid"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
-      <p>You have successfuly reserved</p>
-      <p>Blocks {{ this.streetsToReserve.join(', ') }}</p>
+      <p>{{ this.modalMessage }}</p>
+      <h3>{{ this.blockListString }}</h3>
     </b-modal>
-    <b-modal id="street-failure-modal" ok-only class="street-modal" title="Error">
-      <p>The street you attempted to reserved is unavailable.</p>
-    </b-modal>
-    <b-modal id="street-completed-modal" class="street-modal" title="Complete">
-      <p>Are you sure you want to complete</p>
-      <h3>Blocks {{ this.streetsToComplete.join(', ') }}?</h3>
-    </b-modal>
-    <b-modal id="street-unreserve-modal" class="street-modal" title="Unreserve">
-      <p>Are you sure you want to unreserve</p>
-      <h3>Blocks {{this.streetsToUnreserve.join(', ')}}?</h3>
-    </b-modal>
-    <b-modal id="street-in-list-modal" ok-only title="Error">
-      <p>You have already selected this street</p>
+    <b-modal id="error-modal" ok-only title="Error">
+      <p>{{ this.modalMessage }}</p>
     </b-modal>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import Map from '../components/Map.vue';
 import SelectedStreets from '../components/SelectedStreets.vue';
 import {
   reserveBlocks,
+  releaseBlocks,
+  finishBlocks,
 } from '../api/api';
 
 export default {
@@ -69,16 +58,17 @@ export default {
       streetsToReserve: [],
       streetsToUnreserve: [],
       streetsToComplete: [],
+      modalMessage: null,
+      blockListString: null,
     };
   },
   props: {
     activeStreetFid: {
-      type: Number,
+      type: String,
       required: false,
     },
   },
   computed: {
-    ...mapState(['reservedStreets']),
     header() {
       let headerVal = '';
       let subTitle = '';
@@ -97,16 +87,14 @@ export default {
     reservedFilter() {
       return this.$route.params.editmode === 'edit' ? 1 : 0;
     },
-    reservedStreets() {
-      return this.$store.getters.GET_RESERVED_STREETS;
-    },
   },
   methods: {
     pushStreet(street, selection) {
       if (this.streetsToReserve.includes(street)
       || this.streetsToUnreserve.includes(street)
       || this.streetsToComplete.includes(street)) {
-        this.$bvModal.show('street-in-list-modal');
+        this.modalMessage = 'You have already selected this street';
+        this.$bvModal.show('error-modal');
         return;
       }
       if (selection === 'reserve') {
@@ -117,30 +105,57 @@ export default {
         this.streetsToComplete.push(street);
       }
     },
-    getFids() {
-      const fids = [];
-      this.reservedStreets.forEach((street) => {
-        fids.push(street.FID);
-      });
-      return fids;
-    },
+    // getFids() {
+    //   const fids = [];
+    //   this.currentReservations.forEach((street) => {
+    //     fids.push(+street.fid);
+    //   });
+    //   return fids;
+    // },
     async reserveStreets() {
+      this.blockListString = this.streetsToReserve.join(', ');
       reserveBlocks({ blocks: this.streetsToReserve }).then((response) => {
         // eslint-disable-next-line
         console.log(response);
+        this.modalMessage = 'You have successfuly reserved';
+        this.streetsToReserve = [];
         this.$bvModal.show('street-confirmation-modal');
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
+        this.modalMessage = 'At least one block was unable to be reserved';
+        this.$bvModal.show('error-modal');
       });
     },
     async unreserveStreets() {
-      // reserve streets backend call
-      // .then(
+      this.blockListString = this.streetsToUnReserve.join(', ');
+      releaseBlocks({ blocks: this.streetsToUnreserve }).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.modalMessage = 'You have successfuly unreserved';
+        this.streetsToUnreserve = [];
+        this.$bvModal.show('street-confirmation-modal');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+        this.modalMessage = 'At least one block was unable to be unreserved';
+        this.$bvModal.show('error-modal');
+      });
     },
     async completeStreets() {
-      // reserve streets backend call
-      // .then(
+      this.blockListString = this.streetsToComplete.join(', ');
+      finishBlocks({ blocks: this.streetsToComplete }).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        this.modalMessage = 'You have successfully completed';
+        this.streetsToComplete = [];
+        this.$bvModal.show('street-confirmation-modal');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+        this.modalMessage = 'At least one block was unable to be completed';
+        this.$bvModal.show('street-confirmation-modal');
+      });
     },
   },
 };

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tokenService from '../auth/token';
 import {
-  getAllTeams, getBlocksLeaderboard, getTeam, getUserData,
+  getAllTeams, getBlocksLeaderboard, getTeam, getUserData, getReservedBlocks,
 } from '../api/api';
 
 Vue.use(Vuex);
@@ -13,18 +13,10 @@ export default new Vuex.Store({
     privilegeLevel: -1,
     userData: {},
     userTeam: null,
-    reservedStreets: [
-      { name: 'Forsyth', type: 'ST', FID: 19079 },
-      { name: 'Hemenway', type: 'ST', FID: 14494 },
-      { name: 'Hunington', type: 'BLVD', FID: 19078 },
-      { name: 'Parker', type: 'AVE', FID: 16373 },
-    ],
     teams: [],
     allTeamsLeaderboard: [],
     allVolunteersLeaderboard: [],
-  },
-  getters: {
-    GET_RESERVED_STREETS: state => state.reservedStreets,
+    reservedBlocks: [],
   },
   mutations: {
     setUser(state) {
@@ -45,6 +37,9 @@ export default new Vuex.Store({
     },
     setUserData(state, userData) {
       state.userData = userData;
+    },
+    setReservedBlocks(state, blockData) {
+      state.reservedBlocks = blockData;
     },
   },
   actions: {
@@ -69,6 +64,11 @@ export default new Vuex.Store({
     async getUserData({ commit }) {
       getUserData().then((response) => {
         commit('setUserData', response.data);
+      });
+    },
+    async getReservedBlocks({ commit }) {
+      getReservedBlocks().then((response) => {
+        commit('setReservedBlocks', response.data);
       });
     },
   },
