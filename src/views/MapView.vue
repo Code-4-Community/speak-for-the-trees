@@ -24,6 +24,7 @@
     </div>
 
     <Map
+      class="map-container"
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
       v-bind:activeStreetFid="this.activeStreetFid"
@@ -166,11 +167,9 @@ export default {
 .header-bar {
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
-  margin: auto;
+  width: auto;
   background-color: #9AC356;
-  padding: 5px;
-  margin: 10px;
+  margin-bottom: 5px;
 }
 
 .streets-container {
@@ -185,8 +184,19 @@ export default {
 
 @media only screen and (max-width: 700px) {
   .streets-container {
-    width: 100%;
+    width: auto;
     margin-left: 5px;
+  }
+}
+
+.map-container {
+    width: 95vw;
+    height: 50vh;
+}
+
+@media only screen and (max-width: 700px) {
+  .map-container {
+    width: 100%;
   }
 }
 </style>
