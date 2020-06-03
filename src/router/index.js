@@ -65,11 +65,6 @@ const routes = [
     component: CurrentReservations,
   },
   {
-    path: '/map',
-    name: 'Map',
-    component: MapView,
-  },
-  {
     path: '/available-teams',
     name: 'AvailableTeams',
     component: AvailableTeams,

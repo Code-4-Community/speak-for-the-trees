@@ -18,15 +18,16 @@
       v-bind:streets="streetsToComplete"
       v-bind:title="'Complete'"/>
     <div class="header-bar">
-      <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button>
-      <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button>
+      <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
+      <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
       <h3 v-if="reservedFilter === 1 && !!activeStreetFid">Block {{this.activeStreetFid}}</h3>
     </div>
 
     <Map
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
-      v-bind:activeStreetFid="this.activeStreetFid"/>
+      v-bind:activeStreetFid="this.activeStreetFid"
+      ref="map"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
       <p>{{ this.modalMessage }}</p>
@@ -105,13 +106,6 @@ export default {
         this.streetsToComplete.push(street);
       }
     },
-    // getFids() {
-    //   const fids = [];
-    //   this.currentReservations.forEach((street) => {
-    //     fids.push(+street.fid);
-    //   });
-    //   return fids;
-    // },
     async reserveStreets() {
       this.blockListString = this.streetsToReserve.join(', ');
       reserveBlocks({ blocks: this.streetsToReserve }).then((response) => {
@@ -120,6 +114,7 @@ export default {
         this.modalMessage = 'You have successfuly reserved';
         this.streetsToReserve = [];
         this.$bvModal.show('street-confirmation-modal');
+        this.$refs.map.loadMap();
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
@@ -135,6 +130,7 @@ export default {
         this.modalMessage = 'You have successfuly unreserved';
         this.streetsToUnreserve = [];
         this.$bvModal.show('street-confirmation-modal');
+        this.$refs.map.loadMap();
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
@@ -150,6 +146,7 @@ export default {
         this.modalMessage = 'You have successfully completed';
         this.streetsToComplete = [];
         this.$bvModal.show('street-confirmation-modal');
+        this.$refs.map.loadMap();
       }).catch((error) => {
         // eslint-disable-next-line
         console.log(error.message);
