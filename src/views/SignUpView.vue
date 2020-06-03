@@ -121,7 +121,6 @@ export default {
             this.setUser();
             this.$router.push('/');
             this.$store.dispatch('getUserData');
-            this.$store.dispatch('getUserTeam');
           })
           .catch((error) => {
             this.error = true;

@@ -23,7 +23,6 @@ export default {
   name: 'home',
   computed: mapState({
     userData: 'userData',
-    userTeam: 'userTeam',
   }),
   methods: {
     // sends to the user to the map to make a reservation
