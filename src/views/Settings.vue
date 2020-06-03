@@ -1,7 +1,7 @@
 <template>
   <div>
 
-      <b-modal @ok="deactivateAccount" id="modal-1" title="Warning!">
+  <b-modal @ok="deactivateAccount" id="modal-1" title="Warning!">
     <p class="my-4">Are you sure you would like to deactivate your account?</p>
   </b-modal>
 
@@ -40,26 +40,23 @@
 
    <b-modal @ok="changeEmail" id="modal-3" title="Email Change">
     <b-form @submit.stop.prevent>
-    <label for="text-password">Password</label>
-    <b-input type="email" id="text-email" aria-describedby="email-help-block"></b-input>
+    <label for="text-password">Enter Password</label>
+    <b-input type="password" id="text-password" aria-describedby="password-help-block"
+    v-model="changeEmailRequest.password"></b-input>
     <b-form-text id="email-help-block">
       ....
     </b-form-text>
 
-    <label for="text-email">Confirm Email</label>
+    <label for="text-email">New Email</label>
     <b-input type="email" id="text-email-confirm"
-    aria-describedby="email-help-block"></b-input>
-    <b-form-text id="email-help-block-confirm">
-      Ensure that your passwords match
-    </b-form-text>
+    aria-describedby="email-help-block" v-model="changeEmailRequest.newEmail"></b-input>
    </b-form>
   </b-modal>
 
 <h3>{{ userData.firstName }} {{ userData.lastName }}</h3>
-    <b-list-group flush="true">
+    <b-list-group :flush='true'>
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
       <b-list-group-item>Email: {{ userData.email }}</b-list-group-item>
-      <b-list-group-item>Affiliated Team: {{ userTeam }}</b-list-group-item>
 
   <b-list-group-item><b-button v-b-modal.modal-3 block variant="primary">
     Change Email</b-button></b-list-group-item>
@@ -74,7 +71,7 @@
 <script>
 import { mapState } from 'vuex';
 import {
-  changePassword,
+  changePassword, changeEmail, deleteUser,
 } from '../api/api';
 
 export default {
@@ -82,7 +79,6 @@ export default {
   computed: {
     ...mapState({
       userData: 'userData',
-      userTeam: 'userTeam',
     }),
   },
   data() {
@@ -91,24 +87,51 @@ export default {
         currentPassword: '',
         newPassword: '',
       },
+      changeEmailRequest: {
+        password: '',
+        newEmail: '',
+      },
     };
   },
   methods: {
     changePassword() {
-      changePassword(this.passwords).then((response) => {
+      changePassword(this.passwords).then(() => {
         // eslint-disable-next-line
-        console.log(response);
+        alert('Successfully changed password!')
       }).catch((error) => {
         // eslint-disable-next-line
-        console.log(error);
+        alert(`Failed to change password: ${error}`);
+      }).finally(() => {
+        this.passwords = {
+          currentPassword: '',
+          newPassword: '',
+        };
       });
     },
     changeEmail() {
-
+      changeEmail(this.changeEmailRequest).then(() => {
+        // eslint-disable-next-line
+        alert("Successfully changed your email!");
+        this.$store.dispatch('getUserData');
+      }).catch((error) => {
+        // eslint-disable-next-line
+        alert(`Failed to change your email: ${error}`);
+      }).finally(() => {
+        this.changeEmailRequest = {
+          password: '',
+          newEmail: '',
+        };
+      });
     },
     deactivateAccount() {
-      // eslint-disable-next-line
-        console.log('test2');
+      deleteUser().then(() => {
+        // eslint-disable-next-line
+        alert("Your account has been deactivated");
+        this.$router.push('/signup');
+      }).catch(() => {
+        // eslint-disable-next-line
+        alert("Failed to deactivate your account");
+      });
     },
   },
 };

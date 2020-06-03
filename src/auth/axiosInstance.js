@@ -27,7 +27,7 @@ AxiosInstance.interceptors.response.use(
       && error?.response?.data === INVALID_ACCESS_TOKEN
       && !originalRequest.retry) {
       originalRequest.retry = true;
-      refresh().then(() => {
+      return refresh().then(() => {
         AxiosInstance.defaults.headers['X-Access-Token'] = tokenService.getAccessToken();
         return AxiosInstance(originalRequest);
       });

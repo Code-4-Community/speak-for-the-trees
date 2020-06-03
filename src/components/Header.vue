@@ -10,7 +10,7 @@
       <b-dropdown-item to="/all-volunteers-leaderboard">All Volunteers Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
       <b-dropdown-divider />
-      <b-dropdown-item to="/settings">Profile</b-dropdown-item>
+      <b-dropdown-item to="/settings">Settings</b-dropdown-item>
       <b-dropdown-item v-on:click="logout">
         <strong>Logout</strong>
       </b-dropdown-item>
