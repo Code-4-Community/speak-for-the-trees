@@ -51,7 +51,7 @@
     <b-list-group flush="true">
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
       <b-list-group-item>Email: {{ userData.email }}</b-list-group-item>
-      <b-list-group-item>Affiliated Team: {{ userTeam.name}}</b-list-group-item>
+      <b-list-group-item>Affiliated Team: {{ userTeam }}</b-list-group-item>
 
   <b-list-group-item><b-button v-b-modal.modal-3 block variant="primary">
     Change Email</b-button></b-list-group-item>
@@ -73,19 +73,6 @@ export default {
       userData: 'userData',
       userTeam: 'userTeam',
     }),
-  },
-  data() {
-    return {
-      userData: {
-        firstName: 'Gabriel',
-        lastName: 'Peter',
-        username: 'gabepeter',
-        email: 'peter.g@northeastern.edu',
-      },
-      userTeam: {
-        name: 'TreeLuvrs',
-      },
-    };
   },
 };
 </script>
