@@ -19,8 +19,10 @@ export const getReservedBlocks = async () => AxiosInstance.get(`${BLOCKS_RESERVA
 const BLOCKS_LEADERBOARD = '/api/v1/blocks/leaderboard';
 export const getBlocksLeaderboard = async () => AxiosInstance.get(BLOCKS_LEADERBOARD);
 
-const USER_DATA = '/api/v1/protected/user/data';
-export const getUserData = async () => AxiosInstance.get(USER_DATA);
+const USER = '/api/v1/protected/user';
+export const getUserData = async () => AxiosInstance.get(`${USER}/data`);
+export const changePassword = async passwords => AxiosInstance.post(`${USER}/change_password`, passwords);
+// export const changeEmail = async data => AxiosInstance.post(`${USER}/change_email`, data); check
 
 // Example:
 const GET_FOO = '/api/v1/protected/foo';

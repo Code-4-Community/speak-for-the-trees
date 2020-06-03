@@ -8,13 +8,21 @@
   <b-modal id="modal-2" title="Password Change">
     <b-form @submit.stop.prevent>
 <label for="text-password">Current Password</label>
-    <b-input type="password" id="text-password" aria-describedby="password-help-block"></b-input>
+    <b-input
+    v-model="passwords.currentPassword"
+    type="password"
+    id="text-password"
+    aria-describedby="password-help-block"></b-input>
     <b-form-text id="password-help-block">
       Enter your current password in order to change it.
     </b-form-text>
 
     <label for="text-password">New Password</label>
-    <b-input type="password" id="text-password" aria-describedby="password-help-block"></b-input>
+    <b-input
+    v-model="passwords.newPassword"
+    type="password"
+    id="text-password"
+    aria-describedby="password-help-block"></b-input>
     <b-form-text id="password-help-block">
       Your password must be 8-20 characters long, contain letters and numbers, and must not
       contain spaces, special characters, or emoji.
@@ -65,6 +73,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import {
+  changePassword,
+} from '../api/api';
 
 export default {
   name: 'Profile',
@@ -73,6 +84,32 @@ export default {
       userData: 'userData',
       userTeam: 'userTeam',
     }),
+  },
+  data() {
+    return {
+      passwords: {
+        currentPassword: '',
+        newPassword: '',
+      },
+    };
+  },
+  methods: {
+    changePassword() {
+      changePassword(this.passwords).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
+    },
+    changeEmail() {
+      // eslint-disable-next-line
+        console.log('test');
+    },
+    deactivateAccount() {
+
+    },
   },
 };
 </script>
