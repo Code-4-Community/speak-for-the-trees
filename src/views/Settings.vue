@@ -127,7 +127,7 @@ export default {
       deleteUser().then(() => {
         // eslint-disable-next-line
         alert("Your account has been deactivated");
-        this.$router.push('/signup');
+        this.$router.push('/login');
       }).catch(() => {
         // eslint-disable-next-line
         alert("Failed to deactivate your account");
