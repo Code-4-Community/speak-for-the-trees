@@ -1,11 +1,11 @@
 <template>
   <div>
 
-      <b-modal id="modal-1" title="Warning!">
+      <b-modal @ok="deactivateAccount" id="modal-1" title="Warning!">
     <p class="my-4">Are you sure you would like to deactivate your account?</p>
   </b-modal>
 
-  <b-modal id="modal-2" title="Password Change">
+  <b-modal @ok="changePassword" id="modal-2" title="Password Change">
     <b-form @submit.stop.prevent>
 <label for="text-password">Current Password</label>
     <b-input
@@ -38,7 +38,7 @@
   </b-modal>
 
 
-   <b-modal id="modal-3" title="Email Change">
+   <b-modal @ok="changeEmail" id="modal-3" title="Email Change">
     <b-form @submit.stop.prevent>
     <label for="text-password">Password</label>
     <b-input type="email" id="text-email" aria-describedby="email-help-block"></b-input>
@@ -104,11 +104,11 @@ export default {
       });
     },
     changeEmail() {
-      // eslint-disable-next-line
-        console.log('test');
+
     },
     deactivateAccount() {
-
+      // eslint-disable-next-line
+        console.log('test2');
     },
   },
 };
