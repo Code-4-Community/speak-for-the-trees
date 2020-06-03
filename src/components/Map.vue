@@ -75,13 +75,13 @@ export default {
           value: '0',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: '#9AC356',
+            color: 'rgba(154, 195, 86, 0.5)',
           },
         }, {
           value: '1',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: '#787272',
+            color: 'rgba(120, 114, 114, 0.5)',
           },
         },
         {
