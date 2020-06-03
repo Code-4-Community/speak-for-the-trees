@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tokenService from '../auth/token';
 import {
-  getAllTeams, getBlocksLeaderboard, getTeam, getUserData, getReservedBlocks,
+  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks,
 } from '../api/api';
 
 Vue.use(Vuex);
@@ -12,7 +12,6 @@ export default new Vuex.Store({
     isUserAuthenticated: false,
     privilegeLevel: -1,
     userData: {},
-    userTeam: null,
     teams: [],
     allTeamsLeaderboard: [],
     allVolunteersLeaderboard: [],
@@ -22,9 +21,6 @@ export default new Vuex.Store({
     setUser(state) {
       state.isUserAuthenticated = !!(tokenService.getPrivilegeLevel() > -1);
       state.privilegeLevel = tokenService.getPrivilegeLevel();
-    },
-    setUserTeam(state, userTeam) {
-      state.userTeam = userTeam;
     },
     setAllTeams(state, { teams }) {
       state.teams = teams;
@@ -53,13 +49,6 @@ export default new Vuex.Store({
         commit('setTeamsLeaderboard', response.data);
         commit('setVolunteersLeaderboard', response.data);
       });
-    },
-    async getUserTeam({ commit }) {
-      if (tokenService.getTeamID() >= 0) {
-        getTeam(tokenService.getTeamID()).then((response) => {
-          commit('setUserTeam', response.data);
-        });
-      }
     },
     async getUserData({ commit }) {
       getUserData().then((response) => {

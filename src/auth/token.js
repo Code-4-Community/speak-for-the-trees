@@ -25,7 +25,7 @@ const tokenService = {
   getPrivilegeLevel() {
     try {
       const payload = getTokenPayload();
-      return payload.privilegeLevel;
+      return payload.privilegeLevel || -1;
     } catch (e) {
       return -1;
     }
@@ -33,15 +33,7 @@ const tokenService = {
   getUserID() {
     try {
       const payload = getTokenPayload();
-      return payload.userId;
-    } catch (e) {
-      return -1;
-    }
-  },
-  getTeamID() {
-    try {
-      const payload = getTokenPayload();
-      return payload.teamId;
+      return payload.userId || -1;
     } catch (e) {
       return -1;
     }
