@@ -38,8 +38,7 @@
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <p class="members">MEMBERS</p>
-      <div
-      v-if="userTeamRole == teamConstants.MEMBER || userTeamRole == teamConstants.LEADER">
+      <div>
         <div
         class="memberContainer"
         v-for="member in team.members"
