@@ -21,23 +21,46 @@
         ></b-form-textarea>
       </b-form-group>
 
-      <b-form-group class="goal">
-        <b-form-input
-          v-model="form.teamGoal"
-          type="number"
-          required
-          placeholder="TEAM GOAL #"
-        ></b-form-input>
-      </b-form-group>
+      <div class="mobile">
+        <b-form-group class="goal">
+          <b-form-input
+            v-model="form.teamGoal"
+            type="number"
+            required
+            placeholder="TEAM GOAL #"
+          ></b-form-input>
+        </b-form-group>
 
-      <p class="text">BLOCKS BY</p>
+        <p class="text">BLOCKS BY</p>
 
-      <b-form-group>
-        <b-form-input
-          v-model="form.teamDate"
-          type="date"
-          required
-        ></b-form-input>
+        <b-form-group>
+          <b-form-input
+            v-model="form.teamDate"
+            type="date"
+            required
+          ></b-form-input>
+        </b-form-group>
+      </div>
+
+      <b-form-group class="desktop">
+        <div class="form-row">
+          <div class="col">
+            <b-form-input
+            v-model="form.teamGoal"
+            type="number"
+            required
+            placeholder="TEAM GOAL #"
+            ></b-form-input>
+          </div>
+          <p>BLOCKS BY</p>
+          <div class="col">
+            <b-form-input
+            v-model="form.teamDate"
+            type="date"
+            required
+            ></b-form-input>
+          </div>
+        </div>
       </b-form-group>
 
       <b-form-group v-if="members > 0">
@@ -134,7 +157,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 fieldset.form-group {
   margin-bottom: 1.5rem;
 }
@@ -160,12 +183,30 @@ input.form-control::placeholder, textarea.form-control::placeholder {
   text-align: center;
 }
 
+@media only screen and (min-width: 768px) {
+  .mobile {
+    display: none;
+  }
+}
+
 fieldset.goal.form-group {
   margin-bottom: 0;
 }
 
 .form-row {
   margin-bottom: 0.5rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .desktop.form-group {
+    display: none;
+  }
+}
+
+.desktop.form-group {
+  p {
+    margin: 0.4rem;
+  }
 }
 
 .form-row:last-child {
