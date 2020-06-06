@@ -18,7 +18,7 @@ export default {
       type: Function,
       required: false,
     },
-    activeStreetFid: {
+    activeStreetId: {
       type: String,
       required: false,
     },
@@ -51,7 +51,7 @@ export default {
       function getModalContent() {
       // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
       // TODO: find way to perform function on ESRI data;
-        return '<b>ID:</b> {FID} <strong>RESERVED:</strong> {RESERVED}';
+        return '<b>ID:</b> {ID} <strong>RESERVED:</strong> {RESERVED}';
       }
       const actions = [];
       if (this.reservedFilter === 1) {
@@ -61,9 +61,18 @@ export default {
       }
       const template = {
       // autocasts as new PopupTemplate()
-        title: '{BLOCK}', // Show attribute value
+        title: '{ID}', // Show attribute value
         content: getModalContent(),
         actions,
+      };
+      const blockLabel = {
+        labelExpressionInfo: { expression: '$feature.ID' },
+        symbol: {
+          type: 'text',
+          color: 'black',
+          haloSize: 1,
+          haloColor: 'white',
+        },
       };
       const renderer = {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
@@ -94,15 +103,15 @@ export default {
         ],
       };
       let sqlExpression = '1=0';
-      // Creates a filter from the given list of FIDs so that only the given
+      // Creates a filter from the given list of IDs so that only the given
       // streets will appear on the map
-      const reservedFidsFilter = `FID = ${this.reservedBlocks.join(' OR FID = ')}`;
+      const reservedIdsFilter = `ID = ${this.reservedBlocks.join(' OR ID = ')}`;
       if (this.reservedFilter === 0) {
       // If reserving new streets, only show streets that are not reserved
         sqlExpression = `RESERVED = ${this.reservedFilter}`;
       } else if (this.reservedBlocks.length > 0) {
-      // If there are given FIDs, have the map only show the given streets
-        sqlExpression = reservedFidsFilter;
+      // If there are given IDs, have the map only show the given streets
+        sqlExpression = reservedIdsFilter;
       }
       // lazy load the required ArcGIS API for JavaScript modules and CSS
       loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
@@ -134,20 +143,22 @@ export default {
             renderer,
             outFields: ['BLOCK'],
             popupTemplate: template,
+            labelingInfo: [blockLabel],
+            labelsVisible: true,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
           });
           streetSegments.definitionExpression = sqlExpression;
           map.add(streetSegments);
-          // Opens a popup with the street information that corresponds with the given FID
+          // Opens a popup with the street information that corresponds with the given ID
           this.view.when(() => {
-            if (this.activeStreetFid !== undefined) {
-            // Create a query where the FID equals the given FID
+            if (this.activeStreetId !== undefined) {
+            // Create a query where the ID equals the given ID
               const query = streetSegments.createQuery();
-              query.where = `FID = ${this.activeStreetFid}`;
+              query.where = `ID = ${this.activeStreetId}`;
               streetSegments.queryFeatures(query)
                 .then((response) => {
-                // FID is a key so there should only be one item in the
+                // ID is a key so there should only be one item in the
                 // features array that is returned
                   const streetFeatures = response.features;
                   // Sets what the popup should look like
@@ -164,11 +175,11 @@ export default {
           this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
           // If the event id matches one of the ids defined as an action for selecting a street
-          // then add to the list with a corresonding id
+          // then add to the list with a corresponding id
             if (event.action.id === 'reserve'
             || event.action.id === 'unreserve'
             || event.action.id === 'complete') {
-              this.pushStreet(event.target.selectedFeature.attributes.FID, event.action.id);
+              this.pushStreet(event.target.selectedFeature.attributes.ID, event.action.id);
             }
           });
         });
