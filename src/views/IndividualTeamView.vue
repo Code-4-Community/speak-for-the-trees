@@ -6,9 +6,6 @@
     <div v-if="!error && loaded">
       <h1>
         {{ team.name }}
-        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
-        src="../assets/edit-icon.svg"
-        alt="edit"> -->
         <img v-if="userTeamRole == teamConstants.NONE"
         src="../assets/plus-icon.svg"
         alt="join"
@@ -17,9 +14,6 @@
       <p class="basicText">{{ team.bio }}</p>
       <p class="banner">
         TEAM GOAL
-        <!-- <img v-if="userTeamRole == teamConstants.LEADER"
-        src="../assets/edit-icon.svg"
-        alt="edit"> -->
       </p>
       <p class="basicText">Click on the trophy to view the team leaderboard</p>
       <div class="goal">
@@ -47,7 +41,7 @@
           <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
           <p v-else class="member">{{ member.username }}</p>
           <b-dropdown
-          id="member-actions"
+          id="member-self-actions"
           v-if="userTeamRole == teamConstants.MEMBER && member.id === currentUserID"
           size="sm"
           dropleft
@@ -60,7 +54,7 @@
             <b-dropdown-item @click="leaveThisTeam">Leave team</b-dropdown-item>
           </b-dropdown>
           <b-dropdown
-          id="owner-actions"
+          id="owner-other-actions"
           v-if="userTeamRole == teamConstants.LEADER && member.id != currentUserID"
           size="sm"
           dropleft
@@ -71,9 +65,10 @@
               <img src="../assets/ellipsis-icon.svg" alt="actions">
             </template>
             <b-dropdown-item @click="kickThisMember(member.id)">Kick out</b-dropdown-item>
+            <b-dropdown-item @click="confirmTransfer(member)">Make leader</b-dropdown-item>
           </b-dropdown>
           <b-dropdown
-          id="owner-actions"
+          id="owner-self-actions"
           v-if="userTeamRole == teamConstants.LEADER && member.id == currentUserID"
           size="sm"
           dropleft
@@ -93,7 +88,7 @@
 
 <script>
 import {
-  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam,
+  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam, makeLeader,
 } from '../api/api';
 
 import tokenService from '../auth/token';
@@ -186,8 +181,40 @@ export default {
         // eslint-disable-next-line
         console.log(response);
         return getTeam(this.$route.params.id);
-      }).then((response2) => {
-        this.team = response2.data;
+      }).then((team) => {
+        this.team = team.data;
+        this.loaded = true;
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    confirmTransfer(member) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you would like to make ${member.username} team leader?`, {
+        size: 'sm',
+        okVariant: 'success',
+        cancelVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2 border-top-0',
+        centered: true,
+      }).then((confirmed) => {
+        if (confirmed) {
+          return makeLeader(member.id);
+        }
+        return '';
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
+    makeLeader(member) {
+      makeLeader(this.$route.params.id, member).then((response) => {
+        // eslint-disable-next-line
+        console.log(response);
+        return getTeam(this.$route.params.id);
+      }).then((team) => {
+        this.team = team.data;
         this.loaded = true;
       }).catch((error) => {
         // eslint-disable-next-line
