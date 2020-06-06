@@ -48,7 +48,7 @@ export default {
 @import '../assets/color-constants.less';
 
 .header-container {
-    width: 98vw; /* setting this to 100vw pushes it
+    width: 96vw; /* setting this to 100vw pushes it
                     off the edge of the screen, just fyi */
     height: 3rem;
     margin: 1em;

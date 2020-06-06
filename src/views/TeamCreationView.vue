@@ -24,20 +24,17 @@
 
       <b-form-group class="goal">
         <b-form-input
-          class="shortInput"
           v-model="form.teamGoal"
           type="number"
           required
           placeholder="TEAM GOAL #"
         ></b-form-input>
-        <p>BLOCKS</p>
       </b-form-group>
 
-      <p class="text">BY</p>
+      <p class="text">BLOCKS BY</p>
 
       <b-form-group>
         <b-form-input
-          class="shortInput"
           v-model="form.teamDate"
           type="date"
           required
@@ -169,7 +166,7 @@ p {
 /* STYLE 'BY' */
 .text {
   margin: 0;
-  text-align: left;
+  text-align: center;
 }
 
 fieldset.goal.form-group {
