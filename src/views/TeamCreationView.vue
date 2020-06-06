@@ -7,7 +7,6 @@
         <b-form-input
           v-model="form.teamName"
           type="text"
-          :state="teamNameValidator"
           required
           placeholder="TEAM NAME"
         ></b-form-input>
@@ -41,7 +40,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group>
+      <b-form-group v-if="members > 0">
         <div
         class="form-row"
         v-for="x in members" :key="x">
@@ -64,6 +63,7 @@
 
       <b-form-group>
         <b-button class="add" v-on:click="members += 1">+ MEMBER</b-button>
+        <b-button class="remove" v-if="members > 0" v-on:click="members -= 1">- MEMBER</b-button>
       </b-form-group>
 
       <b-button class="create" type="submit">Create!</b-button>
@@ -107,13 +107,9 @@ export default {
         goalCompletionDate: moment(this.form.teamDate).format('YYYY-MM-DDTHH:mm'),
         invites: this.getInvites(),
       }).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
         this.$store.dispatch('getAllTeams');
         this.$router.push(`/team/${response.data.id}`);
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
         this.alert = error.message;
       });
     },
@@ -158,14 +154,9 @@ input.form-control::placeholder, textarea.form-control::placeholder {
   margin: 0;
 }
 
-p {
-  text-align: left;
-  text-indent: 1em;
-}
-
 /* STYLE 'BY' */
 .text {
-  margin: 0;
+  margin: 0.2rem;
   text-align: center;
 }
 
@@ -181,7 +172,9 @@ fieldset.goal.form-group {
   margin-bottom: 0rem;
 }
 
-button.add, button.add:hover, button.add:focus {
+button.add, button.add:hover, button.add:focus,
+button.remove, button.remove:hover, button.remove:focus {
+  margin-top: 0;
   float: left;
   border: none;
   background: none;
