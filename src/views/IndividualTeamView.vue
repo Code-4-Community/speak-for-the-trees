@@ -88,7 +88,7 @@
 
 <script>
 import {
-  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam, makeLeader,
+  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam, transferOwnership,
 } from '../api/api';
 
 import tokenService from '../auth/token';
@@ -200,7 +200,7 @@ export default {
         centered: true,
       }).then((confirmed) => {
         if (confirmed) {
-          return makeLeader(member.id);
+          return this.makeLeader({ newLeaderId: member.id });
         }
         return '';
       }).catch((error) => {
@@ -209,7 +209,7 @@ export default {
       });
     },
     makeLeader(member) {
-      makeLeader(this.$route.params.id, member).then((response) => {
+      transferOwnership(this.$route.params.id, member).then((response) => {
         // eslint-disable-next-line
         console.log(response);
         return getTeam(this.$route.params.id);
