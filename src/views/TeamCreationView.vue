@@ -2,14 +2,18 @@
   <div class="container">
     <h1>Create a team</h1>
 
-    <b-form @submit="onSubmit">
+    <b-form @submit="onSubmit" novalidate>
       <b-form-group>
         <b-form-input
           v-model="form.teamName"
           type="text"
           required
+          :state="validateName"
           placeholder="TEAM NAME"
         ></b-form-input>
+        <b-form-invalid-feedback>
+          The team name must be at least 4 characters long
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group>
@@ -17,8 +21,12 @@
           v-model="form.teamBio"
           type="text"
           required
+          :state="validateBio"
           placeholder="TEAM BIO"
         ></b-form-textarea>
+        <b-form-invalid-feedback>
+          The team bio cannot be empty
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <div class="mobile">
@@ -27,14 +35,25 @@
             v-model="form.teamGoal"
             type="number"
             required
+            :state="validateGoal"
             placeholder="TEAM GOAL #"
           ></b-form-input>
+          <b-form-invalid-feedback>
+            The goal must be greater than 0
+          </b-form-invalid-feedback>
         </b-form-group>
 
         <p class="text">BLOCKS BY</p>
 
         <b-form-group>
-          <b-form-datepicker v-model="form.teamDate" :min="dateToday"></b-form-datepicker>
+          <b-form-datepicker
+            v-model="form.teamDate"
+            :min="dateToday"
+            :state="validateDate"
+          ></b-form-datepicker>
+          <b-form-invalid-feedback>
+            The date cannot be empty
+          </b-form-invalid-feedback>
         </b-form-group>
       </div>
 
@@ -45,16 +64,23 @@
             v-model="form.teamGoal"
             type="number"
             required
+            :state="validateGoal"
             placeholder="TEAM GOAL #"
             ></b-form-input>
+            <b-form-invalid-feedback>
+              The goal must be greater than 0
+            </b-form-invalid-feedback>
           </div>
           <p>BLOCKS BY</p>
           <div class="col">
-            <b-form-input
+            <b-form-datepicker
             v-model="form.teamDate"
-            type="date"
-            required
-            ></b-form-input>
+            :min="dateToday"
+            :state="validateDate"
+          ></b-form-datepicker>
+          <b-form-invalid-feedback>
+            The date cannot be empty
+          </b-form-invalid-feedback>
           </div>
         </div>
       </b-form-group>
@@ -107,30 +133,37 @@ export default {
       form: {
         teamName: '',
         teamBio: '',
-        teamGoal: Number,
-        teamDate: Date,
+        teamGoal: '',
+        teamDate: '',
       },
       invites: {
         memberNames: [],
         memberEmails: [],
       },
+      submitted: false,
     };
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      createTeam({
-        name: this.form.teamName,
-        bio: this.form.teamBio,
-        goal: Number(this.form.teamGoal),
-        goalCompletionDate: moment(this.form.teamDate).format('YYYY-MM-DDTHH:mm'),
-        invites: this.getInvites(),
-      }).then((response) => {
-        this.$store.dispatch('getAllTeams');
-        this.$router.push(`/team/${response.data.id}`);
-      }).catch((error) => {
-        this.alert = error.message;
-      });
+      this.submitted = true;
+      if (this.validate()) {
+        createTeam({
+          name: this.form.teamName,
+          bio: this.form.teamBio,
+          goal: Number(this.form.teamGoal),
+          goalCompletionDate: moment(this.form.teamDate).format('YYYY-MM-DDTHH:mm'),
+          invites: this.getInvites(),
+        }).then((response) => {
+          this.$store.dispatch('getAllTeams');
+          this.$router.push(`/team/${response.data.id}`);
+        }).catch((error) => {
+          this.alert = error.message;
+        });
+      }
+    },
+    validate() {
+      return this.validateName && this.validateBio && this.validateGoal && this.validateDate;
     },
     // creates an object holding the names and email addresses of the invitees
     getInvites() {
@@ -145,12 +178,32 @@ export default {
     },
   },
   computed: {
-    // ensures the team name is longer than 3 characters
-    teamNameValidator() {
-      return this.form.teamName.length > 3;
-    },
     dateToday() {
       return new Date();
+    },
+    validateName() {
+      if (!this.submitted) {
+        return 'null';
+      }
+      return this.form.teamName.length >= 4;
+    },
+    validateBio() {
+      if (!this.submitted) {
+        return 'null';
+      }
+      return this.form.teamBio.length > 0;
+    },
+    validateGoal() {
+      if (!this.submitted) {
+        return 'null';
+      }
+      return Number(this.form.teamGoal) > 0;
+    },
+    validateDate() {
+      if (!this.submitted) {
+        return 'null';
+      }
+      return this.form.teamDate !== '';
     },
   },
 };
@@ -161,19 +214,14 @@ fieldset.form-group {
   margin-bottom: 1.5rem;
 }
 
-input.form-control, textarea.form-control {
+input.form-control, textarea.form-control, .dropdown {
   border: 2px solid #C4C4C4;
   border-radius: 5px;
   float: left;
 }
 
-input.form-control::placeholder, textarea.form-control::placeholder {
+input.form-control::placeholder, textarea.form-control::placeholder, .dropdown::placeholder {
   color: #E5E5E5;
-}
-
-.shortInput.form-control {
-  width: 60%;
-  margin: 0;
 }
 
 /* STYLE 'BY' */
@@ -235,5 +283,10 @@ button.create, button.create:hover, button.create:focus {
   background: #D4EDAA;
   border-radius: 15px;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.25);
+}
+
+.invalid-feedback {
+  text-align: left;
+  margin-left: 5px;
 }
 </style>
