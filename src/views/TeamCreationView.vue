@@ -34,11 +34,7 @@
         <p class="text">BLOCKS BY</p>
 
         <b-form-group>
-          <b-form-input
-            v-model="form.teamDate"
-            type="date"
-            required
-          ></b-form-input>
+          <b-form-datepicker v-model="form.teamDate" :min="dateToday"></b-form-datepicker>
         </b-form-group>
       </div>
 
@@ -152,6 +148,9 @@ export default {
     // ensures the team name is longer than 3 characters
     teamNameValidator() {
       return this.form.teamName.length > 3;
+    },
+    dateToday() {
+      return new Date();
     },
   },
 };
