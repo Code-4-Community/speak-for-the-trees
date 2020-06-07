@@ -10,6 +10,7 @@ import TeamCreation from '../views/TeamCreationView.vue';
 import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
+import AdminBlockReservations from '../views/AdminBlockReservations.vue';
 import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
@@ -74,6 +75,11 @@ const routes = [
     path: '/available-teams',
     name: 'AvailableTeams',
     component: AvailableTeams,
+  },
+  {
+    path: '/block-reservations',
+    name: 'AdminBlockReservations',
+    component: AdminBlockReservations,
   },
   // editmode can either be set to 'new' if filtering for unreserved streets
   // or can be set to 'edit' if using a provided list of streets
