@@ -93,6 +93,14 @@ export default {
         },
         ],
       };
+      const privateRenderer = {
+        type: 'simple',
+        symbol: {
+          type: 'simple-line',
+          color: 'rgba(200, 0, 0, 1)',
+          width: 2,
+        },
+      };
       let sqlExpression = '1=0';
       // Creates a filter from the given list of FIDs so that only the given
       // streets will appear on the map
@@ -137,8 +145,13 @@ export default {
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
           });
+          const privateStreets = new FeatureLayer({
+            url: process.env.VUE_APP_PRIVATE_STREETS_URL,
+            renderer: privateRenderer,
+          });
           streetSegments.definitionExpression = sqlExpression;
           map.add(streetSegments);
+          map.add(privateStreets);
           // Opens a popup with the street information that corresponds with the given FID
           this.view.when(() => {
             if (this.activeStreetFid !== undefined) {
