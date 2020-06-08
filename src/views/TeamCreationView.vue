@@ -12,7 +12,7 @@
           placeholder="TEAM NAME"
         ></b-form-input>
         <b-form-invalid-feedback>
-          The team name must be at least 4 characters long
+          Your team name must be at least 4 characters long
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -25,7 +25,7 @@
           placeholder="TEAM BIO"
         ></b-form-textarea>
         <b-form-invalid-feedback>
-          The team bio cannot be empty
+          Your team bio cannot be empty
         </b-form-invalid-feedback>
       </b-form-group>
 
