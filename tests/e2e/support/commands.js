@@ -3,7 +3,7 @@ Cypress.Commands.add('login', () => {
   // landing url
   const landing = '/';
 
-  // a user with PF capabilities
+  // user with "standard" capabilities
   const userPF = {
     fname: 'User',
     lname: 'Resu',
