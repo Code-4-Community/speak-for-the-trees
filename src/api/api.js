@@ -9,6 +9,7 @@ export const transferOwnership = async (id, member) => AxiosInstance.post(`${TEA
 export const disbandTeam = async id => AxiosInstance.post(`${TEAM}/${id}/disband`);
 export const getTeam = async id => AxiosInstance.get(`${TEAM}/${id}`);
 export const getAllTeams = async () => AxiosInstance.get(`${TEAM}`);
+export const getTeamsCSV = async () => AxiosInstance.get(`${TEAM}/export`);
 
 const BLOCKS_RESERVATION = '/api/v1/protected/blocks';
 export const reserveBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reserve`, blocks);
