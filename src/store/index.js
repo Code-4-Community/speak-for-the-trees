@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tokenService from '../auth/token';
 import {
-  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks,
+  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks, getReservedBlocksAdmin,
 } from '../api/api';
 
 Vue.use(Vuex);
@@ -16,6 +16,7 @@ export default new Vuex.Store({
     allTeamsLeaderboard: [],
     allVolunteersLeaderboard: [],
     reservedBlocks: [],
+    allReservedBlocks: [],
   },
   mutations: {
     setUser(state) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setReservedBlocks(state, blockData) {
       state.reservedBlocks = blockData;
+    },
+    setReservedBlocksAdmin(state, blockData) {
+      state.allReservedBlocks = blockData;
     },
   },
   actions: {
@@ -58,6 +62,11 @@ export default new Vuex.Store({
     async getReservedBlocks({ commit }) {
       getReservedBlocks().then((response) => {
         commit('setReservedBlocks', response.data);
+      });
+    },
+    async getReservedBlocksAdmin({ commit }) {
+      getReservedBlocksAdmin().then((response) => {
+        commit('setReservedBlocksAdmin', response.data);
       });
     },
   },
