@@ -7,10 +7,10 @@
     <b-row v-else id="header" class="text-left">
       <b-col id="ids" cols="2">ID</b-col>
       <b-col cols="4">User</b-col>
-      <b-col cols="4">Reservation date</b-col>
+      <b-col cols="4">Reservation Date</b-col>
       <b-col cols="2" align-self="start"></b-col>
     </b-row>
-    <b-row class="text-left" cols="14" v-for="block in allReservedBlocks.blocks" :key="block.fid">
+    <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.fid">
       <b-col id="ids" cols="2" align-self="center">{{ block.fid }}</b-col>
       <b-col cols="4" align-self="center">{{ block.username }}</b-col>
       <b-col cols="4" align-self="center">{{ block.dateUpdated }}</b-col>
@@ -75,16 +75,6 @@ export default {
     },
   },
   computed: {
-    sortedBlocks() {
-      const copy = this.allReservedBlocks;
-      copy.sort((a, b) => a.date < b.date);
-      return copy.map(element => ({
-        ...element,
-        id: element.id,
-        user: element.user,
-        date: element.date,
-      }));
-    },
     ...mapState({
       allReservedBlocks: 'allReservedBlocks',
     }),
