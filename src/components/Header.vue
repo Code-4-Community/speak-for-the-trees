@@ -14,6 +14,9 @@
       <b-dropdown-item v-if="isAdmin" to="/reservations-overview">
         Reservations Overview
       </b-dropdown-item>
+      <b-dropdown-item v-if="isAdmin" to="/completed-blocks-overview">
+        Block Completions Overview
+      </b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/settings">Settings</b-dropdown-item>
       <b-dropdown-item v-on:click="logout">
