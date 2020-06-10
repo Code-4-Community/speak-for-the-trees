@@ -1,5 +1,7 @@
 <template>
-  <button v-on:click="this.return">Go Back</button>
+  <button class="return-btn" v-on:click="this.return">
+    <img class="return-btn" src="../assets/left-arrow.svg" alt="actions" />
+  </button>
 </template>
 
 <script>
@@ -14,5 +16,8 @@ export default {
 </script>
 
 <style scoped>
-
+.return-btn {
+  background: none;
+  border: none;
+}
 </style>
