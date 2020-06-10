@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Current Reservations</h1>
+    <return-button />
     <p
     v-if="reservedBlocks.length == 0"
     class="basicText">You currently don't have any reservations</p>
@@ -32,9 +33,13 @@ import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks, getReservedBlocks,
 } from '../api/api';
+import ReturnButton from '../components/ReturnButton.vue';
 
 export default {
   name: 'CurrentReservations',
+  components: {
+    ReturnButton,
+  },
   computed: {
     ...mapState({
       reservedBlocks: 'reservedBlocks',
