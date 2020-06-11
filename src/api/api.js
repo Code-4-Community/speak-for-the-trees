@@ -18,6 +18,8 @@ export const releaseBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERV
 export const resetBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reset`, blocks);
 export const getReservedBlocks = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved`);
 export const getBlocksCSV = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/export`);
+export const getReservedBlocksAdmin = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved/admin`);
+export const getCompletedBlocksAdmin = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/done/admin`);
 
 const BLOCKS_LEADERBOARD = '/api/v1/blocks/leaderboard';
 export const getBlocksLeaderboard = async () => AxiosInstance.get(BLOCKS_LEADERBOARD);

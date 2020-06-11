@@ -10,6 +10,13 @@
       <b-dropdown-item to="/all-teams-leaderboard">All Teams Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/all-volunteers-leaderboard">All Volunteers Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
+      <b-dropdown-divider v-if="isAdmin" />
+      <b-dropdown-item v-if="isAdmin" to="/reservations-overview">
+        Reservations Overview
+      </b-dropdown-item>
+      <b-dropdown-item v-if="isAdmin" to="/completed-blocks-overview">
+        Block Completions Overview
+      </b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/settings">Settings</b-dropdown-item>
       <b-dropdown-item v-on:click="logout">
@@ -24,6 +31,7 @@
 
 <script>
 import { mapMutations, mapState } from 'vuex';
+import constants from '../auth/constants';
 import { logout } from '../auth/authAPI';
 
 export default {
@@ -39,9 +47,15 @@ export default {
       });
     },
   },
-  computed: mapState({
-    showNavbar: 'isUserAuthenticated',
-  }),
+  computed: {
+    ...mapState({
+      showNavbar: 'isUserAuthenticated',
+      privilegeLevel: 'privilegeLevel',
+    }),
+    isAdmin() {
+      return this.privilegeLevel === constants.ADMIN;
+    },
+  },
 };
 </script>
 
@@ -69,5 +83,11 @@ export default {
     width: 3em;
     color: @header-logo-color;
     background-color: @header-logo-bg;
+}
+
+#dropdown-1__BV_toggle_, .btn-succes.focus {
+  background-color: #3A681A;
+  border: #3A681A;
+  box-shadow: none;
 }
 </style>
