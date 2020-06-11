@@ -29,7 +29,7 @@
         </p>
       </router-link>
       <b-button class="create" @click="createTeam">Create New Team</b-button>
-      <b-button v-if="userData.privilegeLevel === userConstants.ADMIN"
+      <b-button v-if="isAdmin"
                 class="create"
                 @click="downloadCSV">
           Download Teams CSV
@@ -42,7 +42,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import { getTeamsCSV } from '../api/api';
-import userConstants from '../constants/userConstants';
+import privilegeLevelConstants from '../auth/constants';
 
 Vue.use(VueRouter);
 
@@ -50,14 +50,18 @@ export default {
   name: 'availableTeams',
   data() {
     return {
-      userConstants,
+      privilegeLevelConstants,
     };
   },
   computed: {
     ...mapState({
       teams: 'teams',
       userData: 'userData',
+      privilegeLevel: 'privilegeLevel',
     }),
+    isAdmin() {
+      return this.privilegeLevel === privilegeLevelConstants.ADMIN;
+    },
     myTeams() {
       return this.teams.filter(e => e.userTeamRole !== 'NONE');
     },
@@ -73,15 +77,8 @@ export default {
     /**
      * Downloads a CSV that contains all Team/User information.
      */
-    async downloadCSV() {
-      try {
-        const resp = await getTeamsCSV();
-        if (resp.status === 200) {
-          this.forceFileDownload(resp.data, 'Teams Export Data');
-        }
-      } catch (error) {
-        // Something went wrong
-      }
+    downloadCSV() {
+      getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
     },
     /**
      * Forces a download of the given data under the given file name.
