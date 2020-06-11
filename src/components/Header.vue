@@ -84,4 +84,10 @@ export default {
     color: @header-logo-color;
     background-color: @header-logo-bg;
 }
+
+#dropdown-1__BV_toggle_, .btn-succes.focus {
+  background-color: #3A681A;
+  border: #3A681A;
+  box-shadow: none;
+}
 </style>
