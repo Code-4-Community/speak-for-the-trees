@@ -6,4 +6,5 @@ cache:
     - node_modules
 script:
   - npm run test:unit
-  - DEBUG=cypress:* cypress run
+  - npm start && wait-on http://localhost:8080
+  - cypress run
