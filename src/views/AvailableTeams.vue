@@ -31,8 +31,13 @@
       <b-button class="create" @click="createTeam">Create New Team</b-button>
       <b-button v-if="isAdmin"
                 class="create"
-                @click="downloadCSV">
+                @click="downloadTeamsCSV">
           Download Teams CSV
+      </b-button>
+      <b-button v-if="isAdmin"
+                class="create"
+                @click="downloadBlocksCSV">
+          Download Blocks CSV
       </b-button>
   </div>
 </template>
@@ -41,7 +46,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
-import { getTeamsCSV } from '../api/api';
+import { getBlocksCSV, getTeamsCSV } from '../api/api';
 import privilegeLevelConstants from '../auth/constants';
 
 Vue.use(VueRouter);
@@ -75,9 +80,15 @@ export default {
       this.$router.push('/create');
     },
     /**
+   * Downloads a CSV that contains all Block/User information.
+   */
+    downloadBlocksCSV() {
+      getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
+    },
+    /**
      * Downloads a CSV that contains all Team/User information.
      */
-    downloadCSV() {
+    downloadTeamsCSV() {
       getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
     },
     /**
