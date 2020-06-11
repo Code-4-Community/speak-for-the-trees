@@ -24,7 +24,7 @@
       </b-dropdown-item>
     </b-dropdown>
     <router-link to="/home">
-      <img class="header__logo" src="../assets/sftt-logo-text.jpg" />
+      <img class="header__logo" src="../assets/sftt-logo.jpg" />
     </router-link>
   </div>
 </template>
