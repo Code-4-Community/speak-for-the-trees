@@ -1,34 +1,49 @@
 <template>
   <div class="cont">
-      <h1>Your teams</h1>
+    <div>
+      <h1>Your Teams</h1>
       <p
-      class="basicText"
-      v-if="myTeams.length == 0">
+          class="basicText"
+          v-if="myTeams.length == 0">
         You aren't on a team yet, check out some below!
       </p>
       <router-link
-        v-for="team in myTeams"
-        :to="`/team/${team.id}`"
-        :key="team.id">
+          v-for="team in myTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
         <p class="team">
           {{ team.name }}
         </p>
       </router-link>
-      <h1>Available teams</h1>
+    </div>
+    <div v-if="pendingTeams.length > 0">
+      <h1>Pending Applications</h1>
+      <router-link
+          v-for="team in pendingTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
+        <p class="team">
+          {{ team.name }}
+        </p>
+      </router-link>
+    </div>
+    <div>
+      <h1>Available Teams</h1>
       <p
-      class="basicText"
-      v-if="availableTeams.length == 0">
+          class="basicText"
+          v-if="availableTeams.length == 0">
         There are no other teams to join.
       </p>
       <router-link
-        v-for="team in availableTeams"
-        :to="`/team/${team.id}`"
-        :key="team.id">
+          v-for="team in availableTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
         <p class="team">
           {{ team.name }}
         </p>
       </router-link>
-      <b-button class="create" @click="createTeam">Create New Team</b-button>
+    </div>
+    <b-button class="create" @click="createTeam">Create New Team</b-button>
   </div>
 </template>
 
@@ -36,6 +51,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
+import teamConstants from '../constants/teamConstants';
 
 Vue.use(VueRouter);
 
@@ -46,10 +62,14 @@ export default {
       teams: 'teams',
     }),
     myTeams() {
-      return this.teams.filter(e => e.userTeamRole !== 'NONE');
+      return this.teams.filter(e => [teamConstants.NONE, teamConstants.PENDING]
+        .indexOf(e.userTeamRole) === -1);
     },
     availableTeams() {
-      return this.teams.filter(e => e.userTeamRole === 'NONE');
+      return this.teams.filter(e => [teamConstants.NONE].indexOf(e.userTeamRole) !== -1);
+    },
+    pendingTeams() {
+      return this.teams.filter(e => [teamConstants.PENDING].indexOf(e.userTeamRole) !== -1);
     },
   },
   methods: {

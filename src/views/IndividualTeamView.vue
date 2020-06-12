@@ -9,12 +9,20 @@
         <!-- <img v-if="userTeamRole == teamConstants.LEADER"
         src="../assets/edit-icon.svg"
         alt="edit"> -->
-        <img v-if="userTeamRole == teamConstants.NONE"
-        src="../assets/plus-icon.svg"
-        alt="join"
-        @click="joinThisTeam">
+        <img v-if="userTeamRole === teamConstants.NONE"
+             class="clickable"
+             src="../assets/plus-icon.svg"
+             alt="apply to team"
+             @click="applyToThisTeam">
       </h1>
       <p class="basicText">{{ team.bio }}</p>
+      <b-alert v-if="userTeamRole === teamConstants.PENDING"
+               class="pending-request-alert"
+               variant="secondary"
+               show
+               dismissible>
+        Your request to join is waiting to be reviewed by the team leader.
+      </b-alert>
       <p class="banner">
         TEAM GOAL
         <!-- <img v-if="userTeamRole == teamConstants.LEADER"
@@ -34,57 +42,99 @@
           role="progressbar">
           {{ progressPercent }}%</div>
         </div>
-          <img src="../assets/trophy.svg" alt="trophy" @click='toThisTeamLeaderboard'>
+          <img class="clickable"
+               src="../assets/trophy.svg"
+               alt="trophy"
+               @click='toThisTeamLeaderboard'>
       </div>
       <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
-      <p class="members">MEMBERS</p>
-      <div>
-        <div
-        class="memberContainer"
-        v-for="member in team.members"
-        :key="member.id">
-          <p v-if="member.id === currentUserID" class="member">{{ member.username }} (You)</p>
-          <p v-else-if="member.role === 'LEADER'" class="member">{{ member.username }} (Owner)</p>
-          <p v-else class="member">{{ member.username }}</p>
-          <b-dropdown
-          id="member-actions"
-          v-if="userTeamRole == teamConstants.MEMBER && member.id === currentUserID"
-          size="sm"
-          dropleft
-          variant="link"
-          toggle-class="text-decoration-none"
-          no-caret>
-            <template v-slot:button-content>
-              <img src="../assets/ellipsis-icon.svg" alt="actions">
-            </template>
-            <b-dropdown-item @click="leaveThisTeam">Leave team</b-dropdown-item>
-          </b-dropdown>
-          <b-dropdown
-          id="owner-actions"
-          v-if="userTeamRole == teamConstants.LEADER && member.id != currentUserID"
-          size="sm"
-          dropleft
-          variant="link"
-          toggle-class="text-decoration-none"
-          no-caret>
-            <template v-slot:button-content>
-              <img src="../assets/ellipsis-icon.svg" alt="actions">
-            </template>
-            <b-dropdown-item @click="kickThisMember(member.id)">Kick out</b-dropdown-item>
-          </b-dropdown>
-          <b-dropdown
-          id="owner-actions"
-          v-if="userTeamRole == teamConstants.LEADER && member.id == currentUserID"
-          size="sm"
-          dropleft
-          variant="link"
-          toggle-class="text-decoration-none"
-          no-caret>
-            <template v-slot:button-content>
-              <img src="../assets/ellipsis-icon.svg" alt="actions">
-            </template>
-            <b-dropdown-item @click="disbandThisTeam">Disband team</b-dropdown-item>
-          </b-dropdown>
+      <div v-if="userTeamRole === teamConstants.LEADER">
+        <div v-if="!applicantsLoaded && team.applicantsToReview"
+             @click="fetchApplicants">
+          <b-alert class="clickable"
+                   variant="warning"
+                   show>
+            You have team applications to review!
+          </b-alert>
+        </div>
+        <b-collapse v-model="applicantsLoaded">
+          <div class="team-table">
+            <div class="banner team-table-header">TEAM APPLICANTS</div>
+            <div class="team-table-row" v-for="applicant in applicants" :key="applicant.userId">
+              <p class="identifier">{{ applicant.username }}</p>
+              <b-dropdown
+                  id="applicant-actions"
+                  class="actions"
+                  size="sm"
+                  dropleft
+                  variant="link"
+                  toggle-class="text-decoration-none"
+                  no-caret>
+                <template v-slot:button-content>
+                  <img src="../assets/ellipsis-icon.svg" alt="actions">
+                </template>
+                <b-dropdown-item @click="acceptApplicant(applicant.userId)">Accept</b-dropdown-item>
+                <b-dropdown-item @click="denyApplicant(applicant.userId)">Reject</b-dropdown-item>
+              </b-dropdown>
+            </div>
+          </div>
+        </b-collapse>
+      </div>
+      <div class="team-table">
+        <p class="banner team-table-header">MEMBERS</p>
+        <div>
+          <div
+              class="team-table-row"
+              v-for="member in team.members"
+              :key="member.id">
+            <p v-if="member.id === currentUserID" class="identifier">{{ member.username }} (You)</p>
+            <p v-else-if="member.role === 'LEADER'" class="identifier">
+              {{ member.username }} (Owner)
+            </p>
+            <p v-else class="identifier">{{ member.username }}</p>
+            <b-dropdown
+                id="member-actions"
+                class="actions"
+                v-if="userTeamRole == teamConstants.MEMBER && member.id === currentUserID"
+                size="sm"
+                dropleft
+                variant="link"
+                toggle-class="text-decoration-none"
+                no-caret>
+              <template v-slot:button-content>
+                <img src="../assets/ellipsis-icon.svg" alt="actions">
+              </template>
+              <b-dropdown-item @click="leaveThisTeam">Leave team</b-dropdown-item>
+            </b-dropdown>
+            <b-dropdown
+                id="owner-actions"
+                class="actions"
+                v-if="userTeamRole == teamConstants.LEADER && member.id != currentUserID"
+                size="sm"
+                dropleft
+                variant="link"
+                toggle-class="text-decoration-none"
+                no-caret>
+              <template v-slot:button-content>
+                <img src="../assets/ellipsis-icon.svg" alt="actions">
+              </template>
+              <b-dropdown-item @click="kickThisMember(member.id)">Kick out</b-dropdown-item>
+            </b-dropdown>
+            <b-dropdown
+                id="owner-actions"
+                class="actions"
+                v-if="userTeamRole == teamConstants.LEADER && member.id == currentUserID"
+                size="sm"
+                dropleft
+                variant="link"
+                toggle-class="text-decoration-none"
+                no-caret>
+              <template v-slot:button-content>
+                <img src="../assets/ellipsis-icon.svg" alt="actions">
+              </template>
+              <b-dropdown-item @click="disbandThisTeam">Disband team</b-dropdown-item>
+            </b-dropdown>
+          </div>
         </div>
       </div>
     </div>
@@ -93,7 +143,8 @@
 
 <script>
 import {
-  getTeam, joinTeam, leaveTeam, kickMember, disbandTeam,
+  getTeam, applyTeam, getApplicants, approveApplicant,
+  rejectApplicant, leaveTeam, kickMember, disbandTeam,
 } from '../api/api';
 
 import tokenService from '../auth/token';
@@ -105,6 +156,8 @@ export default {
   data() {
     return {
       team: {},
+      applicants: [],
+      applicantsLoaded: false,
       loaded: false,
       error: false,
       errorMessage: '',
@@ -156,8 +209,21 @@ export default {
         },
       });
     },
-    joinThisTeam() {
-      joinTeam(this.$route.params.id).then((response1) => {
+    fetchApplicants() {
+      getApplicants(this.$route.params.id).then((res) => {
+        this.applicants = res.data.applicants;
+      }).catch((err) => {
+        // eslint-disable-next-line no-alert
+        alert(`Error loading applicants: ${err}`);
+      }).finally(() => {
+        this.applicantsLoaded = true;
+      });
+    },
+    removeApplicant(applicantId) {
+      this.applicants = this.applicants.filter(app => app.userId !== applicantId);
+    },
+    applyToThisTeam() {
+      applyTeam(this.$route.params.id).then((response1) => {
         // eslint-disable-next-line
         console.log(response1);
         this.$store.dispatch('getAllTeams');
@@ -205,6 +271,23 @@ export default {
         console.log(error.message);
       });
     },
+    denyApplicant(applicantId) {
+      rejectApplicant(this.$route.params.id, applicantId).then(() => {
+        this.removeApplicant(applicantId);
+      });
+    },
+    acceptApplicant(applicantId) {
+      approveApplicant(this.$route.params.id, applicantId).then(() => {
+        this.removeApplicant(applicantId);
+        return getTeam(this.$route.params.id);
+      }).then((res) => {
+        this.team = res.data;
+        this.loaded = true;
+      }).catch((error) => {
+        // eslint-disable-next-line
+        console.log(error.message);
+      });
+    },
   },
 };
 </script>
@@ -233,6 +316,13 @@ export default {
   margin: 0;
   height: 100%;
 }
+.clickable {
+  cursor: pointer;
+}
+.pending-request-alert {
+  width: 60%;
+  margin: 0 auto 12px;
+}
 .progress {
   margin: 0.5rem auto 2rem 10vw;
   width: 70vw;
@@ -250,21 +340,21 @@ export default {
   justify-content: space-around;
   padding: 0 3rem;
 }
-.members {
-  background: #9AC356;
-  font-size: 14px;
-  padding: 0.5rem 0;
+.team-table {
+  margin-bottom: 16px;
+}
+.team-table-header {
   margin-bottom: 0;
 }
-.memberContainer {
+.team-table-row {
   display: flex;
   background: #D4EDAA;
   padding: 0.5rem 0 0.5rem 0;
   border-bottom: 1px solid white;
-  div {
+  .actions {
     margin: 0 1rem 0 auto;
   }
-  .member {
+  .identifier {
     margin: auto 0 auto 1rem;
   }
 }

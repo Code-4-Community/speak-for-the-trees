@@ -2,11 +2,14 @@ import AxiosInstance from '../auth/axiosInstance';
 
 const TEAM = '/api/v1/protected/teams';
 export const createTeam = async team => AxiosInstance.post(TEAM, team);
-export const joinTeam = async id => AxiosInstance.post(`${TEAM}/${id}/join`);
+export const applyTeam = async id => AxiosInstance.post(`${TEAM}/${id}/apply`);
 export const leaveTeam = async id => AxiosInstance.post(`${TEAM}/${id}/leave`);
 export const kickMember = async (team, member) => AxiosInstance.post(`${TEAM}/${team}/members/${member}/kick`);
+export const approveApplicant = async (team, member) => AxiosInstance.post(`${TEAM}/${team}/applicants/${member}/approve`);
+export const rejectApplicant = async (team, member) => AxiosInstance.post(`${TEAM}/${team}/applicants/${member}/reject`);
 export const disbandTeam = async id => AxiosInstance.post(`${TEAM}/${id}/disband`);
 export const getTeam = async id => AxiosInstance.get(`${TEAM}/${id}`);
+export const getApplicants = async id => AxiosInstance.get(`${TEAM}/${id}/applicants`);
 export const getAllTeams = async () => AxiosInstance.get(`${TEAM}`);
 
 const BLOCKS_RESERVATION = '/api/v1/protected/blocks';
