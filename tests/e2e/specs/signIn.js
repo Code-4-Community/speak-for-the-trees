@@ -8,6 +8,7 @@ describe('Sign in', () => {
   // });
 
   it('Loads the login page as root', () => {
+    cy.visit('/');
     cy.contains('h1', 'Login');
   });
 });
