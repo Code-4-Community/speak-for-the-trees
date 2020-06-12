@@ -9,6 +9,7 @@ export const transferOwnership = async (id, member) => AxiosInstance.post(`${TEA
 export const disbandTeam = async id => AxiosInstance.post(`${TEAM}/${id}/disband`);
 export const getTeam = async id => AxiosInstance.get(`${TEAM}/${id}`);
 export const getAllTeams = async () => AxiosInstance.get(`${TEAM}`);
+export const getTeamsCSV = async () => AxiosInstance.get(`${TEAM}/export`);
 
 const BLOCKS_RESERVATION = '/api/v1/protected/blocks';
 export const reserveBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reserve`, blocks);
@@ -16,6 +17,7 @@ export const finishBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVA
 export const releaseBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/release`, blocks);
 export const resetBlocks = async blocks => AxiosInstance.post(`${BLOCKS_RESERVATION}/reset`, blocks);
 export const getReservedBlocks = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved`);
+export const getBlocksCSV = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/export`);
 export const getReservedBlocksAdmin = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/reserved/admin`);
 export const getCompletedBlocksAdmin = async () => AxiosInstance.get(`${BLOCKS_RESERVATION}/done/admin`);
 

@@ -29,6 +29,16 @@
         </p>
       </router-link>
       <b-button class="create" @click="createTeam">Create New Team</b-button>
+      <b-button v-if="isAdmin"
+                class="create"
+                @click="downloadTeamsCSV">
+          Download Teams CSV
+      </b-button>
+      <b-button v-if="isAdmin"
+                class="create"
+                @click="downloadBlocksCSV">
+          Download Blocks CSV
+      </b-button>
   </div>
 </template>
 
@@ -36,15 +46,27 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
+import { getBlocksCSV, getTeamsCSV } from '../api/api';
+import privilegeLevelConstants from '../auth/constants';
 
 Vue.use(VueRouter);
 
 export default {
   name: 'availableTeams',
+  data() {
+    return {
+      privilegeLevelConstants,
+    };
+  },
   computed: {
     ...mapState({
       teams: 'teams',
+      userData: 'userData',
+      privilegeLevel: 'privilegeLevel',
     }),
+    isAdmin() {
+      return this.privilegeLevel === privilegeLevelConstants.ADMIN;
+    },
     myTeams() {
       return this.teams.filter(e => e.userTeamRole !== 'NONE');
     },
@@ -56,6 +78,30 @@ export default {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
+    },
+    /**
+   * Downloads a CSV that contains all Block/User information.
+   */
+    downloadBlocksCSV() {
+      getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
+    },
+    /**
+     * Downloads a CSV that contains all Team/User information.
+     */
+    downloadTeamsCSV() {
+      getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
+    },
+    /**
+     * Forces a download of the given data under the given file name.
+     */
+    forceFileDownload(data, fileName) {
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${fileName}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
   mounted() {
