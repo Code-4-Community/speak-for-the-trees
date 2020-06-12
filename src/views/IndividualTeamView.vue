@@ -219,40 +219,31 @@ export default {
     },
     applyToThisTeam() {
       applyTeam(this.$route.params.id).then((response1) => {
-        // eslint-disable-next-line
-        console.log(response1);
         this.$store.dispatch('getAllTeams');
-        return getTeam(this.$route.params.id);
-      }).then((response2) => {
-        this.team = response2.data;
-        this.loaded = true;
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
-      });
-    },
-    leaveThisTeam() {
-      leaveTeam(this.$route.params.id).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
-        this.$store.dispatch('getAllTeams');
-        this.$router.push('/available-teams');
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
-      });
-    },
-    kickThisMember(member) {
-      kickMember(this.$route.params.id, member).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
         return getTeam(this.$route.params.id);
       }).then((team) => {
         this.team = team.data;
         this.loaded = true;
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
+      });
+    },
+    leaveThisTeam() {
+      leaveTeam(this.$route.params.id).then(() => {
+        this.$store.dispatch('getAllTeams');
+        this.$router.push('/available-teams');
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
+      });
+    },
+    kickThisMember(member) {
+      kickMember(this.$route.params.id, member).then(() => {
+        getTeam(this.$route.params.id);
+      }).then((team) => {
+        this.team = team.data;
+        this.loaded = true;
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     confirmTransfer(member) {
@@ -270,32 +261,25 @@ export default {
         }
         return '';
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     makeLeader(member) {
-      transferOwnership(this.$route.params.id, member).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
-        return getTeam(this.$route.params.id);
+      transferOwnership(this.$route.params.id, member).then(() => {
+        getTeam(this.$route.params.id);
       }).then((team) => {
         this.team = team.data;
         this.loaded = true;
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     disbandThisTeam() {
-      disbandTeam(this.$route.params.id).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
+      disbandTeam(this.$route.params.id).then(() => {
         this.$store.dispatch('getAllTeams');
         this.$router.push('/available-teams');
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     denyApplicant(applicantId) {

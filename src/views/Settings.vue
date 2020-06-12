@@ -96,11 +96,9 @@ export default {
   methods: {
     changePassword() {
       changePassword(this.passwords).then(() => {
-        // eslint-disable-next-line
-        alert('Successfully changed password!')
+        this.$bvToast.toast('Successfully changed password!');
       }).catch((error) => {
-        // eslint-disable-next-line
-        alert(`Failed to change password: ${error}`);
+        this.$bvToast.toast(`Failed to change password: ${error}`);
       }).finally(() => {
         this.passwords = {
           currentPassword: '',
@@ -110,12 +108,10 @@ export default {
     },
     changeEmail() {
       changeEmail(this.changeEmailRequest).then(() => {
-        // eslint-disable-next-line
-        alert("Successfully changed your email!");
+        this.$bvToast.toast('Successfully changed email!');
         this.$store.dispatch('getUserData');
       }).catch((error) => {
-        // eslint-disable-next-line
-        alert(`Failed to change your email: ${error}`);
+        this.$bvToast.toast(`Failed to change your email: ${error}`);
       }).finally(() => {
         this.changeEmailRequest = {
           password: '',
@@ -125,12 +121,10 @@ export default {
     },
     deactivateAccount() {
       deleteUser().then(() => {
-        // eslint-disable-next-line
-        alert("Your account has been deactivated");
+        this.$bvToast.toast('Your account has been deactivated');
         this.$router.push('/login');
       }).catch(() => {
-        // eslint-disable-next-line
-        alert("Failed to deactivate your account");
+        this.$bvToast.toast('Failed to deactivate your account');
       });
     },
   },
