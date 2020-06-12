@@ -218,7 +218,7 @@ export default {
       this.applicants = this.applicants.filter(app => app.userId !== applicantId);
     },
     applyToThisTeam() {
-      applyTeam(this.$route.params.id).then((response1) => {
+      applyTeam(this.$route.params.id).then(() => {
         this.$store.dispatch('getAllTeams');
         return getTeam(this.$route.params.id);
       }).then((team) => {
