@@ -49,7 +49,6 @@ export default {
   methods: {
     resetToOpen(block) {
       resetBlocks({ blocks: [block] }).then(() => {
-        this.$bvToast.toast(`Successful opening of ${block}.`);
         this.$store.dispatch('getCompletedBlocksAdmin');
       }).catch(() => {
         this.$bvToast.toast(`Error in opening of ${block}.`);

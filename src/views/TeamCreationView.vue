@@ -113,10 +113,6 @@
 
       <b-button class="create" type="submit">Create!</b-button>
     </b-form>
-
-    <b-alert v-model="alert" variant="success" dismissible>
-      {{ this.form.alert }}
-    </b-alert>
   </div>
 </template>
 
@@ -129,7 +125,6 @@ export default {
   data() {
     return {
       members: 0,
-      alert: null,
       form: {
         teamName: '',
         teamBio: '',
@@ -158,7 +153,7 @@ export default {
           this.$store.dispatch('getAllTeams');
           this.$router.push(`/team/${response.data.id}`);
         }).catch((error) => {
-          this.alert = error.message;
+          this.$bvToast.toast(`${error.message}`);
         });
       }
     },
@@ -277,12 +272,6 @@ button.create, button.create:hover, button.create:focus {
   color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   float: right;
-}
-
-.alert.alert-success {
-  background: #D4EDAA;
-  border-radius: 15px;
-  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.25);
 }
 
 .invalid-feedback {

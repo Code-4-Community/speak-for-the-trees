@@ -53,7 +53,6 @@ export default {
   methods: {
     resetToOpen(block) {
       releaseBlocks({ blocks: [block] }).then(() => {
-        this.$bvToast.toast(`Successful opening of ${block}.`);
         this.$store.dispatch('getReservedBlocksAdmin');
       }).catch(() => {
         this.$bvToast.toast(`Error in opening of ${block}.`);
@@ -61,7 +60,6 @@ export default {
     },
     completeBlock(block) {
       finishBlocks({ blocks: [block] }).then(() => {
-        this.$bvToast.toast(`Successful completion of ${block}`);
         this.$store.dispatch('getReservedBlocksAdmin');
       }).catch(() => {
         this.$bvToast.toast(`Error in completion of ${block}.`);
