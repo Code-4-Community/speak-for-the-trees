@@ -107,7 +107,7 @@ export default {
         this.streetsToComplete.push(street);
       }
     },
-    async reserveStreets() {
+    reserveStreets() {
       this.blockListString = this.streetsToReserve.join(', ');
       reserveBlocks({ blocks: this.streetsToReserve }).then(() => {
         this.modalMessage = 'You have successfuly reserved';
@@ -119,7 +119,7 @@ export default {
         this.$bvModal.show('error-modal');
       });
     },
-    async unreserveStreets() {
+    unreserveStreets() {
       this.blockListString = this.streetsToUnReserve.join(', ');
       releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
         this.modalMessage = 'You have successfuly unreserved';
@@ -131,7 +131,7 @@ export default {
         this.$bvModal.show('error-modal');
       });
     },
-    async completeStreets() {
+    completeStreets() {
       this.blockListString = this.streetsToComplete.join(', ');
       finishBlocks({ blocks: this.streetsToComplete }).then(() => {
         this.modalMessage = 'You have successfully completed';
