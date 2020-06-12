@@ -3,4 +3,3 @@ node_js:
   - 10.8
 script:
   - npm run test:unit
-  - npm run test:e2e
