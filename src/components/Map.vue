@@ -22,6 +22,10 @@ export default {
       type: String,
       required: false,
     },
+    labelsVisible: {
+      type: Boolean,
+      required: true,
+    },
   },
   data: () => ({
     modalShow: false,
@@ -144,7 +148,7 @@ export default {
             outFields: ['BLOCK'],
             popupTemplate: template,
             labelingInfo: [blockLabel],
-            labelsVisible: true,
+            labelsVisible: this.labelsVisible,
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
           });
@@ -201,6 +205,9 @@ export default {
       this.loadMap();
     },
     reservedFilter() {
+      this.loadMap();
+    },
+    labelsVisible() {
       this.loadMap();
     },
   },

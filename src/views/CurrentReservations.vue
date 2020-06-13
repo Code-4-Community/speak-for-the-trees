@@ -45,7 +45,7 @@ export default {
     viewReservation(id) {
       this.$router.push({
         name: 'ReserveEdit',
-        params: { activeStreetFid: id, editmode: 'edit' },
+        params: { activeStreetId: id, editmode: 'edit' },
       });
     },
     completeStreet(street) {

@@ -21,6 +21,9 @@
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
       <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
       <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
+      <b-button v-on:click="labelsVisible = !labelsVisible">
+        {{`${(this.labelsVisible ? "Hide" : "Show")} block labels`}}
+      </b-button>
     </div>
 
     <Map
@@ -28,6 +31,7 @@
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
       v-bind:activeStreetId="this.activeStreetId"
+      v-bind:labelsVisible="this.labelsVisible"
       ref="map"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
@@ -62,6 +66,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
+      labelsVisible: true,
     };
   },
   props: {
