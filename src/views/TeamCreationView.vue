@@ -178,25 +178,25 @@ export default {
     },
     validateName() {
       if (!this.submitted) {
-        return 'null';
+        return null;
       }
       return this.form.teamName.length >= 4;
     },
     validateBio() {
       if (!this.submitted) {
-        return 'null';
+        return null;
       }
       return this.form.teamBio.length > 0;
     },
     validateGoal() {
       if (!this.submitted) {
-        return 'null';
+        return null;
       }
       return Number(this.form.teamGoal) > 0;
     },
     validateDate() {
       if (!this.submitted) {
-        return 'null';
+        return null;
       }
       return this.form.teamDate !== '';
     },
