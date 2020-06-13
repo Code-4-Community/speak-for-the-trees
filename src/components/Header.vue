@@ -38,11 +38,11 @@ export default {
   name: 'Header',
   methods: {
     ...mapMutations({
-      setUser: 'setUser',
+      resetState: 'resetState',
     }),
     logout() {
       logout().finally(() => {
-        this.setUser();
+        this.resetState();
         this.$router.push('/login');
       });
     },
