@@ -3,11 +3,12 @@ describe('Sign in', () => {
   // const baseUrl = 'http://localhost:8080';
   // const landing = '/';
 
-  beforeEach(() => {
-    cy.login();
-  });
+  // beforeEach(() => {
+  //   cy.login();
+  // });
 
-  it('Signs in as new user', () => {
-    cy.contains('h1', 'Welcome back, User!');
+  it('Loads the login page as root', () => {
+    cy.visit('/');
+    cy.contains('h1', 'Login');
   });
 });

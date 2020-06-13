@@ -108,50 +108,38 @@ export default {
         this.streetsToComplete.push(street);
       }
     },
-    async reserveStreets() {
+    reserveStreets() {
       this.blockListString = this.streetsToReserve.join(', ');
-      reserveBlocks({ blocks: this.streetsToReserve }).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
+      reserveBlocks({ blocks: this.streetsToReserve }).then(() => {
         this.modalMessage = 'You have successfuly reserved';
         this.streetsToReserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+      }).catch(() => {
         this.modalMessage = 'At least one block was unable to be reserved';
         this.$bvModal.show('error-modal');
       });
     },
-    async unreserveStreets() {
+    unreserveStreets() {
       this.blockListString = this.streetsToUnReserve.join(', ');
-      releaseBlocks({ blocks: this.streetsToUnreserve }).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
+      releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
         this.modalMessage = 'You have successfuly unreserved';
         this.streetsToUnreserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+      }).catch(() => {
         this.modalMessage = 'At least one block was unable to be unreserved';
         this.$bvModal.show('error-modal');
       });
     },
-    async completeStreets() {
+    completeStreets() {
       this.blockListString = this.streetsToComplete.join(', ');
-      finishBlocks({ blocks: this.streetsToComplete }).then((response) => {
-        // eslint-disable-next-line
-        console.log(response);
+      finishBlocks({ blocks: this.streetsToComplete }).then(() => {
         this.modalMessage = 'You have successfully completed';
         this.streetsToComplete = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
-      }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+      }).catch(() => {
         this.modalMessage = 'At least one block was unable to be completed';
         this.$bvModal.show('street-confirmation-modal');
       });

@@ -40,6 +40,8 @@ export default {
           getTeam(this.teamID).then((response) => {
             this.specificTeam = response.data;
             this.loaded = true;
+          }).catch(() => {
+            this.$bvToast.toast('An error occured while loading this team, please try again.');
           });
         }
         break;
