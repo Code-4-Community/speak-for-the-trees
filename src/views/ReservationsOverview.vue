@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>All Reservations</h1>
+    <page-title :title="'All Reservations'" />
     <p
     v-if="allReservedBlocks.blocks.length == 0"
     class="basicText">There are currently no reservations</p>
@@ -47,9 +47,13 @@ import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'ReservationsOverview',
+  components: {
+    PageTitle,
+  },
   methods: {
     resetToOpen(block) {
       releaseBlocks({ blocks: [block] }).then(() => {

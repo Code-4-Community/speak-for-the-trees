@@ -1,11 +1,7 @@
 <template>
   <div class="cont">
-      <h1>Your teams</h1>
-      <p
-      class="basicText"
-      v-if="myTeams.length == 0">
-        You aren't on a team yet, check out some below!
-      </p>
+    <page-title :title="'Your Teams'"
+                :subtitle="subtitle" />
       <router-link
         v-for="team in myTeams"
         :to="`/team/${team.id}`"
@@ -14,7 +10,7 @@
           {{ team.name }}
         </p>
       </router-link>
-      <h1>Available teams</h1>
+      <h3>Available teams</h3>
       <p
       class="basicText"
       v-if="availableTeams.length == 0">
@@ -36,11 +32,15 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
+import PageTitle from '../components/PageTitle.vue';
 
 Vue.use(VueRouter);
 
 export default {
   name: 'availableTeams',
+  components: {
+    PageTitle,
+  },
   computed: {
     ...mapState({
       teams: 'teams',
@@ -50,6 +50,9 @@ export default {
     },
     availableTeams() {
       return this.teams.filter(e => e.userTeamRole === 'NONE');
+    },
+    subtitle() {
+      return this.myTeams.length === 0 ? 'You aren\'t on a team yet, check out some below!' : '';
     },
   },
   methods: {

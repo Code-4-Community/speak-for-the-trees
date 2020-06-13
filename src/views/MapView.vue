@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>{{ this.header.headerVal }}</h1>
-    <p class="sub-title">{{ this.header.subTitle }}</p>
+    <page-title :title="this.header.headerVal" :subtitle="this.header.subTitle" />
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 0"
       v-bind:onClick="reserveStreets"
@@ -48,12 +47,14 @@ import {
   releaseBlocks,
   finishBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'MapPage',
   components: {
     Map,
     SelectedStreets,
+    PageTitle,
   },
   data() {
     return {

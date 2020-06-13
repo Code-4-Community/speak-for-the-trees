@@ -1,8 +1,10 @@
 <template>
-  <div class="title-container">
-    <return-button />
-    <h3>{{title}}</h3>
-    <p>{{subtitle}}</p>
+  <div class="spanner">
+    <div class="title-container">
+      <return-button />
+      <h3>{{title}}</h3>
+      <p>{{subtitle}}</p>
+    </div>
   </div>
 </template>
 
@@ -27,21 +29,27 @@ export default {
 
 <style scoped lang="less">
 
-  p {
-    color: #C4C4C4;
-    margin: 0;
+  .spanner {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .title-container {
+    width: 30rem;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     padding: 1rem 0 1rem 0;
+    margin: 0 3rem 0 3rem;
   }
 
   .title-container > h3 {
+    font-weight: bold;
     width: 100%;
     margin: 0;
   }
@@ -49,5 +57,10 @@ export default {
   .title-container > button {
     position: absolute;
     left: -2rem;
+  }
+
+  p {
+    color: #C4C4C4;
+    margin: 0;
   }
 </style>

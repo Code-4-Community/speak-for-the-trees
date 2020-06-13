@@ -53,7 +53,7 @@
    </b-form>
   </b-modal>
 
-<h3>{{ userData.firstName }} {{ userData.lastName }}</h3>
+    <page-title :title="userData.firstName" />
     <b-list-group :flush='true'>
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
       <b-list-group-item>Email: {{ userData.email }}</b-list-group-item>
@@ -73,9 +73,13 @@ import { mapState } from 'vuex';
 import {
   changePassword, changeEmail, deleteUser,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'Profile',
+  components: {
+    PageTitle,
+  },
   computed: {
     ...mapState({
       userData: 'userData',

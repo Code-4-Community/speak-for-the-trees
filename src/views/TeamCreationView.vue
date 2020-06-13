@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <h1>Create a team</h1>
-
+    <page-title :title="'Create a Team'" />
     <b-form @submit="onSubmit" novalidate>
       <b-form-group>
         <b-form-input
@@ -123,9 +122,13 @@
 <script>
 import moment from 'moment';
 import { createTeam } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'TeamCreation',
+  components: {
+    PageTitle,
+  },
   data() {
     return {
       members: 0,
