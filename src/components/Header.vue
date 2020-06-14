@@ -11,6 +11,9 @@
       <b-dropdown-item to="/all-volunteers-leaderboard">All Volunteers Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/create">Create Team</b-dropdown-item>
       <b-dropdown-divider v-if="isAdmin" />
+      <b-dropdown-item v-if="isAdmin" to="/team-progress">
+        Team Progress
+      </b-dropdown-item>
       <b-dropdown-item v-if="isAdmin" to="/reservations-overview">
         Reservations Overview
       </b-dropdown-item>

@@ -10,6 +10,7 @@ import TeamCreation from '../views/TeamCreationView.vue';
 import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
+import TeamProgress from '../views/TeamProgress.vue';
 import ReservationsOverview from '../views/ReservationsOverview.vue';
 import CompletionsOverview from '../views/CompletionsOverview.vue';
 import Settings from '../views/Settings.vue';
@@ -72,6 +73,11 @@ const routes = [
     path: '/current-reservations',
     name: 'CurrentReservations',
     component: CurrentReservations,
+  },
+  {
+    path: '/team-progress',
+    name: 'TeamProgress',
+    component: TeamProgress,
   },
   {
     path: '/available-teams',
