@@ -2,22 +2,33 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tokenService from '../auth/token';
 import {
-  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks,
+  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks, getReservedBlocksAdmin,
+  getCompletedBlocksAdmin,
 } from '../api/api';
 
 Vue.use(Vuex);
 
+const getDefaultState = () => ({
+  isUserAuthenticated: false,
+  privilegeLevel: -1,
+  userData: {},
+  teams: [],
+  allTeamsLeaderboard: [],
+  allVolunteersLeaderboard: [],
+  reservedBlocks: [],
+  allReservedBlocks: [],
+  allCompletedBlocks: [],
+});
+
+// initial state
+const appState = getDefaultState();
+
 export default new Vuex.Store({
-  state: {
-    isUserAuthenticated: false,
-    privilegeLevel: -1,
-    userData: {},
-    teams: [],
-    allTeamsLeaderboard: [],
-    allVolunteersLeaderboard: [],
-    reservedBlocks: [],
-  },
+  state: appState,
   mutations: {
+    resetState(state) {
+      Object.assign(state, getDefaultState());
+    },
     setUser(state) {
       state.isUserAuthenticated = !!(tokenService.getPrivilegeLevel() > -1);
       state.privilegeLevel = tokenService.getPrivilegeLevel();
@@ -36,6 +47,12 @@ export default new Vuex.Store({
     },
     setReservedBlocks(state, blockData) {
       state.reservedBlocks = blockData;
+    },
+    setReservedBlocksAdmin(state, blockData) {
+      state.allReservedBlocks = blockData;
+    },
+    setCompletedBlocksAdmin(state, blockData) {
+      state.allCompletedBlocks = blockData;
     },
   },
   actions: {
@@ -58,6 +75,16 @@ export default new Vuex.Store({
     async getReservedBlocks({ commit }) {
       getReservedBlocks().then((response) => {
         commit('setReservedBlocks', response.data);
+      });
+    },
+    async getReservedBlocksAdmin({ commit }) {
+      getReservedBlocksAdmin().then((response) => {
+        commit('setReservedBlocksAdmin', response.data);
+      });
+    },
+    async getCompletedBlocksAdmin({ commit }) {
+      getCompletedBlocksAdmin().then((response) => {
+        commit('setCompletedBlocksAdmin', response.data);
       });
     },
   },

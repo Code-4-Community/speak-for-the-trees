@@ -10,11 +10,14 @@ import TeamCreation from '../views/TeamCreationView.vue';
 import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
+import ReservationsOverview from '../views/ReservationsOverview.vue';
+import CompletionsOverview from '../views/CompletionsOverview.vue';
 import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
 
 import leaderboardConstants from '../constants/leaderboardConstants';
+import privilegeConstants from '../auth/constants';
 
 Vue.use(VueRouter);
 
@@ -75,6 +78,16 @@ const routes = [
     name: 'AvailableTeams',
     component: AvailableTeams,
   },
+  {
+    path: '/reservations-overview',
+    name: 'ReservationsOverview',
+    component: ReservationsOverview,
+  },
+  {
+    path: '/completed-blocks-overview',
+    name: 'CompletionsOverview',
+    component: CompletionsOverview,
+  },
   // editmode can either be set to 'new' if filtering for unreserved streets
   // or can be set to 'edit' if using a provided list of streets
   {
@@ -107,6 +120,9 @@ router.beforeEach((to, from, next) => {
     if (to.name === 'Login' || to.name === 'SignUp') next();
     else next({ name: 'Login' });
   } else next();
+  if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {
+    if (to.name === 'ReservationsOverview' || to.name === 'CompletionsOverview') next({ name: 'Home' });
+  }
 });
 
 export default router;
