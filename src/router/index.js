@@ -104,6 +104,14 @@ const routes = [
     props: true,
   },
   {
+    path: '/admin-map',
+    name: 'AdminMap',
+    component: MapView,
+    props: {
+      isAdminMap: true,
+    },
+  },
+  {
     path: '/*',
     redirect: '/',
   },
@@ -121,7 +129,7 @@ router.beforeEach((to, from, next) => {
     else next({ name: 'Login' });
   } else next();
   if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {
-    if (to.name === 'ReservationsOverview' || to.name === 'CompletionsOverview') next({ name: 'Home' });
+    if (to.name === 'ReservationsOverview' || to.name === 'CompletionsOverview' || to.name === 'AdminMap') next({ name: 'Home' });
   }
 });
 

@@ -8,12 +8,12 @@
       v-bind:streets="streetsToReserve"
       v-bind:title="'Reserve'"/>
     <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 1"
+      v-if="(reservedFilter === 1) || isAdminMap"
       v-bind:onClick="unreserveStreets"
       v-bind:streets="streetsToUnreserve"
       v-bind:title="'Unreserve'"/>
     <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 1"
+      v-if="(reservedFilter === 1) || isAdminMap"
       v-bind:onClick="completeStreets"
       v-bind:streets="streetsToComplete"
       v-bind:title="'Complete'"/>
@@ -28,6 +28,7 @@
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
       v-bind:activeStreetFid="this.activeStreetFid"
+      v-bind:isAdminMap="this.isAdminMap"
       ref="map"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
@@ -69,6 +70,10 @@ export default {
       type: String,
       required: false,
     },
+    isAdminMap: {
+      type: Boolean,
+      required: false,
+    },
   },
   computed: {
     header() {
@@ -80,6 +85,9 @@ export default {
       } else if (this.reservedFilter === 1) {
         headerVal = 'Edit Blocks';
         subTitle = 'press block to edit or cancel reservation';
+      } else if (this.isAdminMap) {
+        headerVal = 'Edit Active Blocks';
+        subTitle = 'press block to edit or cancel reservation';
       }
       return {
         headerVal,
@@ -87,7 +95,14 @@ export default {
       };
     },
     reservedFilter() {
-      return this.$route.params.editmode === 'edit' ? 1 : 0;
+      if (this.$route.params.editmode === 'edit') {
+        return 1;
+      // eslint-disable-next-line
+      } else if (this.$route.params.editmode === 'new') {
+        return 0;
+      } else {
+        return null;
+      }
     },
   },
   methods: {
@@ -102,9 +117,9 @@ export default {
       if (selection === 'reserve') {
         this.streetsToReserve.push(JSON.stringify(street));
       } else if (selection === 'unreserve') {
-        this.streetsToUnreserve.push(street);
+        this.streetsToUnreserve.push(JSON.stringify(street));
       } else if (selection === 'complete') {
-        this.streetsToComplete.push(street);
+        this.streetsToComplete.push(JSON.stringify(street));
       }
     },
     reserveStreets() {
@@ -120,7 +135,7 @@ export default {
       });
     },
     unreserveStreets() {
-      this.blockListString = this.streetsToUnReserve.join(', ');
+      this.blockListString = this.streetsToUnreserve.join(', ');
       releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
         this.modalMessage = 'You have successfuly unreserved';
         this.streetsToUnreserve = [];
@@ -184,7 +199,7 @@ export default {
 
 @media only screen and (max-width: 700px) {
   .map-container {
-    width: 100%;
+    width: 90vw;
   }
 }
 </style>
