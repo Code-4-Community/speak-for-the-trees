@@ -8,19 +8,27 @@ import {
 
 Vue.use(Vuex);
 
+const getDefaultState = () => ({
+  isUserAuthenticated: false,
+  privilegeLevel: -1,
+  userData: {},
+  teams: [],
+  allTeamsLeaderboard: [],
+  allVolunteersLeaderboard: [],
+  reservedBlocks: [],
+  allReservedBlocks: [],
+  allCompletedBlocks: [],
+});
+
+// initial state
+const appState = getDefaultState();
+
 export default new Vuex.Store({
-  state: {
-    isUserAuthenticated: false,
-    privilegeLevel: -1,
-    userData: {},
-    teams: [],
-    allTeamsLeaderboard: [],
-    allVolunteersLeaderboard: [],
-    reservedBlocks: [],
-    allReservedBlocks: [],
-    allCompletedBlocks: [],
-  },
+  state: appState,
   mutations: {
+    resetState(state) {
+      Object.assign(state, getDefaultState());
+    },
     setUser(state) {
       state.isUserAuthenticated = !!(tokenService.getPrivilegeLevel() > -1);
       state.privilegeLevel = tokenService.getPrivilegeLevel();

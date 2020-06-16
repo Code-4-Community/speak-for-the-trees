@@ -150,6 +150,7 @@ export default {
             },
           });
           const streetSegments = new FeatureLayer({
+            title: 'blocks',
             url: process.env.VUE_APP_ARCGIS_URL,
             renderer,
             outFields: ['BLOCK'],
@@ -160,6 +161,7 @@ export default {
           streetSegments.definitionExpression = sqlExpression;
           map.add(streetSegments);
           const privateStreets = new FeatureLayer({
+            title: 'private',
             url: process.env.VUE_APP_PRIVATE_STREETS_URL,
             renderer: privateRenderer,
           });
