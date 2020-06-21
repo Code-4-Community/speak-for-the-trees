@@ -188,6 +188,8 @@ export default {
               renderer,
               outFields: ['BLOCK'],
               popupTemplate: isCompleteTemplate,
+              labelingInfo: [blockLabel],
+              labelsVisible: this.labelsVisible,
             });
             completeBlocks.definitionExpression = completeExpression;
             map.add(completeBlocks);
