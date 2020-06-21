@@ -22,6 +22,10 @@ export default {
       type: String,
       required: false,
     },
+    isAdminMap: {
+      type: Boolean,
+      required: false,
+    },
     labelsVisible: {
       type: Boolean,
       required: true,
@@ -58,7 +62,11 @@ export default {
         return '<b>ID:</b> {ID} <strong>RESERVED:</strong> {RESERVED}';
       }
       const actions = [];
-      if (this.reservedFilter === 1) {
+      const isCompleteActions = [];
+      if (this.isAdminMap) {
+        actions.push(unreserveSegment, completeSegment);
+        isCompleteActions.push(unreserveSegment);
+      } else if (this.reservedFilter === 1) {
         actions.push(unreserveSegment, completeSegment);
       } else {
         actions.push(reserveSegment);
@@ -69,6 +77,7 @@ export default {
         content: getModalContent(),
         actions,
       };
+      const isCompleteTemplate = { ...template, actions: isCompleteActions };
       const blockLabel = {
         labelExpressionInfo: { expression: '$feature.ID' },
         symbol: {
@@ -115,12 +124,15 @@ export default {
         },
       };
       let sqlExpression = '1=0';
+      const completeExpression = 'RESERVED = 2';
       // Creates a filter from the given list of IDs so that only the given
       // streets will appear on the map
       const reservedIdsFilter = `ID = ${this.reservedBlocks.join(' OR ID = ')}`;
-      if (this.reservedFilter === 0) {
+      if (this.isAdminMap) {
+        sqlExpression = 'RESERVED = 1';
+      } else if (this.reservedFilter === 0) {
       // If reserving new streets, only show streets that are not reserved
-        sqlExpression = `RESERVED = ${this.reservedFilter}`;
+        sqlExpression = 'RESERVED = 0';
       } else if (this.reservedBlocks.length > 0) {
       // If there are given IDs, have the map only show the given streets
         sqlExpression = reservedIdsFilter;
@@ -161,14 +173,27 @@ export default {
           // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
           // popupTemplate: template,
           });
+          streetSegments.definitionExpression = sqlExpression;
+          map.add(streetSegments);
           const privateStreets = new FeatureLayer({
             title: 'private',
             url: process.env.VUE_APP_PRIVATE_STREETS_URL,
             renderer: privateRenderer,
           });
-          streetSegments.definitionExpression = sqlExpression;
-          map.add(streetSegments);
           map.add(privateStreets);
+          if (this.isAdminMap) {
+            const completeBlocks = new FeatureLayer({
+              title: 'complete',
+              url: process.env.VUE_APP_ARCGIS_URL,
+              renderer,
+              outFields: ['BLOCK'],
+              popupTemplate: isCompleteTemplate,
+              labelingInfo: [blockLabel],
+              labelsVisible: this.labelsVisible,
+            });
+            completeBlocks.definitionExpression = completeExpression;
+            map.add(completeBlocks);
+          }
           // Opens a popup with the street information that corresponds with the given FID
           this.view.when(() => {
             if (this.activeStreetId !== undefined) {
