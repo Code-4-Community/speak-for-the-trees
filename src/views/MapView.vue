@@ -100,9 +100,9 @@ export default {
   },
   methods: {
     pushStreet(street, selection) {
-      if (this.streetsToReserve.includes(street)
-      || this.streetsToUnreserve.includes(street)
-      || this.streetsToComplete.includes(street)) {
+      if (this.streetsToReserve.includes(JSON.stringify(street))
+      || this.streetsToUnreserve.includes(JSON.stringify(street))
+      || this.streetsToComplete.includes(JSON.stringify(street))) {
         this.modalMessage = 'You have already selected this street';
         this.$bvModal.show('error-modal');
         return;
@@ -177,12 +177,16 @@ export default {
   margin-bottom: 5px;
 }
 
+.label-toggle {
+  margin-left: 5px;
+}
+
 .streets-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-left: auto;
-  width:60%;
+  width:20%;
   align-items: baseline;
   padding: 5px;
 }
