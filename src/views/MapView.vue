@@ -6,16 +6,19 @@
       v-if="reservedFilter === 0"
       v-bind:onClick="reserveStreets"
       v-bind:streets="streetsToReserve"
+      v-bind:setBlocks="setReserveStreets"
       v-bind:title="'Reserve'"/>
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 1"
       v-bind:onClick="unreserveStreets"
       v-bind:streets="streetsToUnreserve"
+      v-bind:setBlocks="setUnreserveStreets"
       v-bind:title="'Unreserve'"/>
     <SelectedStreets class="streets-container"
       v-if="reservedFilter === 1"
       v-bind:onClick="completeStreets"
       v-bind:streets="streetsToComplete"
+      v-bind:setBlocks="setCompleteStreets"
       v-bind:title="'Complete'"/>
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
@@ -142,6 +145,15 @@ export default {
         this.modalMessage = 'At least one block was unable to be completed';
         this.$bvModal.show('street-confirmation-modal');
       });
+    },
+    setReserveStreets(blocks) {
+      this.streetsToReserve = blocks;
+    },
+    setUnreserveStreets(blocks) {
+      this.streetsToUnreserve = blocks;
+    },
+    setCompleteStreets(blocks) {
+      this.streetsToComplete = blocks;
     },
   },
 };
