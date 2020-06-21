@@ -25,7 +25,7 @@ export default {
     isAdminMap: {
       type: Boolean,
       required: false,
-    },  
+    },
     labelsVisible: {
       type: Boolean,
       required: true,
