@@ -1,8 +1,8 @@
 <template>
   <div>
     <div>
-      <b-button id="block-popover">{{this.title}} Block List</b-button>
-      <b-popover target="block-popover" placement="bottom" title="Block List" width="">
+      <b-button :id="title">{{this.title}} Block List</b-button>
+      <b-popover :target="title" placement="bottom" title="Block List" width="">
         <div class="blockListContainer" >
           <span v-for="block in streets" :key="block" class="activeBlock">
             <p> {{ block }} </p>
