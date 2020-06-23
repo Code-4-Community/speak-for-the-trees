@@ -2,24 +2,29 @@
   <div>
     <h1>{{ this.header.headerVal }}</h1>
     <p class="sub-title">{{ this.header.subTitle }}</p>
-    <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 0"
-      v-bind:onClick="reserveStreets"
-      v-bind:streets="streetsToReserve"
-      v-bind:setBlocks="setReserveStreets"
-      v-bind:title="'Reserve'"/>
-    <SelectedStreets class="streets-container"
-      v-if="(reservedFilter === 1) || isAdminMap"
-      v-bind:onClick="unreserveStreets"
-      v-bind:streets="streetsToUnreserve"
-      v-bind:setBlocks="setUnreserveStreets"
-      v-bind:title="'Unreserve'"/>
-    <SelectedStreets class="streets-container"
-      v-if="(reservedFilter === 1) || isAdminMap"
-      v-bind:onClick="completeStreets"
-      v-bind:streets="streetsToComplete"
-      v-bind:setBlocks="setCompleteStreets"
-      v-bind:title="'Complete'"/>
+    <div class="action-row">
+      <SelectedStreets
+          class="streets-container"
+          v-if="reservedFilter === 0"
+          v-bind:onClick="reserveStreets"
+          v-bind:streets="streetsToReserve"
+          v-bind:setBlocks="setReserveStreets"
+          v-bind:title="'Reserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="unreserveStreets"
+          v-bind:streets="streetsToUnreserve"
+          v-bind:setBlocks="setUnreserveStreets"
+          v-bind:title="'Unreserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="completeStreets"
+          v-bind:streets="streetsToComplete"
+          v-bind:setBlocks="setCompleteStreets"
+          v-bind:title="'Complete'"/>
+    </div>
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
       <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
@@ -70,7 +75,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
-      labelsVisible: true,
+      labelsVisible: false,
     };
   },
   props: {
@@ -196,13 +201,13 @@ export default {
   margin-left: 5px;
 }
 
-.streets-container {
+.action-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-between;
-  margin-left: auto;
-  width:20%;
   align-items: baseline;
+}
+.streets-container {
   padding: 5px;
 }
 
