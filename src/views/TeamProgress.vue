@@ -2,21 +2,21 @@
   <div>
     <h1>Team Progress</h1>
     <p
-        v-if="allTeams.length === 0"
+        v-if="processedTeams.length === 0"
         class="basicText">There are no teams.</p>
     <b-row v-else id="header" class="text-left">
       <b-col class="team" cols="4">Team</b-col>
       <b-col cols="4">Goal Deadline</b-col>
       <b-col cols="2" align-self="start">Goal Progress</b-col>
     </b-row>
-    <b-row class="text-left" v-for="team in allTeams" :key="team.id">
+    <b-row class="text-left" v-for="team in processedTeams" :key="team.id" :class="team.textClass">
       <b-col class="team" cols="4" align-self="center">
         <router-link :to="`/team/${team.id}`">
           {{ team.name }}
         </router-link>
       </b-col>
       <b-col cols="4" align-self="center">
-        {{ new Date(team.goalCompletionDate).toDateString() }}
+        {{ team.dateString }}
       </b-col>
       <b-col cols="2" align-self="center">
         {{ team.blocksCompleted }} / {{ team.goal }} blocks completed
@@ -49,6 +49,33 @@ export default {
     isAdmin() {
       return this.privilegeLevel === privilegeLevelConstants.ADMIN;
     },
+    processedTeams() {
+      const processed = this.allTeams.map((team) => {
+        const today = new Date();
+        const completionDate = new Date(team.goalCompletionDate);
+        const pastGoalDate = today > team.goalCompletionDate;
+        const metGoal = team.blocksCompleted >= team.goal;
+        let textClass;
+        if (metGoal) {
+          textClass = 'complete';
+        } else if (pastGoalDate) {
+          textClass = 'failed';
+        } else {
+          textClass = 'incomplete';
+        }
+        return {
+          id: team.id,
+          dateString: completionDate.toDateString(),
+          name: team.name,
+          blocksCompleted: team.blocksCompleted,
+          goal: team.goal,
+          pastGoalDate,
+          metGoal,
+          textClass,
+        };
+      });
+      return processed;
+    },
   },
   mounted() {
     if (this.allTeams?.length === 0) {
@@ -67,12 +94,23 @@ export default {
   }
 
   .row {
-    background: #D4EDAA;
     border-bottom: 1px solid white;
     width: 100vw;
     div {
       padding: 0 5px;
     }
+  }
+
+  .incomplete {
+    background: #DDDDDD;
+  }
+
+  .complete {
+    background: #99FF99;
+  }
+
+  .failed {
+    background: #FF7777;
   }
 
   .team {
