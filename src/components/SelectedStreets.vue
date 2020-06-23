@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="list-action-row">
+    <div class="list-button">
       <b-button :id="title">{{this.title}} Block List</b-button>
       <b-popover :target="title" placement="bottom" title="Block List" width="">
         <div class="blockListContainer" >
@@ -52,6 +52,16 @@ export default {
 </script>
 
 <style scoped>
+  .list-action-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  .list-button {
+    padding-right: 10px;
+  }
+
   .blockListContainer {
     display: flex;
     width: 210px;
