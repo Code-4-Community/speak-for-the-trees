@@ -6,16 +6,19 @@
       v-if="reservedFilter === 0"
       v-bind:onClick="reserveStreets"
       v-bind:streets="streetsToReserve"
+      v-bind:setBlocks="setReserveStreets"
       v-bind:title="'Reserve'"/>
     <SelectedStreets class="streets-container"
       v-if="(reservedFilter === 1) || isAdminMap"
       v-bind:onClick="unreserveStreets"
       v-bind:streets="streetsToUnreserve"
+      v-bind:setBlocks="setUnreserveStreets"
       v-bind:title="'Unreserve'"/>
     <SelectedStreets class="streets-container"
       v-if="(reservedFilter === 1) || isAdminMap"
       v-bind:onClick="completeStreets"
       v-bind:streets="streetsToComplete"
+      v-bind:setBlocks="setCompleteStreets"
       v-bind:title="'Complete'"/>
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
@@ -112,9 +115,9 @@ export default {
   },
   methods: {
     pushStreet(street, selection) {
-      if (this.streetsToReserve.includes(street)
-      || this.streetsToUnreserve.includes(street)
-      || this.streetsToComplete.includes(street)) {
+      if (this.streetsToReserve.includes(JSON.stringify(street))
+      || this.streetsToUnreserve.includes(JSON.stringify(street))
+      || this.streetsToComplete.includes(JSON.stringify(street))) {
         this.modalMessage = 'You have already selected this street';
         this.$bvModal.show('error-modal');
         return;
@@ -163,6 +166,15 @@ export default {
         this.$bvModal.show('street-confirmation-modal');
       });
     },
+    setReserveStreets(blocks) {
+      this.streetsToReserve = blocks;
+    },
+    setUnreserveStreets(blocks) {
+      this.streetsToUnreserve = blocks;
+    },
+    setCompleteStreets(blocks) {
+      this.streetsToComplete = blocks;
+    },
   },
 };
 </script>
@@ -180,12 +192,16 @@ export default {
   margin-bottom: 5px;
 }
 
+.label-toggle {
+  margin-left: 5px;
+}
+
 .streets-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-left: auto;
-  width:60%;
+  width:20%;
   align-items: baseline;
   padding: 5px;
 }
