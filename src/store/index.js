@@ -2,8 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import tokenService from '../auth/token';
 import {
-  getAllTeams, getBlocksLeaderboard, getUserData, getReservedBlocks, getReservedBlocksAdmin,
-  getCompletedBlocksAdmin,
+  getAllTeams, getAllTeamsAdmin, getBlocksLeaderboard, getUserData, getReservedBlocks,
+  getReservedBlocksAdmin, getCompletedBlocksAdmin,
 } from '../api/api';
 
 Vue.use(Vuex);
@@ -13,6 +13,7 @@ const getDefaultState = () => ({
   privilegeLevel: -1,
   userData: {},
   teams: [],
+  allTeams: [],
   allTeamsLeaderboard: [],
   allVolunteersLeaderboard: [],
   reservedBlocks: [],
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     },
     setAllTeams(state, { teams }) {
       state.teams = teams;
+    },
+    setAllTeamsAdmin(state, { teams }) {
+      state.allTeams = teams;
     },
     setTeamsLeaderboard(state, { teams }) {
       state.allTeamsLeaderboard = teams;
@@ -59,6 +63,11 @@ export default new Vuex.Store({
     async getAllTeams({ commit }) {
       getAllTeams().then((response) => {
         commit('setAllTeams', response.data);
+      });
+    },
+    async getAllTeamsAdmin({ commit }) {
+      getAllTeamsAdmin().then((response) => {
+        commit('setAllTeamsAdmin', response.data);
       });
     },
     async getBlocksLeaderboard({ commit }) {
