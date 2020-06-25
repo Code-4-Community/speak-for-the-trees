@@ -1,7 +1,7 @@
 <template>
   <div class="spanner">
     <div class="title-container">
-      <return-button />
+      <return-button :path="this.path" />
       <h3>{{title}}</h3>
       <p>{{subtitle}}</p>
     </div>
@@ -19,9 +19,15 @@ export default {
   props: {
     title: {
       required: true,
+      type: String,
     },
     subtitle: {
       required: false,
+      type: String,
+    },
+    path: {
+      required: false,
+      type: Object,
     },
   },
 };

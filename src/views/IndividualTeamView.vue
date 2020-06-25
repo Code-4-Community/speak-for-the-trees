@@ -4,6 +4,7 @@
       <h3>{{ errorMessage }}</h3>
     </div>
     <div v-if="!error && loaded">
+      <page-title :title="'Test'" :path="{ name: 'CurrentReservations'}" />
       <h1>
         {{ team.name }}
         <img v-if="userTeamRole == teamConstants.NONE"
@@ -94,9 +95,13 @@ import {
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
 import teamConstants from '../constants/teamConstants';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'TeamView',
+  components: {
+    PageTitle,
+  },
   data() {
     return {
       team: {},

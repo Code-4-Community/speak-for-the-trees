@@ -53,7 +53,7 @@
    </b-form>
   </b-modal>
 
-    <page-title :title="userData.firstName" />
+    <page-title :title="fullName" />
     <b-list-group :flush='true'>
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
       <b-list-group-item>Email: {{ userData.email }}</b-list-group-item>
@@ -84,6 +84,9 @@ export default {
     ...mapState({
       userData: 'userData',
     }),
+    fullName() {
+      return `${this.userData.firstName} ${this.userData.lastName}`;
+    },
   },
   data() {
     return {
