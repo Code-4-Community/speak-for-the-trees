@@ -3,28 +3,53 @@
     <page-title :title="'Your Teams'"
                 :subtitle="subtitle" />
       <router-link
-        v-for="team in myTeams"
-        :to="`/team/${team.id}`"
-        :key="team.id">
+          v-for="team in myTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
         <p class="team">
           {{ team.name }}
         </p>
       </router-link>
       <h3>Available teams</h3>
-      <p
-      class="basicText"
-      v-if="availableTeams.length == 0">
-        There are no other teams to join.
-      </p>
+    </div>
+    <div v-if="pendingTeams.length > 0">
+      <h1>Pending Applications</h1>
       <router-link
-        v-for="team in availableTeams"
-        :to="`/team/${team.id}`"
-        :key="team.id">
+          v-for="team in pendingTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
         <p class="team">
           {{ team.name }}
         </p>
       </router-link>
-      <b-button class="create" @click="createTeam">Create New Team</b-button>
+    </div>
+    <div>
+      <h1>Available Teams</h1>
+      <p
+          class="basicText"
+          v-if="availableTeams.length == 0">
+        There are no other teams to join.
+      </p>
+      <router-link
+          v-for="team in availableTeams"
+          :to="`/team/${team.id}`"
+          :key="team.id">
+        <p class="team">
+          {{ team.name }}
+        </p>
+      </router-link>
+    </div>
+    <b-button class="create" @click="createTeam">Create New Team</b-button>
+    <b-button v-if="isAdmin"
+              class="create"
+              @click="downloadTeamsCSV">
+      Download Teams CSV
+    </b-button>
+    <b-button v-if="isAdmin"
+              class="create"
+              @click="downloadBlocksCSV">
+      Download Blocks CSV
+    </b-button>
   </div>
 </template>
 
@@ -33,6 +58,9 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import PageTitle from '../components/PageTitle.vue';
+import { getBlocksCSV, getTeamsCSV } from '../api/api';
+import privilegeLevelConstants from '../auth/constants';
+import teamConstants from '../constants/teamConstants';
 
 Vue.use(VueRouter);
 
@@ -41,15 +69,29 @@ export default {
   components: {
     PageTitle,
   },
+  data() {
+    return {
+      privilegeLevelConstants,
+    };
+  },
   computed: {
     ...mapState({
       teams: 'teams',
+      userData: 'userData',
+      privilegeLevel: 'privilegeLevel',
     }),
+    isAdmin() {
+      return this.privilegeLevel === privilegeLevelConstants.ADMIN;
+    },
     myTeams() {
-      return this.teams.filter(e => e.userTeamRole !== 'NONE');
+      return this.teams.filter(e => [teamConstants.NONE, teamConstants.PENDING]
+        .indexOf(e.userTeamRole) === -1);
     },
     availableTeams() {
-      return this.teams.filter(e => e.userTeamRole === 'NONE');
+      return this.teams.filter(e => [teamConstants.NONE].indexOf(e.userTeamRole) !== -1);
+    },
+    pendingTeams() {
+      return this.teams.filter(e => [teamConstants.PENDING].indexOf(e.userTeamRole) !== -1);
     },
     subtitle() {
       return this.myTeams.length === 0 ? 'You aren\'t on a team yet, check out some below!' : '';
@@ -59,6 +101,30 @@ export default {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
+    },
+    /**
+   * Downloads a CSV that contains all Block/User information.
+   */
+    downloadBlocksCSV() {
+      getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
+    },
+    /**
+     * Downloads a CSV that contains all Team/User information.
+     */
+    downloadTeamsCSV() {
+      getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
+    },
+    /**
+     * Forces a download of the given data under the given file name.
+     */
+    forceFileDownload(data, fileName) {
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${fileName}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
   mounted() {

@@ -1,16 +1,16 @@
 <template>
   <div>
-    <page-title :title="'All Reservations'" />
+    <h1>Completed Blocks</h1>
     <p
-    v-if="allReservedBlocks.blocks.length == 0"
-    class="basicText">There are currently no reservations</p>
+    v-if="allCompletedBlocks.blocks.length == 0"
+    class="basicText">No blocks have been completed</p>
     <b-row v-else id="header" class="text-left">
       <b-col id="ids" cols="2">ID</b-col>
       <b-col cols="4">User</b-col>
-      <b-col cols="4">Reservation Date</b-col>
-      <b-col cols="2" align-self="start"></b-col>
+      <b-col cols="4">Completion Date</b-col>
+      <b-col cols="2" align-self="center"></b-col>
     </b-row>
-    <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.fid">
+    <b-row class="text-left" v-for="block in allCompletedBlocks.blocks" :key="block.fid">
       <b-col id="ids" cols="2" align-self="center">{{ block.fid }}</b-col>
       <b-col cols="4" align-self="center">{{ block.username }}</b-col>
       <b-col cols="4" align-self="center">{{ block.dateUpdated }}</b-col>
@@ -29,12 +29,8 @@
               Reset to open
           </b-dropdown-item>
           <b-dropdown-item
-          @click="completeBlock(block.fid)">
-              Complete
-          </b-dropdown-item>
-          <b-dropdown-item
-          @click="viewReservation(block.fid)">
-              View reservation
+          @click="viewBlock(block.fid)">
+              View block
           </b-dropdown-item>
           </b-dropdown>
       </b-col>
@@ -45,31 +41,20 @@
 <script>
 import { mapState } from 'vuex';
 import {
-  finishBlocks, releaseBlocks,
+  resetBlocks,
 } from '../api/api';
-import PageTitle from '../components/PageTitle.vue';
 
 export default {
-  name: 'ReservationsOverview',
-  components: {
-    PageTitle,
-  },
+  name: 'CompletionsOverview',
   methods: {
     resetToOpen(block) {
-      releaseBlocks({ blocks: [block] }).then(() => {
-        this.$store.dispatch('getReservedBlocksAdmin');
+      resetBlocks({ blocks: [block] }).then(() => {
+        this.$store.dispatch('getCompletedBlocksAdmin');
       }).catch(() => {
         this.$bvToast.toast(`Error in opening of ${block}.`);
       });
     },
-    completeBlock(block) {
-      finishBlocks({ blocks: [block] }).then(() => {
-        this.$store.dispatch('getReservedBlocksAdmin');
-      }).catch(() => {
-        this.$bvToast.toast(`Error in completion of ${block}.`);
-      });
-    },
-    viewReservation(block) {
+    viewBlock(block) {
       this.$router.push({
         name: 'ReserveEdit',
         params: { activeStreetFid: block, editmode: 'edit' },
@@ -78,11 +63,11 @@ export default {
   },
   computed: {
     ...mapState({
-      allReservedBlocks: 'allReservedBlocks',
+      allCompletedBlocks: 'allCompletedBlocks',
     }),
   },
   mounted() {
-    this.$store.dispatch('getReservedBlocksAdmin');
+    this.$store.dispatch('getCompletedBlocksAdmin');
   },
 };
 </script>

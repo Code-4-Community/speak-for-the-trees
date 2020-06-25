@@ -14,6 +14,9 @@
       <b-dropdown-item v-if="isAdmin" to="/reservations-overview">
         Reservations Overview
       </b-dropdown-item>
+      <b-dropdown-item v-if="isAdmin" to="/completed-blocks-overview">
+        Block Completions Overview
+      </b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/settings">Settings</b-dropdown-item>
       <b-dropdown-item v-on:click="logout">
@@ -21,7 +24,7 @@
       </b-dropdown-item>
     </b-dropdown>
     <router-link to="/home">
-      <img class="header__logo" src="../assets/sftt-logo-text.jpg" />
+      <img class="header__logo" src="../assets/sftt-logo.jpg" />
     </router-link>
   </div>
 </template>
@@ -80,5 +83,11 @@ export default {
     width: 3em;
     color: @header-logo-color;
     background-color: @header-logo-bg;
+}
+
+#dropdown-1__BV_toggle_, .btn-succes.focus {
+  background-color: #3A681A;
+  border: #3A681A;
+  box-shadow: none;
 }
 </style>

@@ -11,6 +11,7 @@ import IndividualTeamView from '../views/IndividualTeamView.vue';
 import CurrentReservations from '../views/CurrentReservations.vue';
 import AvailableTeams from '../views/AvailableTeams.vue';
 import ReservationsOverview from '../views/ReservationsOverview.vue';
+import CompletionsOverview from '../views/CompletionsOverview.vue';
 import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
@@ -82,6 +83,11 @@ const routes = [
     name: 'ReservationsOverview',
     component: ReservationsOverview,
   },
+  {
+    path: '/completed-blocks-overview',
+    name: 'CompletionsOverview',
+    component: CompletionsOverview,
+  },
   // editmode can either be set to 'new' if filtering for unreserved streets
   // or can be set to 'edit' if using a provided list of streets
   {
@@ -115,7 +121,7 @@ router.beforeEach((to, from, next) => {
     else next({ name: 'Login' });
   } else next();
   if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {
-    if (to.name === 'ReservationsOverview') next({ name: 'Home' });
+    if (to.name === 'ReservationsOverview' || to.name === 'CompletionsOverview') next({ name: 'Home' });
   }
 });
 
