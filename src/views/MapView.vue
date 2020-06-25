@@ -1,32 +1,45 @@
 <template>
   <div>
     <page-title :title="this.header.headerVal" :subtitle="this.header.subTitle" />
-    <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 0"
-      v-bind:onClick="reserveStreets"
-      v-bind:streets="streetsToReserve"
-      v-bind:title="'Reserve'"/>
-    <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 1"
-      v-bind:onClick="unreserveStreets"
-      v-bind:streets="streetsToUnreserve"
-      v-bind:title="'Unreserve'"/>
-    <SelectedStreets class="streets-container"
-      v-if="reservedFilter === 1"
-      v-bind:onClick="completeStreets"
-      v-bind:streets="streetsToComplete"
-      v-bind:title="'Complete'"/>
+    <div class="action-row">
+      <SelectedStreets
+          class="streets-container"
+          v-if="reservedFilter === 0"
+          v-bind:onClick="reserveStreets"
+          v-bind:streets="streetsToReserve"
+          v-bind:setBlocks="setReserveStreets"
+          v-bind:title="'Reserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="unreserveStreets"
+          v-bind:streets="streetsToUnreserve"
+          v-bind:setBlocks="setUnreserveStreets"
+          v-bind:title="'Unreserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="completeStreets"
+          v-bind:streets="streetsToComplete"
+          v-bind:setBlocks="setCompleteStreets"
+          v-bind:title="'Complete'"/>
+    </div>
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
       <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
-      <h3 v-if="reservedFilter === 1 && !!activeStreetFid">Block {{this.activeStreetFid}}</h3>
+      <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
+      <b-button v-on:click="labelsVisible = !labelsVisible">
+        {{`${(this.labelsVisible ? "Hide" : "Show")} block labels`}}
+      </b-button>
     </div>
 
     <Map
       class="map-container"
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
-      v-bind:activeStreetFid="this.activeStreetFid"
+      v-bind:isAdminMap="this.isAdminMap"
+      v-bind:activeStreetId="this.activeStreetId"
+      v-bind:labelsVisible="this.labelsVisible"
       ref="map"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
@@ -63,11 +76,16 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
+      labelsVisible: false,
     };
   },
   props: {
-    activeStreetFid: {
+    activeStreetId: {
       type: String,
+      required: false,
+    },
+    isAdminMap: {
+      type: Boolean,
       required: false,
     },
   },
@@ -81,6 +99,9 @@ export default {
       } else if (this.reservedFilter === 1) {
         headerVal = 'Edit Blocks';
         subTitle = 'press block to edit or cancel reservation';
+      } else if (this.isAdminMap) {
+        headerVal = 'Edit Active Blocks';
+        subTitle = 'press block to edit or cancel reservation';
       }
       return {
         headerVal,
@@ -88,14 +109,21 @@ export default {
       };
     },
     reservedFilter() {
-      return this.$route.params.editmode === 'edit' ? 1 : 0;
+      if (this.$route.params.editmode === 'edit') {
+        return 1;
+      // eslint-disable-next-line
+      } else if (this.$route.params.editmode === 'new') {
+        return 0;
+      } else {
+        return null;
+      }
     },
   },
   methods: {
     pushStreet(street, selection) {
-      if (this.streetsToReserve.includes(street)
-      || this.streetsToUnreserve.includes(street)
-      || this.streetsToComplete.includes(street)) {
+      if (this.streetsToReserve.includes(JSON.stringify(street))
+      || this.streetsToUnreserve.includes(JSON.stringify(street))
+      || this.streetsToComplete.includes(JSON.stringify(street))) {
         this.modalMessage = 'You have already selected this street';
         this.$bvModal.show('error-modal');
         return;
@@ -103,9 +131,9 @@ export default {
       if (selection === 'reserve') {
         this.streetsToReserve.push(JSON.stringify(street));
       } else if (selection === 'unreserve') {
-        this.streetsToUnreserve.push(street);
+        this.streetsToUnreserve.push(JSON.stringify(street));
       } else if (selection === 'complete') {
-        this.streetsToComplete.push(street);
+        this.streetsToComplete.push(JSON.stringify(street));
       }
     },
     reserveStreets() {
@@ -121,7 +149,7 @@ export default {
       });
     },
     unreserveStreets() {
-      this.blockListString = this.streetsToUnReserve.join(', ');
+      this.blockListString = this.streetsToUnreserve.join(', ');
       releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
         this.modalMessage = 'You have successfuly unreserved';
         this.streetsToUnreserve = [];
@@ -144,6 +172,15 @@ export default {
         this.$bvModal.show('street-confirmation-modal');
       });
     },
+    setReserveStreets(blocks) {
+      this.streetsToReserve = blocks;
+    },
+    setUnreserveStreets(blocks) {
+      this.streetsToUnreserve = blocks;
+    },
+    setCompleteStreets(blocks) {
+      this.streetsToComplete = blocks;
+    },
   },
 };
 </script>
@@ -161,13 +198,17 @@ export default {
   margin-bottom: 5px;
 }
 
-.streets-container {
+.label-toggle {
+  margin-left: 5px;
+}
+
+.action-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-between;
-  margin-left: auto;
-  width:60%;
   align-items: baseline;
+}
+.streets-container {
   padding: 5px;
 }
 
@@ -185,7 +226,7 @@ export default {
 
 @media only screen and (max-width: 700px) {
   .map-container {
-    width: 100%;
+    width: 90vw;
   }
 }
 </style>

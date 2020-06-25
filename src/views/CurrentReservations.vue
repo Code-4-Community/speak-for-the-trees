@@ -46,10 +46,10 @@ export default {
   },
   methods: {
     // sends to the user to the map to edit a reservation
-    viewReservation(fid) {
+    viewReservation(id) {
       this.$router.push({
         name: 'ReserveEdit',
-        params: { activeStreetFid: fid, editmode: 'edit' },
+        params: { activeStreetId: id, editmode: 'edit' },
       });
     },
     completeStreet(street) {
