@@ -11,7 +11,6 @@
         </p>
       </router-link>
       <h3>Available teams</h3>
-    </div>
     <div v-if="pendingTeams.length > 0">
       <h1>Pending Applications</h1>
       <router-link
@@ -24,7 +23,6 @@
       </router-link>
     </div>
     <div>
-      <h1>Available Teams</h1>
       <p
           class="basicText"
           v-if="availableTeams.length == 0">
