@@ -51,9 +51,9 @@ export default {
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
       const unreserveSegment = {
-        title: 'Remove',
+        title: 'Unreserve',
         id: 'unreserve',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
       };
       const completeSegment = {
         title: 'Complete',
