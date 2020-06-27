@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <div id="map">
+    <b-button class="label" type="submit" @click="showLabels">
+      {{`${(this.labelsVisible ? "Hide" : "Show")} Block Numbers`}}
+    </b-button>
+  </div>
 </template>
 
 <script>
@@ -26,13 +30,10 @@ export default {
       type: Boolean,
       required: false,
     },
-    labelsVisible: {
-      type: Boolean,
-      required: true,
-    },
   },
   data: () => ({
     modalShow: false,
+    labelsVisible: false,
   }),
   computed: {
     ...mapState({
@@ -40,6 +41,9 @@ export default {
     }),
   },
   methods: {
+    showLabels() {
+      this.labelsVisible = !this.labelsVisible;
+    },
     loadMap() {
       const reserveSegment = {
         title: 'Add',
@@ -256,5 +260,15 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
+  button.label, button.label:hover, button.label:focus {
+    position: absolute;
+    z-index: 100;
+    right: 5px;
+    top: 5px;
+    float: right;
+    background: #9AC356;
+    color: white;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 </style>

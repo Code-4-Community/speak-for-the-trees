@@ -1,21 +1,35 @@
 <template>
   <div class="list-action-row">
     <div class="list-button">
-      <b-button :id="title">{{this.title}} Block List</b-button>
-      <b-popover :target="title" placement="bottom" title="Block List" width="">
-        <div class="blockListContainer" >
-          <span v-for="block in streets" :key="block" class="activeBlock">
+      <b-button
+        class="trigger"
+        :id="title"
+        @click="popoverToggle = !popoverToggle"
+        :disabled="streets.length === 0">
+        {{this.title}} Block List
+      </b-button>
+      <b-popover
+        :target="title"
+        :show.sync="showPopover"
+        triggers="manual"
+        placement="bottom"
+        title="Block List"
+        width="">
+        <div class="block-list-container">
+          <span v-for="block in streets" :key="block" class="active-block">
             <p> {{ block }} </p>
-            <span class="xIcon" @click="removeBlock(block)">
+            <span class="x-icon" @click="removeBlock(block)">
               X
             </span>
           </span>
         </div>
+        <div class="popover-footer">
+          <b-button class="trigger" v-on:click="this.onClick" :disabled="streets.length === 0">
+              {{this.title}}
+          </b-button>
+        </div>
       </b-popover>
     </div>
-    <b-button v-on:click="this.onClick" :disabled="streets.length === 0">
-        {{this.title}}
-    </b-button>
   </div>
 </template>
 
@@ -38,6 +52,11 @@ export default {
       type: Function,
     },
   },
+  data() {
+    return {
+      popoverToggle: false,
+    };
+  },
   methods: {
     removeBlock(block) {
       const arr = this.streets.slice();
@@ -45,7 +64,15 @@ export default {
       if (index !== -1) {
         arr.splice(index, 1);
       }
+      if (arr.length === 0) {
+        this.popoverToggle = false;
+      }
       this.setBlocks(arr);
+    },
+  },
+  computed: {
+    showPopover() {
+      return this.popoverToggle && this.streets.length > 0;
     },
   },
 };
@@ -62,13 +89,20 @@ export default {
     padding-right: 10px;
   }
 
-  .blockListContainer {
+  button.trigger, button.trigger:hover, button.trigger:focus{
+    background: #9AC356;
+    color: white;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .block-list-container {
     display: flex;
     width: 210px;
     flex-wrap: wrap;
   }
 
-  .activeBlock {
+  .active-block {
     display: flex;
     background: #D4EDAA;
     border-radius: 5px;
@@ -79,7 +113,7 @@ export default {
     font-size: 16px;
   }
 
-  .xIcon {
+  .x-icon {
     opacity: 0.6;
     cursor: pointer;
     margin-left: 5px;
@@ -87,7 +121,7 @@ export default {
     font-weight: bold;
   }
 
-  .xIcon:hover {
+  .x-icon:hover {
     opacity: 1;
   }
 </style>

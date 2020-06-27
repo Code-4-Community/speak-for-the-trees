@@ -25,14 +25,8 @@
           v-bind:setBlocks="setCompleteStreets"
           v-bind:title="'Complete'"/>
     </div>
-    <div class="header-bar">
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
-      <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
-      <b-button v-on:click="labelsVisible = !labelsVisible">
-        {{`${(this.labelsVisible ? "Hide" : "Show")} block labels`}}
-      </b-button>
-    </div>
+
+    <hr />
 
     <Map
       class="map-container"
@@ -40,7 +34,6 @@
       v-bind:pushStreet="this.pushStreet"
       v-bind:isAdminMap="this.isAdminMap"
       v-bind:activeStreetId="this.activeStreetId"
-      v-bind:labelsVisible="this.labelsVisible"
       ref="map"/>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
@@ -75,7 +68,6 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
-      labelsVisible: false,
     };
   },
   props: {
@@ -138,7 +130,7 @@ export default {
     reserveStreets() {
       this.blockListString = this.streetsToReserve.join(', ');
       reserveBlocks({ blocks: this.streetsToReserve }).then(() => {
-        this.modalMessage = 'You have successfuly reserved';
+        this.modalMessage = 'You have successfully reserved';
         this.streetsToReserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
@@ -150,7 +142,7 @@ export default {
     unreserveStreets() {
       this.blockListString = this.streetsToUnreserve.join(', ');
       releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
-        this.modalMessage = 'You have successfuly unreserved';
+        this.modalMessage = 'You have successfully unreserved';
         this.streetsToUnreserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
@@ -203,8 +195,7 @@ export default {
 
 .action-row {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: baseline;
 }
 .streets-container {
@@ -220,12 +211,13 @@ export default {
 
 .map-container {
     width: 95vw;
-    height: 50vh;
+    height: 55vh;
+    position: relative;
 }
 
 @media only screen and (max-width: 700px) {
   .map-container {
-    width: 90vw;
+    width: 92vw;
   }
 }
 </style>
