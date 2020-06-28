@@ -46,8 +46,12 @@ export default {
     align-items: center;
   }
 
+
   .title-container {
-    width: 30rem;
+    width: 14rem;
+    @media only screen and (min-width: 650px) {
+      width: 30rem;
+    }
     position: relative;
     display: flex;
     align-items: center;
