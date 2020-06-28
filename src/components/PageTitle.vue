@@ -2,7 +2,10 @@
   <div class="spanner">
     <div class="title-container">
       <return-button :path="this.path" />
-      <h3>{{title}}</h3>
+      <h3>
+        {{title}}
+        <slot></slot>
+      </h3>
       <p>{{subtitle}}</p>
     </div>
   </div>

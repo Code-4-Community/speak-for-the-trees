@@ -4,15 +4,12 @@
       <h3>{{ errorMessage }}</h3>
     </div>
     <div v-if="!error && loaded">
-      <page-title :title="'Test'" :path="{ name: 'CurrentReservations'}" />
-      <h1>
-        {{ team.name }}
+      <page-title :title="team.name" :path="{ name: 'CurrentReservations'}">
         <img v-if="userTeamRole === teamConstants.NONE"
              class="clickable"
              src="../assets/plus-icon.svg"
              alt="apply to team"
-             @click="applyToThisTeam">
-      </h1>
+             @click="applyToThisTeam"></page-title>
       <p class="basicText">{{ team.bio }}</p>
       <b-alert v-if="userTeamRole === teamConstants.PENDING"
                class="pending-request-alert"
@@ -334,6 +331,7 @@ export default {
 }
 .clickable {
   cursor: pointer;
+  padding-bottom: 5px;
 }
 .pending-request-alert {
   width: 60%;
