@@ -10,7 +10,7 @@
       </b-button>
       <b-popover
         :target="title"
-        :show.sync="showPopover"
+        :show.sync="popoverToggle && streets.length > 0"
         triggers="manual"
         placement="bottom"
         title="Block List"
@@ -59,20 +59,16 @@ export default {
   },
   methods: {
     removeBlock(block) {
+      const self = this;
       const arr = this.streets.slice();
       const index = arr.indexOf(block);
       if (index !== -1) {
         arr.splice(index, 1);
       }
       if (arr.length === 0) {
-        this.popoverToggle = false;
+        self.popoverToggle = false;
       }
-      this.setBlocks(arr);
-    },
-  },
-  computed: {
-    showPopover() {
-      return this.popoverToggle && this.streets.length > 0;
+      self.setBlocks(arr);
     },
   },
 };

@@ -1,40 +1,61 @@
 <template>
   <div>
-    <h1>{{ this.header.headerVal }}</h1>
-    <p class="sub-title">{{ this.header.subTitle }}</p>
-    <div class="action-row">
-      <SelectedStreets
-          class="streets-container"
-          v-if="reservedFilter === 0"
-          v-bind:onClick="reserveStreets"
-          v-bind:streets="streetsToReserve"
-          v-bind:setBlocks="setReserveStreets"
-          v-bind:title="'Reserve'"/>
-      <SelectedStreets
-          class="streets-container"
-          v-if="(reservedFilter === 1) || isAdminMap"
-          v-bind:onClick="unreserveStreets"
-          v-bind:streets="streetsToUnreserve"
-          v-bind:setBlocks="setUnreserveStreets"
-          v-bind:title="'Unreserve'"/>
-      <SelectedStreets
-          class="streets-container"
-          v-if="(reservedFilter === 1) || isAdminMap"
-          v-bind:onClick="completeStreets"
-          v-bind:streets="streetsToComplete"
-          v-bind:setBlocks="setCompleteStreets"
-          v-bind:title="'Complete'"/>
+    <span class="caret-icon" v-if="!this.showHeader" @click="showHeader = true">
+          <h4>v</h4>
+    </span>
+    <div class="header" v-if="showHeader">
+      <span class="title">
+        <span class="caret-icon" @click="showHeader = false">
+          <h3>^</h3>
+        </span>
+        <h1>{{ this.header.headerVal }}</h1>
+      </span>
+      <p class="sub-title">{{ this.header.subTitle }}</p>
+      <div class="action-row">
+        <SelectedStreets
+            class="streets-container"
+            v-if="reservedFilter === 0"
+            v-bind:onClick="reserveStreets"
+            v-bind:streets="streetsToReserve"
+            v-bind:setBlocks="setReserveStreets"
+            v-bind:title="'Reserve'"/>
+        <SelectedStreets
+            class="streets-container"
+            v-if="(reservedFilter === 1) || isAdminMap"
+            v-bind:onClick="unreserveStreets"
+            v-bind:streets="streetsToUnreserve"
+            v-bind:setBlocks="setUnreserveStreets"
+            v-bind:title="'Unreserve'"/>
+        <SelectedStreets
+            class="streets-container"
+            v-if="(reservedFilter === 1) || isAdminMap"
+            v-bind:onClick="completeStreets"
+            v-bind:streets="streetsToComplete"
+            v-bind:setBlocks="setCompleteStreets"
+            v-bind:title="'Complete'"/>
+      </div>
+
+      <hr />
     </div>
 
-    <hr />
+      <Map
+        v-if="showHeader"
+        class="map-container-small"
+        v-bind:reservedFilter="this.reservedFilter"
+        v-bind:pushStreet="this.pushStreet"
+        v-bind:isAdminMap="this.isAdminMap"
+        v-bind:activeStreetId="this.activeStreetId"
+        ref="map"/>
 
-    <Map
-      class="map-container"
-      v-bind:reservedFilter="this.reservedFilter"
-      v-bind:pushStreet="this.pushStreet"
-      v-bind:isAdminMap="this.isAdminMap"
-      v-bind:activeStreetId="this.activeStreetId"
-      ref="map"/>
+    <div v-if="!showHeader">
+      <Map
+        class="map-container-large"
+        v-bind:reservedFilter="this.reservedFilter"
+        v-bind:pushStreet="this.pushStreet"
+        v-bind:isAdminMap="this.isAdminMap"
+        v-bind:activeStreetId="this.activeStreetId"
+        ref="map"/>
+    </div>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
       <p>{{ this.modalMessage }}</p>
@@ -68,6 +89,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
+      showHeader: true,
     };
   },
   props: {
@@ -177,6 +199,17 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:5px;
+}
+
+.caret-icon {
+  margin-right: 5px;
+}
+
 .sub-title {
   color: lightgray;
 }
@@ -209,14 +242,26 @@ export default {
   }
 }
 
-.map-container {
-    width: 95vw;
+.map-container-small {
     height: 55vh;
+    width: 95vw;
     position: relative;
 }
 
 @media only screen and (max-width: 700px) {
-  .map-container {
+  .map-container-small {
+    width: 92vw;
+  }
+}
+
+.map-container-large {
+    width: 95vw;
+    position: relative;
+    height: 75vh;
+}
+
+@media only screen and (max-width: 700px) {
+  .map-container-large {
     width: 92vw;
   }
 }

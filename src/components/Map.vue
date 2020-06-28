@@ -60,10 +60,16 @@ export default {
         id: 'complete',
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
-      function getModalContent() {
-      // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
-      // TODO: find way to perform function on ESRI data;
-        return '<b>ID:</b> {ID} <strong>RESERVED:</strong> {RESERVED}';
+      function getModalContent(feature) {
+        let reserveString = 'Open';
+        if (feature.graphic.attributes.RESERVED === '1') {
+          reserveString = 'Reserved';
+        } else if (feature.graphic.attributes.RESERVED === '2') {
+          reserveString = 'Complete';
+        }
+        // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
+        // TODO: find way to perform function on ESRI data;
+        return `<b>ID:</b> {ID} <strong>RESERVED:</strong> ${reserveString}`;
       }
       const actions = [];
       const isCompleteActions = [];
@@ -78,7 +84,7 @@ export default {
       const template = {
       // autocasts as new PopupTemplate()
         title: '{ID}', // Show attribute value
-        content: getModalContent(),
+        content: getModalContent,
         actions,
       };
       const isCompleteTemplate = { ...template, actions: isCompleteActions };
