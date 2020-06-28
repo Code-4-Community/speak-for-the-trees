@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <div id="map">
+    <b-button class="label" type="submit" @click="showLabels">
+      {{`${(this.labelsVisible ? "Hide" : "Show")} Block Numbers`}}
+    </b-button>
+  </div>
 </template>
 
 <script>
@@ -26,13 +30,10 @@ export default {
       type: Boolean,
       required: false,
     },
-    labelsVisible: {
-      type: Boolean,
-      required: true,
-    },
   },
   data: () => ({
     modalShow: false,
+    labelsVisible: false,
   }),
   computed: {
     ...mapState({
@@ -40,6 +41,9 @@ export default {
     }),
   },
   methods: {
+    showLabels() {
+      this.labelsVisible = !this.labelsVisible;
+    },
     loadMap() {
       const reserveSegment = {
         title: 'Add',
@@ -47,19 +51,25 @@ export default {
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
       const unreserveSegment = {
-        title: 'Remove',
+        title: 'Unreserve',
         id: 'unreserve',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
       };
       const completeSegment = {
         title: 'Complete',
         id: 'complete',
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
-      function getModalContent() {
-      // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
-      // TODO: find way to perform function on ESRI data;
-        return '<b>ID:</b> {ID} <strong>RESERVED:</strong> {RESERVED}';
+      function getModalContent(feature) {
+        let reserveString = 'Open';
+        if (feature.graphic.attributes.RESERVED === '1') {
+          reserveString = 'Reserved';
+        } else if (feature.graphic.attributes.RESERVED === '2') {
+          reserveString = 'Complete';
+        }
+        // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
+        // TODO: find way to perform function on ESRI data;
+        return `<b>ID:</b> {ID} <strong>RESERVED:</strong> ${reserveString}`;
       }
       const actions = [];
       const isCompleteActions = [];
@@ -74,7 +84,7 @@ export default {
       const template = {
       // autocasts as new PopupTemplate()
         title: '{ID}', // Show attribute value
-        content: getModalContent(),
+        content: getModalContent,
         actions,
       };
       const isCompleteTemplate = { ...template, actions: isCompleteActions };
@@ -256,5 +266,15 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
+  button.label, button.label:hover, button.label:focus {
+    position: absolute;
+    z-index: 100;
+    right: 5px;
+    top: 5px;
+    float: right;
+    background: #9AC356;
+    color: white;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 </style>
