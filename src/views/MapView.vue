@@ -208,6 +208,7 @@ export default {
 
 .caret-icon {
   margin-left: 5px;
+  cursor: pointer;
 }
 
 .sub-title {
