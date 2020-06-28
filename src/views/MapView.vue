@@ -5,10 +5,10 @@
     </span>
     <div class="header" v-if="showHeader">
       <span class="title">
+        <h1>{{ this.header.headerVal }}</h1>
         <span class="caret-icon" @click="showHeader = false">
           <h3>^</h3>
         </span>
-        <h1>{{ this.header.headerVal }}</h1>
       </span>
       <p class="sub-title">{{ this.header.subTitle }}</p>
       <div class="action-row">
@@ -207,7 +207,7 @@ export default {
 }
 
 .caret-icon {
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .sub-title {
