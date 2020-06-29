@@ -2,16 +2,16 @@
   <div>
     <h1>All Reservations</h1>
     <p
-    v-if="allReservedBlocks.blocks.length == 0"
+    v-if="allReservedBlocks.blocks.length === 0"
     class="basicText">There are currently no reservations</p>
     <b-row v-else id="header" class="text-left">
-      <b-col id="ids" cols="2">ID</b-col>
+      <b-col class="ids" cols="2">ID</b-col>
       <b-col cols="4">User</b-col>
       <b-col cols="4">Reservation Date</b-col>
       <b-col cols="2" align-self="start"></b-col>
     </b-row>
     <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.fid">
-      <b-col id="ids" cols="2" align-self="center">{{ block.fid }}</b-col>
+      <b-col class="ids" cols="2" align-self="center">{{ block.fid }}</b-col>
       <b-col cols="4" align-self="center">{{ block.username }}</b-col>
       <b-col cols="4" align-self="center">{{ block.dateUpdated }}</b-col>
       <b-col id="icon" cols="2" align-self="center">
@@ -101,7 +101,7 @@ export default {
     padding: 0 5px;
   }
 }
-#ids {
+.ids {
   padding-left: 10px;
 }
 #icon {

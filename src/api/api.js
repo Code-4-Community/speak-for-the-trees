@@ -12,6 +12,7 @@ export const disbandTeam = async id => AxiosInstance.post(`${TEAM}/${id}/disband
 export const getTeam = async id => AxiosInstance.get(`${TEAM}/${id}`);
 export const getApplicants = async id => AxiosInstance.get(`${TEAM}/${id}/applicants`);
 export const getAllTeams = async () => AxiosInstance.get(`${TEAM}`);
+export const getAllTeamsAdmin = async () => AxiosInstance.get(`${TEAM}/admin`);
 export const getTeamsCSV = async () => AxiosInstance.get(`${TEAM}/export`);
 
 const BLOCKS_RESERVATION = '/api/v1/protected/blocks';

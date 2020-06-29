@@ -4,7 +4,7 @@
       <h1>Your Teams</h1>
       <p
           class="basicText"
-          v-if="myTeams.length == 0">
+          v-if="myTeams.length === 0">
         You aren't on a team yet, check out some below!
       </p>
       <router-link
@@ -31,7 +31,7 @@
       <h1>Available Teams</h1>
       <p
           class="basicText"
-          v-if="availableTeams.length == 0">
+          v-if="availableTeams.length === 0">
         There are no other teams to join.
       </p>
       <router-link
