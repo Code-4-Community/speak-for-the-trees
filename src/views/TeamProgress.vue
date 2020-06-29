@@ -4,24 +4,27 @@
     <p
         v-if="processedTeams.length === 0"
         class="basicText">There are no teams.</p>
-    <b-row v-else id="header" class="text-left">
-      <b-col class="team" cols="4">Team</b-col>
-      <b-col cols="4">Goal Deadline</b-col>
-      <b-col cols="2" align-self="start">Goal Progress</b-col>
-    </b-row>
-    <b-row class="text-left" v-for="team in processedTeams" :key="team.id" :class="team.textClass">
-      <b-col class="team" cols="4" align-self="center">
-        <router-link :to="`/team/${team.id}`">
-          {{ team.name }}
-        </router-link>
-      </b-col>
-      <b-col cols="4" align-self="center">
-        {{ team.dateString }}
-      </b-col>
-      <b-col cols="2" align-self="center">
-        {{ team.blocksCompleted }} / {{ team.goal }} blocks completed
-      </b-col>
-    </b-row>
+    <div v-else>
+      <b-row id="header" class="text-left">
+        <b-col class="team" cols="4">Team</b-col>
+        <b-col cols="4">Goal Deadline</b-col>
+        <b-col cols="2" align-self="start">Goal Progress</b-col>
+      </b-row>
+      <b-row class="text-left" v-for="team in processedTeams"
+             :key="team.id" :class="team.textClass">
+        <b-col class="team" cols="4" align-self="center">
+          <router-link :to="`/team/${team.id}`">
+            {{ team.name }}
+          </router-link>
+        </b-col>
+        <b-col cols="4" align-self="center">
+          {{ team.dateString }}
+        </b-col>
+        <b-col cols="2" align-self="center">
+          {{ team.blocksCompleted }} / {{ team.goal }} blocks completed
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
@@ -42,7 +45,7 @@ export default {
   },
   computed: {
     ...mapState({
-      allTeams: 'allTeams',
+      allTeamsAdmin: 'allTeamsAdmin',
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
@@ -50,7 +53,7 @@ export default {
       return this.privilegeLevel === privilegeLevelConstants.ADMIN;
     },
     processedTeams() {
-      const processed = this.allTeams.map((team) => {
+      const processed = this.allTeamsAdmin.map((team) => {
         const today = new Date();
         const completionDate = new Date(team.goalCompletionDate);
         const pastGoalDate = today > team.goalCompletionDate;
@@ -78,7 +81,7 @@ export default {
     },
   },
   mounted() {
-    if (this.allTeams?.length === 0) {
+    if (this.allTeamsAdmin?.length === 0) {
       this.$store.dispatch('getAllTeamsAdmin');
     }
   },

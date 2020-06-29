@@ -13,7 +13,7 @@ const getDefaultState = () => ({
   privilegeLevel: -1,
   userData: {},
   teams: [],
-  allTeams: [],
+  allTeamsAdmin: [],
   allTeamsLeaderboard: [],
   allVolunteersLeaderboard: [],
   reservedBlocks: [],
@@ -38,7 +38,7 @@ export default new Vuex.Store({
       state.teams = teams;
     },
     setAllTeamsAdmin(state, { teams }) {
-      state.allTeams = teams;
+      state.allTeamsAdmin = teams;
     },
     setTeamsLeaderboard(state, { teams }) {
       state.allTeamsLeaderboard = teams;
