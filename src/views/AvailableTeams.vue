@@ -50,11 +50,6 @@
                 @click="downloadTeamsCSV">
         Download Teams CSV
       </b-button>
-      <b-button v-if="isAdmin"
-                class="create"
-                @click="downloadBlocksCSV">
-        Download Blocks CSV
-      </b-button>
     </div>
   </div>
 </template>
@@ -63,7 +58,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
-import { getBlocksCSV, getTeamsCSV } from '../api/api';
+import { getTeamsCSV } from '../api/api';
 import privilegeLevelConstants from '../auth/constants';
 import teamConstants from '../constants/teamConstants';
 
@@ -100,12 +95,6 @@ export default {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
-    },
-    /**
-   * Downloads a CSV that contains all Block/User information.
-   */
-    downloadBlocksCSV() {
-      getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
     },
     /**
      * Downloads a CSV that contains all Team/User information.

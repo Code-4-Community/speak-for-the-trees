@@ -105,20 +105,20 @@ export default {
           value: '0',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(154, 195, 86, 0.5)',
+            color: 'rgba(195, 195, 195, 0.5)',
           },
         }, {
           value: '1',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(120, 114, 114, 0.5)',
+            color: 'rgba(240, 240, 30, 0.5)',
           },
         },
         {
           value: '2',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: '#186221',
+            color: 'rgba(134, 195, 86, 0.5)',
           },
         },
         ],
