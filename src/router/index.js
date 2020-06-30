@@ -113,9 +113,7 @@ const routes = [
     path: '/admin-map',
     name: 'AdminMap',
     component: MapView,
-    props: {
-      isAdminMap: true,
-    },
+    props: true,
   },
   {
     path: '/*',
