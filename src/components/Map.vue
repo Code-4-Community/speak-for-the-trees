@@ -33,7 +33,7 @@ export default {
   },
   data: () => ({
     modalShow: false,
-    labelsVisible: false,
+    labelsVisible: true,
   }),
   computed: {
     ...mapState({
@@ -67,9 +67,7 @@ export default {
         } else if (feature.graphic.attributes.RESERVED === '2') {
           reserveString = 'Complete';
         }
-        // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
-        // TODO: find way to perform function on ESRI data;
-        return `<b>ID:</b> {ID} <strong>RESERVED:</strong> ${reserveString}`;
+        return `<strong>Status:</strong> ${reserveString}`;
       }
       const actions = [];
       const isCompleteActions = [];
