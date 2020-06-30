@@ -113,7 +113,7 @@ export default {
           value: '1',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(194, 195, 86, 0.5)',
+            color: 'rgba(240, 240, 30, 0.5)',
           },
         },
         {
