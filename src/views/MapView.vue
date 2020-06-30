@@ -1,41 +1,44 @@
 <template>
   <div>
-    <span class="caret-icon" v-if="!this.showHeader" @click="showHeader = true">
-          <h4>v</h4>
-    </span>
     <div class="header" v-if="showHeader">
       <span class="title">
         <h1>{{ this.header.headerVal }}</h1>
-        <span class="caret-icon" @click="showHeader = false">
-          <h3>^</h3>
+        <span class="caret-icon" @click="showHeader=false">
+          <h3 id="hide-title-tt">^</h3>
         </span>
+        <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+          Hide Title
+        </b-tooltip>
       </span>
       <p class="sub-title">{{ this.header.subTitle }}</p>
-      <div class="action-row">
-        <SelectedStreets
-            class="streets-container"
-            v-if="reservedFilter === 0"
-            v-bind:onClick="reserveStreets"
-            v-bind:streets="streetsToReserve"
-            v-bind:setBlocks="setReserveStreets"
-            v-bind:title="'Reserve'"/>
-        <SelectedStreets
-            class="streets-container"
-            v-if="(reservedFilter === 1) || isAdminMap"
-            v-bind:onClick="unreserveStreets"
-            v-bind:streets="streetsToUnreserve"
-            v-bind:setBlocks="setUnreserveStreets"
-            v-bind:title="'Unreserve'"/>
-        <SelectedStreets
-            class="streets-container"
-            v-if="(reservedFilter === 1) || isAdminMap"
-            v-bind:onClick="completeStreets"
-            v-bind:streets="streetsToComplete"
-            v-bind:setBlocks="setCompleteStreets"
-            v-bind:title="'Complete'"/>
-      </div>
+    </div>
+    <div v-else>
+      <p class="show-text" @click="showHeader=true">show</p>
+    </div>
 
-      <hr />
+    <hr />
+    <div class="action-row">
+      <SelectedStreets
+          class="streets-container"
+          v-if="reservedFilter === 0"
+          v-bind:onClick="reserveStreets"
+          v-bind:streets="streetsToReserve"
+          v-bind:setBlocks="setReserveStreets"
+          v-bind:title="'Reserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="unreserveStreets"
+          v-bind:streets="streetsToUnreserve"
+          v-bind:setBlocks="setUnreserveStreets"
+          v-bind:title="'Unreserve'"/>
+      <SelectedStreets
+          class="streets-container"
+          v-if="(reservedFilter === 1) || isAdminMap"
+          v-bind:onClick="completeStreets"
+          v-bind:streets="streetsToComplete"
+          v-bind:setBlocks="setCompleteStreets"
+          v-bind:title="'Complete'"/>
     </div>
 
       <Map
@@ -107,10 +110,10 @@ export default {
       let headerVal = '';
       let subTitle = '';
       if (this.reservedFilter === 0) {
-        headerVal = 'Reserve New Block';
+        headerVal = 'Reserve New Blocks';
         subTitle = 'you may add multiple blocks per reservation';
       } else if (this.reservedFilter === 1) {
-        headerVal = 'Edit Blocks';
+        headerVal = 'Edit Reservations';
         subTitle = 'press block to edit or cancel reservation';
       } else if (this.isAdminMap) {
         headerVal = 'Edit Active Blocks';
@@ -213,6 +216,12 @@ export default {
 
 .sub-title {
   color: lightgray;
+}
+
+.show-text {
+  color: lightgray;
+  cursor: pointer;
+  margin-bottom: 0;
 }
 
 .header-bar {

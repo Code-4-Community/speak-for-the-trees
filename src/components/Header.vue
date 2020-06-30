@@ -2,8 +2,8 @@
   <div class="header-container" v-show="showNavbar">
     <b-dropdown id="dropdown-1" text="Menu " variant="success" class="m-2" size="lg">
       <b-dropdown-item to="/home">Home</b-dropdown-item>
-      <b-dropdown-item to="/reserve/new">Reserve Streets</b-dropdown-item>
-      <b-dropdown-item to="/reserve/edit">View Reservations Map</b-dropdown-item>
+      <b-dropdown-item to="/reserve/new">Reserve New Blocks</b-dropdown-item>
+      <b-dropdown-item to="/reserve/edit">Reservations Map</b-dropdown-item>
       <b-dropdown-item to="/current-reservations">Reservations List</b-dropdown-item>
       <b-dropdown-divider />
       <b-dropdown-item to="/available-teams">View All Teams</b-dropdown-item>
