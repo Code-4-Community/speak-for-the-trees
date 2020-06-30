@@ -24,11 +24,13 @@ export default {
     }),
   },
   beforeCreate() {
-    if (tokenService.getRefreshToken()) {
+    if (tokenService.isRefreshTokenValid()) {
       refresh().finally(() => {
         this.setUser();
         this.$store.dispatch('getUserData');
       });
+    } else {
+      this.$router.push('/login');
     }
   },
 };
