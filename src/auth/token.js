@@ -50,7 +50,7 @@ const tokenService = {
       return -1;
     }
   },
-  isRefreshTokenVaid() {
+  isRefreshTokenValid() {
     const payload = getTokenPayload(REFRESH_TOKEN_KEY);
     return payload && Math.round(Date.now() / 1000) < payload.exp;
   },

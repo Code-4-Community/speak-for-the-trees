@@ -24,14 +24,14 @@ AxiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401
       && error.response.data === INVALID_ACCESS_TOKEN
-      && tokenService.isRefreshTokenVaid()) {
+      && tokenService.isRefreshTokenValid()) {
       return refresh().then(() => {
         AxiosInstance.defaults.headers['X-Access-Token'] = tokenService.getAccessToken();
         return AxiosInstance(originalRequest);
       });
     } if (error.response.status === 401
       && error.response.data === INVALID_ACCESS_TOKEN
-      && !tokenService.isRefreshTokenVaid()) {
+      && !tokenService.isRefreshTokenValid()) {
       logout();
     } return Promise.reject(error);
   },

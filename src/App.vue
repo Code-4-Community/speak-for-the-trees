@@ -24,7 +24,7 @@ export default {
     }),
   },
   beforeCreate() {
-    if (tokenService.isRefreshTokenVaid()) {
+    if (tokenService.isRefreshTokenValid()) {
       refresh().finally(() => {
         this.setUser();
         this.$store.dispatch('getUserData');
