@@ -13,7 +13,7 @@
     <b-row class="text-left" v-for="block in allCompletedBlocks.blocks" :key="block.fid">
       <b-col id="ids" cols="2" align-self="center">{{ block.id }}</b-col>
       <b-col cols="4" align-self="center">{{ block.username }}</b-col>
-      <b-col cols="4" align-self="center">{{ block.dateUpdated }}</b-col>
+      <b-col cols="4" align-self="center">{{ formatDate(block.dateUpdated) }}</b-col>
       <b-col id="icon" cols="2" align-self="center">
         <b-dropdown
         size="sm"
@@ -65,9 +65,16 @@ export default {
         params: { activeStreetFid: block, editmode: 'edit' },
       });
     },
+    formatDate(date) {
+      const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const [{ value: mo },,
+        { value: da },,
+        { value: ye }] = dtf.formatToParts(date);
+      return `${mo}/${da}/${ye}`;
+    },
     /**
-   * Downloads a CSV that contains all Block/User information.
-   */
+     * Downloads a CSV that contains all Block/User information.
+     */
     downloadBlocksCSV() {
       getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
     },
