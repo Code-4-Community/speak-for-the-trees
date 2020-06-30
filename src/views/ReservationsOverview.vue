@@ -13,7 +13,7 @@
     <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.fid">
       <b-col class="ids" cols="2" align-self="center">{{ block.fid }}</b-col>
       <b-col cols="4" align-self="center">{{ block.username }}</b-col>
-      <b-col cols="4" align-self="center">{{ block.dateUpdated }}</b-col>
+      <b-col cols="4" align-self="center">{{ formatDate(block.dateUpdated) }}</b-col>
       <b-col id="icon" cols="2" align-self="center">
         <b-dropdown
         size="sm"
@@ -70,6 +70,13 @@ export default {
         name: 'ReserveEdit',
         params: { activeStreetFid: block, editmode: 'edit' },
       });
+    },
+    formatDate(date) {
+      const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
+      const [{ value: mo },,
+        { value: da },,
+        { value: ye }] = dtf.formatToParts(date);
+      return `${mo}/${da}/${ye}`;
     },
   },
   computed: {
