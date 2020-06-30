@@ -92,4 +92,8 @@ export default {
 };
 </script>
 
-<style scoped />
+<style scoped>
+.form-row {
+  display: block;
+}
+</style>
