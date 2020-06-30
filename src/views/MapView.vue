@@ -100,12 +100,11 @@ export default {
       type: String,
       required: false,
     },
-    isAdminMap: {
-      type: Boolean,
-      required: false,
-    },
   },
   computed: {
+    isAdminMap() {
+      return this.$route.name === 'AdminMap';
+    },
     header() {
       let headerVal = '';
       let subTitle = '';
