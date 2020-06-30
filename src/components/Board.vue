@@ -1,14 +1,18 @@
 <template>
   <div>
-      <div
-      class="individual"
+      <b-row id="header">
+        <b-col class="rank" cols="3">Rank</b-col>
+        <b-col cols="5">Name</b-col>
+        <b-col class="points" cols="4">Blocks Completed</b-col>
+      </b-row>
+      <b-row
       v-for="individual in individualsWithRank"
       :key="individual.rank"
       :individual="individual">
-        <p class="rank">{{ individual.rank }}</p>
-        <p class="name">{{ individual.name }}</p>
-        <p class="points">{{ individual.blocksCompleted }}</p>
-      </div>
+        <b-col class="rank" cols="3">{{ individual.rank }}</b-col>
+        <b-col cols="5">{{ individual.name }}</b-col>
+        <b-col class="points" cols="4">{{ individual.blocksCompleted }}</b-col>
+      </b-row>
       <h3 v-if="individualsWithRank.length <= 0">
         There's no leaderboard quite yet, check back soon!
       </h3>
@@ -41,21 +45,23 @@ export default {
 </script>
 
 <style scoped lang="less">
-.individual {
-    display: flex;
-    background: #D4EDAA;
-    padding: 0.5rem 0 0.5rem 0;
-    border-bottom: 1px solid white;
-    .rank {
-        font-weight: bold;
-        margin: 0 0 0 8%;
-    }
-    .name {
-        margin: 0 auto 0 15%;
-    }
-    .points {
-        font-style: italic;
-        margin: 0 15% 0 auto;
-    }
+#header {
+  background: #9AC356 !important;
+  border: none !important;
+  .points {
+    padding: 0;
+  }
+}
+.row {
+  background: #D4EDAA;
+  border-bottom: 1px solid white;
+  padding: 0.5rem 0;
+  margin: 0;
+}
+.rank {
+  font-weight: bold;
+}
+.points {
+  font-style: italic;
 }
 </style>
