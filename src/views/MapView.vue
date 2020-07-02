@@ -3,34 +3,32 @@
     <page-title :title="this.header.headerVal" :subtitle="this.header.subTitle" />
     <div class="action-row">
       <SelectedStreets
-          class="streets-container"
           v-if="reservedFilter === 0"
           v-bind:onClick="reserveStreets"
           v-bind:streets="streetsToReserve"
           v-bind:setBlocks="setReserveStreets"
           v-bind:title="'Reserve'"/>
       <SelectedStreets
-          class="streets-container"
           v-if="(reservedFilter === 1) || isAdminMap"
           v-bind:onClick="unreserveStreets"
           v-bind:streets="streetsToUnreserve"
           v-bind:setBlocks="setUnreserveStreets"
           v-bind:title="'Unreserve'"/>
       <SelectedStreets
-          class="streets-container"
           v-if="(reservedFilter === 1) || isAdminMap"
           v-bind:onClick="completeStreets"
           v-bind:streets="streetsToComplete"
           v-bind:setBlocks="setCompleteStreets"
           v-bind:title="'Complete'"/>
-    </div>
-    <div class="header-bar">
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
       <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
       <b-button v-on:click="labelsVisible = !labelsVisible">
         {{`${(this.labelsVisible ? "Hide" : "Show")} block labels`}}
       </b-button>
+    </div>
+    <div class="header-bar">
+      <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
+      <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
+
     </div>
 
     <Map
@@ -186,9 +184,6 @@ export default {
 </script>
 
 <style scoped>
-.sub-title {
-  color: lightgray;
-}
 
 .header-bar {
   display: flex;
@@ -199,25 +194,12 @@ export default {
   margin-bottom: 5px;
 }
 
-.label-toggle {
-  margin-left: 5px;
-}
-
 .action-row {
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
   align-items: baseline;
-}
-.streets-container {
-  padding: 5px;
-}
-
-@media only screen and (max-width: 700px) {
-  .streets-container {
-    width: auto;
-    margin-left: 5px;
-  }
+  flex-wrap: wrap;
 }
 
 .map-container {
@@ -228,6 +210,12 @@ export default {
 @media only screen and (max-width: 700px) {
   .map-container {
     width: 90vw;
+    margin: 0 auto;
+  }
+
+  .action-row {
+    justify-content: center;
+    height: 6rem;
   }
 }
 </style>
