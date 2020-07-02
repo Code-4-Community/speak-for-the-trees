@@ -4,7 +4,7 @@
       <h3>{{ errorMessage }}</h3>
     </div>
     <div v-if="!error && loaded">
-      <page-title :title="team.name" :path="{ name: 'CurrentReservations'}">
+      <page-title :title="team.name">
         <img v-if="userTeamRole === teamConstants.NONE"
              class="clickable"
              src="../assets/plus-icon.svg"

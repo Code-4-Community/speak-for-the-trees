@@ -192,9 +192,10 @@ export default {
 
 .header-bar {
   display: flex;
-  justify-content: space-evenly;
+  padding: 0 5px;
+  justify-content: flex-end;
   width: auto;
-  background-color: #9AC356;
+  /*background-color: #9AC356;*/
   margin-bottom: 5px;
 }
 
