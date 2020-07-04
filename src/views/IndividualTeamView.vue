@@ -74,7 +74,7 @@
               class="clickable"
               v-b-tooltip.hover.bottom
               title="Reject"
-              src="../assets/reject.svg"
+              src="../assets/cross.svg"
               alt="reject"
               @click="denyApplicant(applicant.userId)">
             </div>
