@@ -41,17 +41,25 @@
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
       <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
-
     </div>
-
     <Map
-      class="map-container"
+      v-if="showHeader"
+      class="map-container-small"
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushStreet="this.pushStreet"
       v-bind:isAdminMap="this.isAdminMap"
       v-bind:activeStreetId="this.activeStreetId"
-      v-bind:labelsVisible="this.labelsVisible"
       ref="map"/>
+
+    <div v-if="!showHeader">
+      <Map
+        class="map-container-large"
+        v-bind:reservedFilter="this.reservedFilter"
+        v-bind:pushStreet="this.pushStreet"
+        v-bind:isAdminMap="this.isAdminMap"
+        v-bind:activeStreetId="this.activeStreetId"
+        ref="map"/>
+    </div>
 
     <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
       <p>{{ this.modalMessage }}</p>
@@ -95,20 +103,19 @@ export default {
       type: String,
       required: false,
     },
-    isAdminMap: {
-      type: Boolean,
-      required: false,
-    },
   },
   computed: {
+    isAdminMap() {
+      return this.$route.name === 'AdminMap';
+    },
     header() {
       let headerVal = '';
       let subTitle = '';
       if (this.reservedFilter === 0) {
-        headerVal = 'Reserve New Block';
+        headerVal = 'Reserve New Blocks';
         subTitle = 'you may add multiple blocks per reservation';
       } else if (this.reservedFilter === 1) {
-        headerVal = 'Edit Blocks';
+        headerVal = 'Edit Reservations';
         subTitle = 'press block to edit or cancel reservation';
       } else if (this.isAdminMap) {
         headerVal = 'Edit Active Blocks';
@@ -141,16 +148,19 @@ export default {
       }
       if (selection === 'reserve') {
         this.streetsToReserve.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the reservations list`);
       } else if (selection === 'unreserve') {
         this.streetsToUnreserve.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the unreserve list`);
       } else if (selection === 'complete') {
         this.streetsToComplete.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the completions list`);
       }
     },
     reserveStreets() {
       this.blockListString = this.streetsToReserve.join(', ');
       reserveBlocks({ blocks: this.streetsToReserve }).then(() => {
-        this.modalMessage = 'You have successfuly reserved';
+        this.modalMessage = 'You have successfully reserved';
         this.streetsToReserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
@@ -162,7 +172,7 @@ export default {
     unreserveStreets() {
       this.blockListString = this.streetsToUnreserve.join(', ');
       releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
-        this.modalMessage = 'You have successfuly unreserved';
+        this.modalMessage = 'You have successfully unreserved';
         this.streetsToUnreserve = [];
         this.$bvModal.show('street-confirmation-modal');
         this.$refs.map.loadMap();
@@ -197,6 +207,27 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:5px;
+}
+
+.caret-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.sub-title {
+  color: lightgray;
+}
+
+.show-text {
+  color: lightgray;
+  cursor: pointer;
+  margin-bottom: 0;
+}
 
 .header-bar {
   display: flex;
@@ -209,15 +240,27 @@ export default {
 
 .action-row {
   display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: baseline;
   flex-wrap: wrap;
 }
 
-.map-container {
+.map-container-small {
+    height: 55vh;
     width: 95vw;
-    height: 50vh;
+    position: relative;
+}
+
+@media only screen and (max-width: 700px) {
+  .map-container-small {
+    width: 92vw;
+  }
+}
+
+.map-container-large {
+    width: 95vw;
+    position: relative;
+    height: 75vh;
 }
 
 @media only screen and (max-width: 700px) {
@@ -229,6 +272,9 @@ export default {
   .action-row {
     justify-content: center;
     height: 6rem;
-  }
+}
+
+.map-container-large {
+    width: 92vw;
 }
 </style>

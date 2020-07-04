@@ -67,7 +67,7 @@
             placeholder="TEAM GOAL #"
             ></b-form-input>
             <b-form-invalid-feedback>
-              The goal must be greater than 0
+              The goal must be a whole number greater than 0
             </b-form-invalid-feedback>
           </div>
           <p>BLOCKS BY</p>
@@ -195,7 +195,7 @@ export default {
       if (!this.submitted) {
         return null;
       }
-      return Number(this.form.teamGoal) > 0;
+      return Number(this.form.teamGoal) > 0 && Number.isInteger(Number(this.form.teamGoal));
     },
     validateDate() {
       if (!this.submitted) {

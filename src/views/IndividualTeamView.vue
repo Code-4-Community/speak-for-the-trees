@@ -7,6 +7,8 @@
       <page-title :title="team.name">
         <img v-if="userTeamRole === teamConstants.NONE"
              class="clickable"
+             v-b-tooltip.hover.bottom
+             title="Apply to Team"
              src="../assets/plus-icon.svg"
              alt="apply to team"
              @click="applyToThisTeam"></page-title>
@@ -27,19 +29,22 @@
           <p>BY</p>
           <p>{{ formattedTargetDate }}</p>
       </div>
-      <div class="progressWrapper">
+      <div class="progress-wrapper">
         <div class="progress">
           <div class="progress-bar"
-          :style="barStyle"
-          role="progressbar">
-          {{ progressPercent }}%</div>
+               :style="barStyle"
+               role="progressbar">
+            {{ progressPercent }}%
+          </div>
         </div>
+        <div>
           <img class="clickable"
                src="../assets/trophy.svg"
                alt="trophy"
                @click='toThisTeamLeaderboard'>
+          <p class="progress-fraction">{{ team.blocksCompleted }}/{{ team.goal }}</p>
+        </div>
       </div>
-      <p class="trophyProgress">{{ team.blocksCompleted }}/{{ team.goal }}</p>
       <div v-if="userTeamRole === teamConstants.LEADER">
         <div v-if="!applicantsLoaded && team.applicantsToReview"
              @click="fetchApplicants">
@@ -310,16 +315,26 @@ export default {
   border: none;
   background: none;
 }
-.progressWrapper {
+
+.progress-wrapper {
   display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
 }
-.progressWrapper a {
-  margin: 0 auto 1.5rem 0;
+.progress {
+  margin-top: 6px;
+  margin-right: 6px;
+  width: 70vw;
+}
+.progress-bar {
+  background-color: #9AC356;
+  width: var(--barWidth);
 }
 .trophyProgress {
   text-align: right;
-  margin: auto 2rem 1rem auto;
 }
+
 .banner {
   background: #9AC356;
   font-size: 14px;
@@ -336,14 +351,6 @@ export default {
 .pending-request-alert {
   width: 60%;
   margin: 0 auto 12px;
-}
-.progress {
-  margin: 0.5rem auto 2rem 10vw;
-  width: 70vw;
-}
-.progress-bar {
-  background-color: #9AC356;
-  width: var(--barWidth);
 }
 .basicText {
   color: #C4C4C4;

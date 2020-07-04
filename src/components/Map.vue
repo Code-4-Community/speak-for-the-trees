@@ -1,5 +1,9 @@
 <template>
-  <div></div>
+  <div id="map">
+    <b-button class="label" type="submit" @click="showLabels">
+      {{`${(this.labelsVisible ? "Hide" : "Show")} Block Numbers`}}
+    </b-button>
+  </div>
 </template>
 
 <script>
@@ -26,13 +30,10 @@ export default {
       type: Boolean,
       required: false,
     },
-    labelsVisible: {
-      type: Boolean,
-      required: true,
-    },
   },
   data: () => ({
     modalShow: false,
+    labelsVisible: true,
   }),
   computed: {
     ...mapState({
@@ -40,6 +41,9 @@ export default {
     }),
   },
   methods: {
+    showLabels() {
+      this.labelsVisible = !this.labelsVisible;
+    },
     loadMap() {
       const reserveSegment = {
         title: 'Add',
@@ -47,19 +51,23 @@ export default {
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
       const unreserveSegment = {
-        title: 'Remove',
+        title: 'Unreserve',
         id: 'unreserve',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
       };
       const completeSegment = {
         title: 'Complete',
         id: 'complete',
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
-      function getModalContent() {
-      // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
-      // TODO: find way to perform function on ESRI data;
-        return '<b>ID:</b> {ID} <strong>RESERVED:</strong> {RESERVED}';
+      function getModalContent(feature) {
+        let reserveString = 'Open';
+        if (feature.graphic.attributes.RESERVED === '1') {
+          reserveString = 'Reserved';
+        } else if (feature.graphic.attributes.RESERVED === '2') {
+          reserveString = 'Complete';
+        }
+        return `<strong>Status:</strong> ${reserveString}`;
       }
       const actions = [];
       const isCompleteActions = [];
@@ -74,7 +82,7 @@ export default {
       const template = {
       // autocasts as new PopupTemplate()
         title: '{ID}', // Show attribute value
-        content: getModalContent(),
+        content: getModalContent,
         actions,
       };
       const isCompleteTemplate = { ...template, actions: isCompleteActions };
@@ -97,20 +105,20 @@ export default {
           value: '0',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(154, 195, 86, 0.5)',
+            color: 'rgba(195, 195, 195, 0.5)',
           },
         }, {
           value: '1',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(120, 114, 114, 0.5)',
+            color: 'rgba(240, 240, 30, 0.5)',
           },
         },
         {
           value: '2',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: '#186221',
+            color: 'rgba(134, 195, 86, 0.5)',
           },
         },
         ],
@@ -256,5 +264,15 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-
+  button.label, button.label:hover, button.label:focus {
+    position: absolute;
+    z-index: 100;
+    right: 5px;
+    top: 5px;
+    float: right;
+    background: #9AC356;
+    color: white;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
 </style>

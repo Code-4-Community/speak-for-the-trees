@@ -14,7 +14,7 @@
     id="text-password"
     aria-describedby="password-help-block"></b-input>
     <b-form-text id="password-help-block">
-      Enter your current password in order to change it.
+      Enter your current password in order to change it
     </b-form-text>
 
     <label for="text-password">New Password</label>
@@ -24,8 +24,7 @@
     id="text-password"
     aria-describedby="password-help-block"></b-input>
     <b-form-text id="password-help-block">
-      Your password must be 8-20 characters long, contain letters and numbers, and must not
-      contain spaces, special characters, or emoji.
+      Your password must be at least 8 characters long and contain letters and numbers
     </b-form-text>
 
     <label for="text-password">Confirm Password</label>
@@ -43,9 +42,6 @@
     <label for="text-password">Enter Password</label>
     <b-input type="password" id="text-password" aria-describedby="password-help-block"
     v-model="changeEmailRequest.password"></b-input>
-    <b-form-text id="email-help-block">
-      ....
-    </b-form-text>
 
     <label for="text-email">New Email</label>
     <b-input type="email" id="text-email-confirm"
@@ -58,13 +54,22 @@
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
       <b-list-group-item>Email: {{ userData.email }}</b-list-group-item>
 
-  <b-list-group-item><b-button v-b-modal.modal-3 block variant="primary">
-    Change Email</b-button></b-list-group-item>
-  <b-list-group-item><b-button v-b-modal.modal-2 block variant="primary">
-    Change Password</b-button></b-list-group-item>
-  <b-list-group-item><b-button v-b-modal.modal-1 block variant="danger">
-    Deactivate Account</b-button></b-list-group-item>
-</b-list-group>
+  <b-list-group-item>
+    <b-button class="standardButton" v-b-modal.modal-3 block>
+    Change Email
+    </b-button>
+  </b-list-group-item>
+  <b-list-group-item>
+    <b-button class="standardButton" v-b-modal.modal-2 block>
+    Change Password
+    </b-button>
+  </b-list-group-item>
+  <b-list-group-item v-if="!isAdmin">
+    <b-button v-b-modal.modal-1 block variant="danger">
+    Deactivate Account
+    </b-button>
+  </b-list-group-item>
+  </b-list-group>
   </div>
 </template>
 
@@ -74,6 +79,7 @@ import {
   changePassword, changeEmail, deleteUser,
 } from '../api/api';
 import PageTitle from '../components/PageTitle.vue';
+import constants from '../auth/constants';
 
 export default {
   name: 'Profile',
@@ -83,9 +89,13 @@ export default {
   computed: {
     ...mapState({
       userData: 'userData',
+      privilegeLevel: 'privilegeLevel',
     }),
     fullName() {
       return `${this.userData.firstName} ${this.userData.lastName}`;
+    },
+    isAdmin() {
+      return this.privilegeLevel === constants.ADMIN;
     },
   },
   data() {
@@ -138,6 +148,10 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped lang="less">
+button.standardButton, button.standardButton:hover, button.standardButton:focus {
+  background: #9AC356;
+  border-color: #9AC356;
+  box-shadow: none;
+}
 </style>
