@@ -1,6 +1,19 @@
 <template>
   <div>
-    <page-title :title="this.header.headerVal" :subtitle="this.header.subTitle" />
+    <page-title v-if="showHeader" :subtitle="this.header.subTitle">
+      <span class="caret-icon" @click="showHeader=false">
+          <h3 id="hide-title-tt">Reserve New Block ^</h3>
+        </span>
+      <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+        Hide Title
+      </b-tooltip>
+    </page-title>
+    <div v-else>
+      <p class="show-text" @click="showHeader=true">show</p>
+    </div>
+    <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+      Hide Title
+    </b-tooltip>
     <div class="action-row">
       <SelectedStreets
           v-if="reservedFilter === 0"
@@ -74,7 +87,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
-      labelsVisible: false,
+      showHeader: true,
     };
   },
   props: {

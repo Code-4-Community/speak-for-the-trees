@@ -61,7 +61,7 @@ export default {
     margin: 0 3rem 0 3rem;
   }
 
-  .title-container > h3 {
+  h3 {
     font-weight: bold;
     width: 100%;
     margin: 0;
