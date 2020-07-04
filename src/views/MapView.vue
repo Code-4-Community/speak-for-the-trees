@@ -145,10 +145,13 @@ export default {
       }
       if (selection === 'reserve') {
         this.streetsToReserve.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the reservations list`);
       } else if (selection === 'unreserve') {
         this.streetsToUnreserve.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the unreserve list`);
       } else if (selection === 'complete') {
         this.streetsToComplete.push(JSON.stringify(street));
+        this.$bvToast.toast(`Added block ${street} to the completions list`);
       }
     },
     reserveStreets() {
