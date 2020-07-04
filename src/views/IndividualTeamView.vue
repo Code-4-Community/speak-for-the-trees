@@ -61,20 +61,22 @@
             <div class="banner team-table-header">TEAM APPLICANTS</div>
             <div class="team-table-row" v-for="applicant in applicants" :key="applicant.userId">
               <p class="identifier">{{ applicant.username }}</p>
-              <b-dropdown
-                  id="applicant-actions"
-                  class="actions"
-                  size="sm"
-                  dropleft
-                  variant="link"
-                  toggle-class="text-decoration-none"
-                  no-caret>
-                <template v-slot:button-content>
-                  <img src="../assets/ellipsis-icon.svg" alt="actions">
-                </template>
-                <b-dropdown-item @click="acceptApplicant(applicant.userId)">Accept</b-dropdown-item>
-                <b-dropdown-item @click="denyApplicant(applicant.userId)">Reject</b-dropdown-item>
-              </b-dropdown>
+              <img
+              id="accept"
+              class="clickable"
+              v-b-tooltip.hover.bottom
+              title="Accept"
+              src="../assets/check.svg"
+              alt="accept"
+              @click="acceptApplicant(applicant.userId)">
+              <img
+              id="reject"
+              class="clickable"
+              v-b-tooltip.hover.bottom
+              title="Reject"
+              src="../assets/reject.svg"
+              alt="reject"
+              @click="denyApplicant(applicant.userId)">
             </div>
           </div>
         </b-collapse>
@@ -374,6 +376,12 @@ export default {
   }
   .identifier {
     margin: auto 0 auto 1rem;
+  }
+  #accept {
+    margin: 0 0.5rem 0 auto;
+  }
+  #reject {
+    margin: 0 0.5rem 0 0;
   }
 }
 </style>
