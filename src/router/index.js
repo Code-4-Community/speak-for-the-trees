@@ -27,6 +27,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView,
+    props: true,
   },
   {
     path: '/login',

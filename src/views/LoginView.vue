@@ -79,7 +79,10 @@ export default {
         login(user)
           .then(() => {
             this.setUser();
-            this.$router.push('/');
+            this.$router.push({
+              name: 'Home',
+              params: { firstLogIn: false },
+            });
             this.$store.dispatch('getUserData');
           })
           .catch(() => {

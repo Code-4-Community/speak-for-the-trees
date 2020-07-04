@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <h1>Welcome back, {{ userData.firstName }}!</h1>
+    <h1 v-if="firstLogIn">Welcome {{ userData.firstName }}!</h1>
+    <h1 v-else>Welcome back, {{ userData.firstName }}!</h1>
     <b-button-group vertical>
       <b-button @click="toNewReservations">New Reservations</b-button>
       <b-button @click="toCurrentReservations">Current Reservations</b-button>
@@ -21,6 +22,12 @@ Vue.use(VueRouter);
 
 export default {
   name: 'home',
+  props: {
+    firstLogIn: {
+      type: Boolean,
+      required: false,
+    },
+  },
   computed: mapState({
     userData: 'userData',
   }),
