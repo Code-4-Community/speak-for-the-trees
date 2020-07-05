@@ -62,21 +62,21 @@
             <div class="team-table-row" v-for="applicant in applicants" :key="applicant.userId">
               <p class="identifier">{{ applicant.username }}</p>
               <img
-              id="accept"
-              class="clickable"
-              v-b-tooltip.hover.bottom
-              title="Accept"
-              src="../assets/check.svg"
-              alt="accept"
-              @click="acceptApplicant(applicant.userId)">
+                id="accept"
+                class="clickable"
+                v-b-tooltip.hover.bottom
+                title="Accept"
+                src="../assets/check.svg"
+                alt="accept"
+                @click="acceptApplicant(applicant.userId)">
               <img
-              id="reject"
-              class="clickable"
-              v-b-tooltip.hover.bottom
-              title="Reject"
-              src="../assets/cross.svg"
-              alt="reject"
-              @click="denyApplicant(applicant.userId)">
+                id="reject"
+                class="clickable"
+                v-b-tooltip.hover.bottom
+                title="Reject"
+                src="../assets/cross.svg"
+                alt="reject"
+                @click="denyApplicant(applicant.userId)">
             </div>
           </div>
         </b-collapse>
