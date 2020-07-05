@@ -25,6 +25,7 @@ export default {
   props: {
     firstLogIn: {
       type: Boolean,
+      default: false,
       required: false,
     },
   },
