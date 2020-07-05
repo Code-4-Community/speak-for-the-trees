@@ -1,15 +1,13 @@
 <template>
   <div>
     <page-title v-if="showHeader" :subtitle="this.header.subTitle" title="">
-      <span class="caret-icon" @click="showHeader=false">
-          <h3 id="hide-title-tt">Reserve New Block ^</h3>
-        </span>
+      <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">Reserve New Block ^</h3>
       <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
         Hide Title
       </b-tooltip>
     </page-title>
     <div v-else>
-      <p class="show-text" @click="showHeader=true">show</p>
+      <b-button class="show-text" @click="showHeader=true">show</b-button>
     </div>
     <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
       Hide Title
@@ -225,9 +223,7 @@ export default {
 }
 
 .show-text {
-  color: lightgray;
-  cursor: pointer;
-  margin-bottom: 0;
+  margin-bottom: .75rem;
 }
 
 .header-bar {
@@ -279,6 +275,4 @@ export default {
     width: 92vw;
   }
 }
-
-
 </style>
