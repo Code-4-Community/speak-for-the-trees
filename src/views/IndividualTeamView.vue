@@ -68,7 +68,7 @@
                 title="Accept"
                 src="../assets/check.svg"
                 alt="accept"
-                @click="acceptApplicant(applicant.userId)">
+                @click="confirmAcceptance(applicant)">
               <img
                 id="reject"
                 class="clickable"
@@ -76,7 +76,7 @@
                 title="Reject"
                 src="../assets/cross.svg"
                 alt="reject"
-                @click="denyApplicant(applicant.userId)">
+                @click="confirmRejection(applicant)">
             </div>
           </div>
         </b-collapse>
@@ -289,9 +289,45 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+    confirmRejection(applicant) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you would like to reject ${applicant.username}?`, {
+        size: 'sm',
+        okVariant: 'success',
+        cancelVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2 border-top-0',
+        centered: true,
+      }).then((confirmed) => {
+        if (confirmed) {
+          return this.denyApplicant(applicant.userId);
+        }
+        return '';
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
+      });
+    },
     denyApplicant(applicantId) {
       rejectApplicant(this.$route.params.id, applicantId).then(() => {
         this.removeApplicant(applicantId);
+      });
+    },
+    confirmAcceptance(applicant) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you would like to accept ${applicant.username}?`, {
+        size: 'sm',
+        okVariant: 'success',
+        cancelVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2 border-top-0',
+        centered: true,
+      }).then((confirmed) => {
+        if (confirmed) {
+          return this.acceptApplicant(applicant.userId);
+        }
+        return '';
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     acceptApplicant(applicantId) {
@@ -302,8 +338,7 @@ export default {
         this.team = res.data;
         this.loaded = true;
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
   },
