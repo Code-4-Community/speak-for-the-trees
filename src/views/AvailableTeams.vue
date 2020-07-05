@@ -53,7 +53,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import PageTitle from '../components/PageTitle.vue';
-import { getBlocksCSV, getTeamsCSV } from '../api/api';
 import { getTeamsCSV } from '../api/api';
 import privilegeLevelConstants from '../auth/constants';
 import teamConstants from '../constants/teamConstants';

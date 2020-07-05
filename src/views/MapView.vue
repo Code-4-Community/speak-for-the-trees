@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title v-if="showHeader" :subtitle="this.header.subTitle">
+    <page-title v-if="showHeader" :subtitle="this.header.subTitle" title="">
       <span class="caret-icon" @click="showHeader=false">
           <h3 id="hide-title-tt">Reserve New Block ^</h3>
         </span>
@@ -95,6 +95,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
+      labelsVisible: true,
       showHeader: true,
     };
   },
@@ -272,9 +273,12 @@ export default {
   .action-row {
     justify-content: center;
     height: 6rem;
+  }
+
+  .map-container-large {
+    width: 92vw;
+  }
 }
 
-.map-container-large {
-    width: 92vw;
-}
+
 </style>
