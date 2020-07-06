@@ -61,12 +61,12 @@ export default {
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
       function getModalContent(feature) {
-        let reserveString = 'Open';
-        if (feature.graphic.attributes.RESERVED === '1') {
-          reserveString = 'Reserved';
-        } else if (feature.graphic.attributes.RESERVED === '2') {
-          reserveString = 'Complete';
-        }
+        const reserveString = feature.graphic.attributes.RESERVED;
+        // if (feature.graphic.attributes.RESERVED === '1') {
+        //   reserveString = 'Reserved';
+        // } else if (feature.graphic.attributes.RESERVED === '2') {
+        //   reserveString = 'Complete';
+        // }
         // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
         // TODO: find way to perform function on ESRI data;
         return `<b>ID:</b> {ID} <strong>RESERVED:</strong> ${reserveString}`;
@@ -148,8 +148,8 @@ export default {
         sqlExpression = reservedIdsFilter;
       }
       // lazy load the required ArcGIS API for JavaScript modules and CSS
-      loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
-        .then(([ArcGISMap, MapView, FeatureLayer]) => {
+      loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
+        .then(([ArcGISMap, MapView, FeatureLayer, Locate]) => {
           const map = new ArcGISMap({
             basemap: 'gray',
           });
@@ -172,11 +172,17 @@ export default {
             // visible: !!props.currentSelection
             },
           });
+          const locate = new Locate({
+            view: this.view,
+            useHeadingEnabled: false,
+            goToOverride: (view, options) => view.goTo(options.target),
+          });
+          this.view.ui.add(locate, 'top-left');
           const streetSegments = new FeatureLayer({
             title: 'blocks',
             url: process.env.VUE_APP_ARCGIS_URL,
             renderer,
-            outFields: ['BLOCK'],
+            outFields: ['BLOCK', 'RESERVED'],
             popupTemplate: template,
             labelingInfo: [blockLabel],
             labelsVisible: this.labelsVisible,
