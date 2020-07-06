@@ -43,17 +43,14 @@
         </p>
       </router-link>
     </div>
-    <b-button class="create" @click="createTeam">Create New Team</b-button>
-    <b-button v-if="isAdmin"
-              class="create"
-              @click="downloadTeamsCSV">
-      Download Teams CSV
-    </b-button>
-    <b-button v-if="isAdmin"
-              class="create"
-              @click="downloadBlocksCSV">
-      Download Blocks CSV
-    </b-button>
+    <div class="button-row">
+      <b-button class="create" @click="createTeam">Create New Team</b-button>
+      <b-button v-if="isAdmin"
+                class="create"
+                @click="downloadTeamsCSV">
+        Download Teams CSV
+      </b-button>
+    </div>
   </div>
 </template>
 
@@ -61,7 +58,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
-import { getBlocksCSV, getTeamsCSV } from '../api/api';
+import { getTeamsCSV } from '../api/api';
 import privilegeLevelConstants from '../auth/constants';
 import teamConstants from '../constants/teamConstants';
 
@@ -98,12 +95,6 @@ export default {
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
-    },
-    /**
-   * Downloads a CSV that contains all Block/User information.
-   */
-    downloadBlocksCSV() {
-      getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
     },
     /**
      * Downloads a CSV that contains all Team/User information.
@@ -149,7 +140,15 @@ export default {
   width: 100%;
 }
 
-button.create, button.create:hover, button.create:focus {
+.button-row {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 5em;
+}
+
+button.create {
   background: #9AC356;
   color: white;
   border-radius: 5px;
@@ -157,6 +156,8 @@ button.create, button.create:hover, button.create:focus {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 0.5rem;
   margin: 1rem 5vw 0 0;
-  float: right;
+}
+button.create:hover {
+  box-shadow: none;
 }
 </style>

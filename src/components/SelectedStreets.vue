@@ -85,6 +85,11 @@ export default {
     padding-right: 10px;
   }
 
+  .popover-footer {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
   button.trigger, button.trigger:hover, button.trigger:focus{
     background: #9AC356;
     color: white;

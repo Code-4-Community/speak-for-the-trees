@@ -27,6 +27,7 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomeView,
+    props: true,
   },
   {
     path: '/login',
@@ -113,9 +114,7 @@ const routes = [
     path: '/admin-map',
     name: 'AdminMap',
     component: MapView,
-    props: {
-      isAdminMap: true,
-    },
+    props: true,
   },
   {
     path: '/*',

@@ -33,7 +33,7 @@ export default {
   },
   data: () => ({
     modalShow: false,
-    labelsVisible: false,
+    labelsVisible: true,
   }),
   computed: {
     ...mapState({
@@ -61,15 +61,13 @@ export default {
         image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
       };
       function getModalContent(feature) {
-        const reserveString = feature.graphic.attributes.RESERVED;
-        // if (feature.graphic.attributes.RESERVED === '1') {
-        //   reserveString = 'Reserved';
-        // } else if (feature.graphic.attributes.RESERVED === '2') {
-        //   reserveString = 'Complete';
-        // }
-        // const reserved = '{RESERVED}' === '0' ? 'Open' : 'Reserved';
-        // TODO: find way to perform function on ESRI data;
-        return `<b>ID:</b> {ID} <strong>RESERVED:</strong> ${reserveString}`;
+        let reserveString = 'Open';
+        if (feature.graphic.attributes.RESERVED === '1') {
+          reserveString = 'Reserved';
+        } else if (feature.graphic.attributes.RESERVED === '2') {
+          reserveString = 'Complete';
+        }
+        return `<strong>Status:</strong> ${reserveString}`;
       }
       const actions = [];
       const isCompleteActions = [];

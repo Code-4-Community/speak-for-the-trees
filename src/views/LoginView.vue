@@ -79,7 +79,10 @@ export default {
         login(user)
           .then(() => {
             this.setUser();
-            this.$router.push('/');
+            this.$router.push({
+              name: 'Home',
+              params: { firstLogIn: false },
+            });
             this.$store.dispatch('getUserData');
           })
           .catch(() => {
@@ -92,4 +95,8 @@ export default {
 };
 </script>
 
-<style scoped />
+<style scoped>
+.form-row {
+  display: block;
+}
+</style>
