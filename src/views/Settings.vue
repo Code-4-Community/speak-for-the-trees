@@ -49,6 +49,26 @@
    </b-form>
   </b-modal>
 
+    <b-modal @ok="changeUsername" id="modal-4" title="Username Change">
+      <b-form @submit.stop.prevent>
+        <label for="text-password-username">Enter Password</label>
+        <b-input type="password" id="text-password-username"
+                 aria-describedby="password-help-block-username"
+                 v-model="changeUsernameRequest.password"></b-input>
+        <b-form-text id="password-help-block-username">
+          Enter your current password in order to change your username
+        </b-form-text>
+
+        <label for="text-username">New Username</label>
+        <b-input type="text" id="text-username"
+                 aria-describedby="username-help-block"
+                 v-model="changeUsernameRequest.newUsername"/>
+        <b-form-text id="username-help-block">
+          Enter a new username that is not already in use
+        </b-form-text>
+      </b-form>
+    </b-modal>
+
 <h3>{{ userData.firstName }} {{ userData.lastName }}</h3>
     <b-list-group :flush='true'>
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
@@ -57,6 +77,11 @@
   <b-list-group-item>
     <b-button class="standardButton" v-b-modal.modal-3 block>
     Change Email
+    </b-button>
+  </b-list-group-item>
+  <b-list-group-item>
+    <b-button class="standardButton" v-b-modal.modal-4 block>
+      Change Username
     </b-button>
   </b-list-group-item>
   <b-list-group-item>
@@ -76,7 +101,7 @@
 <script>
 import { mapState } from 'vuex';
 import {
-  changePassword, changeEmail, deleteUser,
+  changePassword, changeEmail, deleteUser, changeUsername,
 } from '../api/api';
 import constants from '../auth/constants';
 
@@ -101,6 +126,10 @@ export default {
         password: '',
         newEmail: '',
       },
+      changeUsernameRequest: {
+        password: '',
+        newUsername: '',
+      },
     };
   },
   methods: {
@@ -116,6 +145,7 @@ export default {
         };
       });
     },
+
     changeEmail() {
       changeEmail(this.changeEmailRequest).then(() => {
         this.$bvToast.toast('Successfully changed email!');
@@ -129,6 +159,22 @@ export default {
         };
       });
     },
+
+    changeUsername() {
+      changeUsername(this.changeUsernameRequest).then(() => {
+        this.$bvToast.toast('Successfully changed username!');
+        this.$store.dispatch('getUserData');
+      }).catch((error) => {
+        const errorMsg = error.response?.data || error;
+        this.$bvToast.toast(`Failed to change your username: ${errorMsg}`);
+      }).finally(() => {
+        this.changeUsernameRequest = {
+          password: '',
+          newUsername: '',
+        };
+      });
+    },
+
     deactivateAccount() {
       deleteUser().then(() => {
         this.$bvToast.toast('Your account has been deactivated');
