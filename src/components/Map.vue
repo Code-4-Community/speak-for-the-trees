@@ -154,8 +154,8 @@ export default {
           this.view = new MapView({
             container: this.$el,
             map,
-            center: [-71.0892, 42.3398],
-            zoom: 15,
+            center: [-71.0640, 42.3554],
+            zoom: 13.5,
             popup: {
               dockEnabled: true,
               dockOptions: {
