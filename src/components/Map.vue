@@ -62,9 +62,9 @@ export default {
       };
       function getModalContent(feature) {
         let reserveString = 'Open';
-        if (feature.graphic.attributes.RESERVED === '1') {
+        if (feature.graphic.attributes.RESERVED === 1) {
           reserveString = 'Reserved';
-        } else if (feature.graphic.attributes.RESERVED === '2') {
+        } else if (feature.graphic.attributes.RESERVED === 2) {
           reserveString = 'Complete';
         }
         return `<strong>Status:</strong> ${reserveString}`;
@@ -208,19 +208,21 @@ export default {
             completeBlocks.definitionExpression = completeExpression;
             map.add(completeBlocks);
           }
-          // Opens a popup with the street information that corresponds with the given FID
+          // Opens a popup with the street information that corresponds with the given ID
           this.view.when(() => {
             if (this.activeStreetId !== undefined) {
             // Create a query where the ID equals the given ID
               const query = streetSegments.createQuery();
-              query.where = `ID = ${this.activeStreetId} AND RESERVED = 1`;
+              query.where = `ID = ${this.activeStreetId}  AND RESERVED = 1`;
               streetSegments.queryFeatures(query)
                 .then((response) => {
                 // ID is a key so there should only be one item in the
                 // features array that is returned
                   const streetFeatures = response.features;
                   // Sets what the popup should look like
-                  streetFeatures[0].popupTemplate = template;
+                  if (streetFeatures.length > 0) {
+                    streetFeatures[0].popupTemplate = template;
+                  }
                   this.view.popup.open({
                     features: streetFeatures,
                   });
