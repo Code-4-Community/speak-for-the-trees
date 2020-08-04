@@ -130,7 +130,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (tokenService.getPrivilegeLevel() < 0) {
-    if (to.name === 'Login' || to.name === 'SignUp') next();
+    if (to.name === 'Login' || to.name === 'SignUp' || to.path === '/forgot-password-reset/*') next();
     else next({ name: 'Login' });
   } else next();
   if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {
