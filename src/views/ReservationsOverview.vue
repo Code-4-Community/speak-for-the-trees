@@ -11,7 +11,7 @@
         <b-col cols="4">Reservation Date</b-col>
         <b-col cols="2" align-self="start"></b-col>
       </b-row>
-      <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.fid">
+      <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.id">
         <b-col class="ids" cols="2" align-self="center">{{ block.id }}</b-col>
         <b-col cols="4" align-self="center">{{ block.username }}</b-col>
         <b-col cols="4" align-self="center">{{ formatDate(block.dateUpdated) }}</b-col>
