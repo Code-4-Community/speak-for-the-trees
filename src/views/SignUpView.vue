@@ -119,7 +119,10 @@ export default {
         signup(user)
           .then(() => {
             this.setUser();
-            this.$router.push('/');
+            this.$router.push({
+              name: 'Home',
+              params: { firstLogIn: true },
+            });
             this.$store.dispatch('getUserData');
           })
           .catch((error) => {

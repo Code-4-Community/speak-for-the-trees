@@ -62,9 +62,9 @@ export default {
       };
       function getModalContent(feature) {
         let reserveString = 'Open';
-        if (feature.graphic.attributes.RESERVED === '1') {
+        if (feature.graphic.attributes.RESERVED === 1) {
           reserveString = 'Reserved';
-        } else if (feature.graphic.attributes.RESERVED === '2') {
+        } else if (feature.graphic.attributes.RESERVED === 2) {
           reserveString = 'Complete';
         }
         return `<strong>Status:</strong> ${reserveString}`;
@@ -83,6 +83,7 @@ export default {
       // autocasts as new PopupTemplate()
         title: '{ID}', // Show attribute value
         content: getModalContent,
+        outFields: ['*'],
         actions,
       };
       const isCompleteTemplate = { ...template, actions: isCompleteActions };
@@ -135,7 +136,7 @@ export default {
       const completeExpression = 'RESERVED = 2';
       // Creates a filter from the given list of IDs so that only the given
       // streets will appear on the map
-      const reservedIdsFilter = `ID = ${this.reservedBlocks.join(' OR ID = ')}`;
+      const reservedIdsFilter = `ID = ${this.reservedBlocks.join(' OR ID = ')} AND RESERVED = 1`;
       if (this.isAdminMap) {
         sqlExpression = 'RESERVED = 1';
       } else if (this.reservedFilter === 0) {
@@ -146,16 +147,16 @@ export default {
         sqlExpression = reservedIdsFilter;
       }
       // lazy load the required ArcGIS API for JavaScript modules and CSS
-      loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer'], { css: true })
-        .then(([ArcGISMap, MapView, FeatureLayer]) => {
+      loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
+        .then(([ArcGISMap, MapView, FeatureLayer, Locate]) => {
           const map = new ArcGISMap({
             basemap: 'gray',
           });
           this.view = new MapView({
             container: this.$el,
             map,
-            center: [-71.0892, 42.3398],
-            zoom: 15,
+            center: [-71.0640, 42.3554],
+            zoom: 13.5,
             popup: {
               dockEnabled: true,
               dockOptions: {
@@ -170,11 +171,16 @@ export default {
             // visible: !!props.currentSelection
             },
           });
+          const locate = new Locate({
+            view: this.view,
+            useHeadingEnabled: false,
+            goToOverride: (view, options) => view.goTo(options.target),
+          });
+          this.view.ui.add(locate, 'top-left');
           const streetSegments = new FeatureLayer({
             title: 'blocks',
             url: process.env.VUE_APP_ARCGIS_URL,
             renderer,
-            outFields: ['BLOCK'],
             popupTemplate: template,
             labelingInfo: [blockLabel],
             labelsVisible: this.labelsVisible,
@@ -202,19 +208,21 @@ export default {
             completeBlocks.definitionExpression = completeExpression;
             map.add(completeBlocks);
           }
-          // Opens a popup with the street information that corresponds with the given FID
+          // Opens a popup with the street information that corresponds with the given ID
           this.view.when(() => {
             if (this.activeStreetId !== undefined) {
             // Create a query where the ID equals the given ID
               const query = streetSegments.createQuery();
-              query.where = `ID = ${this.activeStreetId}`;
+              query.where = `ID = ${this.activeStreetId}  AND RESERVED = 1`;
               streetSegments.queryFeatures(query)
                 .then((response) => {
                 // ID is a key so there should only be one item in the
                 // features array that is returned
                   const streetFeatures = response.features;
                   // Sets what the popup should look like
-                  streetFeatures[0].popupTemplate = template;
+                  if (streetFeatures.length > 0) {
+                    streetFeatures[0].popupTemplate = template;
+                  }
                   this.view.popup.open({
                     features: streetFeatures,
                   });

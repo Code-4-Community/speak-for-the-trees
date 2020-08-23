@@ -59,20 +59,22 @@
             <div class="banner team-table-header">TEAM APPLICANTS</div>
             <div class="team-table-row" v-for="applicant in applicants" :key="applicant.userId">
               <p class="identifier">{{ applicant.username }}</p>
-              <b-dropdown
-                  id="applicant-actions"
-                  class="actions"
-                  size="sm"
-                  dropleft
-                  variant="link"
-                  toggle-class="text-decoration-none"
-                  no-caret>
-                <template v-slot:button-content>
-                  <img src="../assets/ellipsis-icon.svg" alt="actions">
-                </template>
-                <b-dropdown-item @click="acceptApplicant(applicant.userId)">Accept</b-dropdown-item>
-                <b-dropdown-item @click="denyApplicant(applicant.userId)">Reject</b-dropdown-item>
-              </b-dropdown>
+              <img
+                id="accept"
+                class="clickable"
+                v-b-tooltip.hover.bottom
+                title="Accept"
+                src="../assets/check.svg"
+                alt="accept"
+                @click="confirmAcceptance(applicant)">
+              <img
+                id="reject"
+                class="clickable"
+                v-b-tooltip.hover.bottom
+                title="Reject"
+                src="../assets/cross.svg"
+                alt="reject"
+                @click="confirmRejection(applicant)">
             </div>
           </div>
         </b-collapse>
@@ -289,9 +291,45 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+    confirmRejection(applicant) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you would like to reject ${applicant.username}?`, {
+        size: 'sm',
+        okVariant: 'success',
+        cancelVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2 border-top-0',
+        centered: true,
+      }).then((confirmed) => {
+        if (confirmed) {
+          return this.denyApplicant(applicant.userId);
+        }
+        return '';
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
+      });
+    },
     denyApplicant(applicantId) {
       rejectApplicant(this.$route.params.id, applicantId).then(() => {
         this.removeApplicant(applicantId);
+      });
+    },
+    confirmAcceptance(applicant) {
+      this.$bvModal.msgBoxConfirm(`Are you sure you would like to accept ${applicant.username}?`, {
+        size: 'sm',
+        okVariant: 'success',
+        cancelVariant: 'danger',
+        okTitle: 'Yes',
+        cancelTitle: 'No',
+        footerClass: 'p-2 border-top-0',
+        centered: true,
+      }).then((confirmed) => {
+        if (confirmed) {
+          return this.acceptApplicant(applicant.userId);
+        }
+        return '';
+      }).catch((error) => {
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
     acceptApplicant(applicantId) {
@@ -302,8 +340,7 @@ export default {
         this.team = res.data;
         this.loaded = true;
       }).catch((error) => {
-        // eslint-disable-next-line
-        console.log(error.message);
+        this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
   },
@@ -377,6 +414,12 @@ export default {
   }
   .identifier {
     margin: auto 0 auto 1rem;
+  }
+  #accept {
+    margin: 0 0.5rem 0 auto;
+  }
+  #reject {
+    margin: 0 0.5rem 0 0;
   }
 }
 </style>
