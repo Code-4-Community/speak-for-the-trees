@@ -13,6 +13,7 @@ import AvailableTeams from '../views/AvailableTeams.vue';
 import TeamProgress from '../views/TeamProgress.vue';
 import ReservationsOverview from '../views/ReservationsOverview.vue';
 import CompletionsOverview from '../views/CompletionsOverview.vue';
+import ForgotPassword from '../views/ForgotPassword.vue';
 import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
@@ -117,6 +118,11 @@ const routes = [
     props: true,
   },
   {
+    path: '/forgot-password-reset/*',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
+  },
+  {
     path: '/*',
     redirect: '/',
   },
@@ -130,7 +136,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (tokenService.getPrivilegeLevel() < 0) {
-    if (to.name === 'Login' || to.name === 'SignUp' || to.path === '/forgot-password-reset/*') next();
+    if (to.name === 'Login' || to.name === 'SignUp' || to.name === 'ForgotPassword') next();
     else next({ name: 'Login' });
   } else next();
   if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {
