@@ -15,34 +15,34 @@
     "@sentry/integrations": "^5.21.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "cypress": "^4.12.1",
-    "esri-loader": "^2.15.0",
-    "moment": "^2.27.0",
+    "cypress": "^4.8.0",
+    "esri-loader": "^2.14.0",
+    "moment": "^2.25.3",
     "vue": "^2.6.11",
     "vue-js-popover": "^1.2.1",
-    "vue-router": "^3.4.3",
-    "vue-tables-2": "^2.0.32",
-    "vuex": "^3.5.1"
+    "vue-router": "^3.1.6",
+    "vue-tables-2": "^2.0.29",
+    "vuex": "^3.3.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.4",
-    "@vue/cli-plugin-e2e-cypress": "^4.5.4",
-    "@vue/cli-plugin-eslint": "^4.5.4",
-    "@vue/cli-plugin-router": "^4.5.4",
-    "@vue/cli-plugin-unit-jest": "^4.5.4",
-    "@vue/cli-plugin-vuex": "^4.5.4",
-    "@vue/cli-service": "^4.5.4",
+    "@vue/cli-plugin-babel": "^4.3.1",
+    "@vue/cli-plugin-e2e-cypress": "^4.4.1",
+    "@vue/cli-plugin-eslint": "^4.3.1",
+    "@vue/cli-plugin-router": "^4.3.1",
+    "@vue/cli-plugin-unit-jest": "^4.3.1",
+    "@vue/cli-plugin-vuex": "^4.3.1",
+    "@vue/cli-service": "^4.3.1",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.1.0",
-    "bootstrap": "^4.5.2",
-    "bootstrap-vue": "^2.16.0",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.12.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "less": "^3.12.2",
+    "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.5.0",
-    "sass": "^1.26.10",
+    "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
@@ -54,8 +54,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "resolutions": {
-    "serialize-javascript": "3.1.0"
   }
 }
