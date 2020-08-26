@@ -75,7 +75,7 @@ export default {
     viewReservation(blockId) {
       this.$router.push({
         name: 'AdminMap',
-        params: { activeStreetId: blockId },
+        params: { activeBlockId: blockId },
       });
     },
     formatDate(date) {

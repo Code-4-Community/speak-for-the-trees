@@ -5,18 +5,18 @@
         class="trigger"
         :id="title"
         @click="popoverToggle = !popoverToggle"
-        :disabled="streets.length === 0">
+        :disabled="blocks.length === 0">
         {{this.title}} Block List
       </b-button>
       <b-popover
         :target="title"
-        :show.sync="popoverToggle && streets.length > 0"
+        :show.sync="displayPopover"
         triggers="manual"
         placement="bottom"
         title="Block List"
         width="">
         <div class="block-list-container">
-          <span v-for="block in streets" :key="block" class="active-block">
+          <span v-for="block in blocks" :key="block" class="active-block">
             <p> {{ block }} </p>
             <span class="x-icon" @click="removeBlock(block)">
               X
@@ -24,7 +24,7 @@
           </span>
         </div>
         <div class="popover-footer">
-          <b-button class="trigger" v-on:click="this.onClick" :disabled="streets.length === 0">
+          <b-button class="trigger" v-on:click="this.onClick" :disabled="blocks.length === 0">
               {{this.title}}
           </b-button>
         </div>
@@ -36,12 +36,12 @@
 <script>
 
 export default {
-  name: 'SelectedStreets',
+  name: 'SelectedBlocks',
   props: {
     onClick: {
       type: Function,
     },
-    streets: {
+    blocks: {
       type: Array,
       default: () => [],
     },
@@ -57,10 +57,17 @@ export default {
       popoverToggle: false,
     };
   },
+  computed: {
+    displayPopover() {
+      return this.popoverToggle && this.blocks.length > 0;
+    },
+  },
   methods: {
+    // Removes the given block from the given array of blocks and calls the
+    // setBlocks callback with the new array
     removeBlock(block) {
       const self = this;
-      const arr = this.streets.slice();
+      const arr = this.blocks.slice();
       const index = arr.indexOf(block);
       if (index !== -1) {
         arr.splice(index, 1);

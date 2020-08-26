@@ -18,26 +18,26 @@
 
     <hr />
     <div class="action-row">
-      <SelectedStreets
-          class="streets-container"
+      <SelectedBlocks
+          class="blocks-container"
           v-if="reservedFilter === 0"
-          v-bind:onClick="reserveStreets"
-          v-bind:streets="streetsToReserve"
-          v-bind:setBlocks="setReserveStreets"
+          v-bind:onClick="this.reserveBlocks"
+          v-bind:blocks="blocksToReserve"
+          v-bind:setBlocks="setReserveBlocks"
           v-bind:title="'Reserve'"/>
-      <SelectedStreets
-          class="streets-container"
+      <SelectedBlocks
+          class="blocks-container"
           v-if="(reservedFilter === 1) || isAdminMap"
-          v-bind:onClick="unreserveStreets"
-          v-bind:streets="streetsToUnreserve"
-          v-bind:setBlocks="setUnreserveStreets"
-          v-bind:title="'Unreserve'"/>
-      <SelectedStreets
-          class="streets-container"
+          v-bind:onClick="this.releaseBlocks"
+          v-bind:blocks="blocksToRelease"
+          v-bind:setBlocks="setReleaseBlocks"
+          v-bind:title="'Release'"/>
+      <SelectedBlocks
+          class="blocks-container"
           v-if="(reservedFilter === 1) || isAdminMap"
-          v-bind:onClick="completeStreets"
-          v-bind:streets="streetsToComplete"
-          v-bind:setBlocks="setCompleteStreets"
+          v-bind:onClick="this.completeBlocks"
+          v-bind:blocks="blocksToComplete"
+          v-bind:setBlocks="setCompleteBlocks"
           v-bind:title="'Complete'"/>
     </div>
 
@@ -45,22 +45,22 @@
         v-if="showHeader"
         class="map-container-small"
         v-bind:reservedFilter="this.reservedFilter"
-        v-bind:pushStreet="this.pushStreet"
+        v-bind:pushBlock="this.pushBlock"
         v-bind:isAdminMap="this.isAdminMap"
-        v-bind:activeStreetId="this.activeStreetId"
+        v-bind:activeBlockId="this.activeBlockId"
         ref="map"/>
 
     <div v-if="!showHeader">
       <Map
         class="map-container-large"
         v-bind:reservedFilter="this.reservedFilter"
-        v-bind:pushStreet="this.pushStreet"
+        v-bind:pushBlock="this.pushBlock"
         v-bind:isAdminMap="this.isAdminMap"
-        v-bind:activeStreetId="this.activeStreetId"
+        v-bind:activeBlockId="this.activeBlockId"
         ref="map"/>
     </div>
 
-    <b-modal id="street-confirmation-modal" class="street-modal" ok-only title="Success">
+    <b-modal id="block-confirmation-modal" class="block-modal" ok-only title="Success">
       <p>{{ this.modalMessage }}</p>
       <h3>{{ this.blockListString }}</h3>
     </b-modal>
@@ -72,7 +72,7 @@
 
 <script>
 import Map from '../components/Map.vue';
-import SelectedStreets from '../components/SelectedStreets.vue';
+import SelectedBlocks from '../components/SelectedBlocks.vue';
 import {
   reserveBlocks,
   releaseBlocks,
@@ -83,20 +83,20 @@ export default {
   name: 'MapPage',
   components: {
     Map,
-    SelectedStreets,
+    SelectedBlocks,
   },
   data() {
     return {
-      streetsToReserve: [],
-      streetsToUnreserve: [],
-      streetsToComplete: [],
+      blocksToReserve: [],
+      blocksToRelease: [],
+      blocksToComplete: [],
       modalMessage: null,
       blockListString: null,
       showHeader: true,
     };
   },
   props: {
-    activeStreetId: {
+    activeBlockId: {
       type: String,
       required: false,
     },
@@ -135,69 +135,77 @@ export default {
     },
   },
   methods: {
-    pushStreet(street, selection) {
-      if (this.streetsToReserve.includes(JSON.stringify(street))
-      || this.streetsToUnreserve.includes(JSON.stringify(street))
-      || this.streetsToComplete.includes(JSON.stringify(street))) {
-        this.modalMessage = 'You have already selected this street';
+
+    // Adds a block ID to the given pending list
+    pushBlock(block, selection) {
+      const jsonBlock = JSON.stringify(block);
+      if (this.blocksToReserve.includes(jsonBlock)
+      || this.blocksToRelease.includes(jsonBlock)
+      || this.blocksToComplete.includes(jsonBlock)) {
+        this.modalMessage = 'You have already selected this block';
         this.$bvModal.show('error-modal');
         return;
       }
       if (selection === 'reserve') {
-        this.streetsToReserve.push(JSON.stringify(street));
-        this.$bvToast.toast(`Added block ${street} to the reservations list`);
-      } else if (selection === 'unreserve') {
-        this.streetsToUnreserve.push(JSON.stringify(street));
-        this.$bvToast.toast(`Added block ${street} to the unreserve list`);
+        this.blocksToReserve.push(jsonBlock);
+        this.$bvToast.toast(`Added block ${block} to the reservations list`);
+      } else if (selection === 'release') {
+        this.blocksToRelease.push(jsonBlock);
+        this.$bvToast.toast(`Added block ${block} to the release list`);
       } else if (selection === 'complete') {
-        this.streetsToComplete.push(JSON.stringify(street));
-        this.$bvToast.toast(`Added block ${street} to the completions list`);
+        this.blocksToComplete.push(jsonBlock);
+        this.$bvToast.toast(`Added block ${block} to the completions list`);
       }
     },
-    reserveStreets() {
-      this.blockListString = this.streetsToReserve.join(', ');
-      reserveBlocks({ blocks: this.streetsToReserve }).then(() => {
+
+    // Calls reserve, release, or complete api routes on
+    // the block IDs in the pending list
+    reserveBlocks() {
+      this.blockListString = this.blocksToReserve.join(', ');
+      reserveBlocks({ blocks: this.blocksToReserve }).then(() => {
         this.modalMessage = 'You have successfully reserved';
-        this.streetsToReserve = [];
-        this.$bvModal.show('street-confirmation-modal');
+        this.blocksToReserve = [];
+        this.$bvModal.show('block-confirmation-modal');
         this.$refs.map.loadMap();
       }).catch(() => {
         this.modalMessage = 'At least one block was unable to be reserved';
         this.$bvModal.show('error-modal');
       });
     },
-    unreserveStreets() {
-      this.blockListString = this.streetsToUnreserve.join(', ');
-      releaseBlocks({ blocks: this.streetsToUnreserve }).then(() => {
-        this.modalMessage = 'You have successfully unreserved';
-        this.streetsToUnreserve = [];
-        this.$bvModal.show('street-confirmation-modal');
+    releaseBlocks() {
+      this.blockListString = this.blocksToRelease.join(', ');
+      releaseBlocks({ blocks: this.blocksToRelease }).then(() => {
+        this.modalMessage = 'You have successfully released';
+        this.blocksToRelease = [];
+        this.$bvModal.show('block-confirmation-modal');
         this.$refs.map.loadMap();
       }).catch(() => {
-        this.modalMessage = 'At least one block was unable to be unreserved';
+        this.modalMessage = 'At least one block was unable to be released';
         this.$bvModal.show('error-modal');
       });
     },
-    completeStreets() {
-      this.blockListString = this.streetsToComplete.join(', ');
-      finishBlocks({ blocks: this.streetsToComplete }).then(() => {
+    completeBlocks() {
+      this.blockListString = this.blocksToComplete.join(', ');
+      finishBlocks({ blocks: this.blocksToComplete }).then(() => {
         this.modalMessage = 'You have successfully completed';
-        this.streetsToComplete = [];
-        this.$bvModal.show('street-confirmation-modal');
+        this.blocksToComplete = [];
+        this.$bvModal.show('block-confirmation-modal');
         this.$refs.map.loadMap();
       }).catch(() => {
         this.modalMessage = 'At least one block was unable to be completed';
-        this.$bvModal.show('street-confirmation-modal');
+        this.$bvModal.show('error-modal');
       });
     },
-    setReserveStreets(blocks) {
-      this.streetsToReserve = blocks;
+
+    // Sets the state of pending blocks to the given list of IDs
+    setReserveBlocks(blocks) {
+      this.blocksToReserve = blocks;
     },
-    setUnreserveStreets(blocks) {
-      this.streetsToUnreserve = blocks;
+    setReleaseBlocks(blocks) {
+      this.blocksToRelease = blocks;
     },
-    setCompleteStreets(blocks) {
-      this.streetsToComplete = blocks;
+    setCompleteBlocks(blocks) {
+      this.blocksToComplete = blocks;
     },
   },
 };
@@ -243,12 +251,12 @@ export default {
   justify-content: flex-end;
   align-items: baseline;
 }
-.streets-container {
+.blocks-container {
   padding: 5px;
 }
 
 @media only screen and (max-width: 700px) {
-  .streets-container {
+  .blocks-container {
     width: auto;
     margin-left: 5px;
   }

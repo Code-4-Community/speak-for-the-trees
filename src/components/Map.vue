@@ -16,13 +16,12 @@ export default {
     reservedFilter: {
       type: Number,
       required: false,
-      // currentSelection:
     },
-    pushStreet: {
+    pushBlock: {
       type: Function,
       required: false,
     },
-    activeStreetId: {
+    activeBlockId: {
       type: String,
       required: false,
     },
@@ -32,77 +31,36 @@ export default {
     },
   },
   data: () => ({
-    modalShow: false,
     labelsVisible: true,
   }),
-  computed: {
-    ...mapState({
-      reservedBlocks: 'reservedBlocks',
-    }),
-  },
-  methods: {
-    showLabels() {
-      this.labelsVisible = !this.labelsVisible;
-    },
-    loadMap() {
-      const reserveSegment = {
-        title: 'Add',
-        id: 'reserve',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
-      };
-      const unreserveSegment = {
-        title: 'Unreserve',
-        id: 'unreserve',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
-      };
-      const completeSegment = {
-        title: 'Complete',
-        id: 'complete',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
-      };
-      function getModalContent(feature) {
-        let reserveString = 'Open';
-        if (feature.graphic.attributes.RESERVED === 1) {
-          reserveString = 'Reserved';
-        } else if (feature.graphic.attributes.RESERVED === 2) {
-          reserveString = 'Complete';
-        }
-        return `<strong>Status:</strong> ${reserveString}`;
-      }
-      const actions = [];
-      const isCompleteActions = [];
-      if (this.isAdminMap) {
-        actions.push(unreserveSegment, completeSegment);
-        isCompleteActions.push(unreserveSegment);
-      } else if (this.reservedFilter === 1) {
-        actions.push(unreserveSegment, completeSegment);
-      } else {
-        actions.push(reserveSegment);
-      }
-      const template = {
-      // autocasts as new PopupTemplate()
-        title: '{ID}', // Show attribute value
-        content: getModalContent,
-        outFields: ['*'],
-        actions,
-      };
-      const isCompleteTemplate = { ...template, actions: isCompleteActions };
-      const blockLabel = {
-        labelExpressionInfo: { expression: '$feature.ID' },
-        symbol: {
-          type: 'text',
-          color: 'black',
-          haloSize: 1,
-          haloColor: 'white',
-        },
-      };
-      const renderer = {
+  created() {
+    // The action button to add a block to the reserve list
+    this.addToReserve = {
+      title: 'Add',
+      id: 'reserve',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    // The action button to add a block to the release list
+    this.addToRelease = {
+      title: 'Release',
+      id: 'release',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
+    };
+    // The action button to add a block to the complete list
+    this.addToComplete = {
+      title: 'Complete',
+      id: 'complete',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+    };
+    // Sets the colors of blocks based on their reservation status
+    this.blockRenderer = {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-UniqueValueRenderer.html
-        type: 'unique-value',
-        field: 'RESERVED',
-        defaultSymbol: { type: 'simple-line' },
-        uniqueValueInfos: [{
+      type: 'unique-value',
+      field: 'RESERVED',
+      defaultSymbol: { type: 'simple-fill' },
+      uniqueValueInfos: [
+        {
           value: '0',
           symbol: {
             type: 'simple-fill', // autocasts as new SimpleFillSymbol()
@@ -122,40 +80,118 @@ export default {
             color: 'rgba(134, 195, 86, 0.5)',
           },
         },
-        ],
-      };
-      const privateRenderer = {
-        type: 'simple',
-        symbol: {
-          type: 'simple-line',
-          color: 'rgba(200, 0, 0, 1)',
-          width: 2,
-        },
-      };
-      let sqlExpression = '1=0';
-      const completeExpression = 'RESERVED = 2';
-      // Creates a filter from the given list of IDs so that only the given
-      // streets will appear on the map
-      const reservedIdsFilter = `ID = ${this.reservedBlocks.join(' OR ID = ')} AND RESERVED = 1`;
+      ],
+    };
+    // Sets the color of the marked private streets
+    this.privateStreetRenderer = {
+      type: 'simple',
+      symbol: {
+        type: 'simple-line',
+        color: 'rgba(200, 0, 0, 1)',
+        width: 2,
+      },
+    };
+    // The optional labels of the blocks on the map
+    this.blockLabel = {
+      labelExpressionInfo: { expression: '$feature.ID' },
+      symbol: {
+        type: 'text',
+        color: 'black',
+        haloSize: 1,
+        haloColor: 'white',
+      },
+    };
+  },
+  computed: {
+    ...mapState({
+      reservedBlocks: 'reservedBlocks',
+    }),
+    // Determines which blocks to display depending on the user is looking at
+    // reserve new blocks, current reservations, or admin map
+    blockFilter() {
       if (this.isAdminMap) {
-        sqlExpression = 'RESERVED = 1';
-      } else if (this.reservedFilter === 0) {
-      // If reserving new streets, only show streets that are not reserved
-        sqlExpression = 'RESERVED = 0';
-      } else if (this.reservedBlocks.length > 0) {
-      // If there are given IDs, have the map only show the given streets
-        sqlExpression = reservedIdsFilter;
+        // Admins can see all current reserved blocks by any user
+        return 'RESERVED = 1 OR RESERVED = 2';
+      } if (this.reservedFilter === 0) {
+        // If reserving new blocks, only show blocks that are not reserved
+        return 'RESERVED = 0';
+      } if (this.reservedBlocks.length > 0) {
+        // If there are given IDs, have the map only show the given blocks
+        return `ID = ${this.reservedBlocks.join(' OR ID = ')} AND RESERVED = 1`;
       }
+      // Will not display any blocks
+      return '1=0';
+    },
+    // The content of the popup when clicking on a block
+    // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
+    blockPopupTemplate() {
+      return {
+        // autocasts as new PopupTemplate()
+        title: '{ID}', // Show attribute value
+        content: this.reservationToString,
+        outFields: ['*'],
+        actions: this.blockActions,
+      };
+    },
+    // Sets whether a user can reserve, release, or complete a block depending
+    // on which map screen they are viewing
+    blockActions() {
+      if (this.reservedFilter === 0) {
+        return [this.addToReserve];
+      }
+      return [this.addToRelease, this.addToComplete];
+    },
+    // contains the information about each of the blocks, each block is a feature.
+    // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+    blockLayerObject() {
+      return {
+        title: 'blocks',
+        url: process.env.VUE_APP_ARCGIS_URL,
+        renderer: this.blockRenderer,
+        popupTemplate: this.blockPopupTemplate,
+        labelingInfo: [this.blockLabel],
+        labelsVisible: this.labelsVisible,
+        definitionExpression: this.blockFilter,
+      };
+    },
+    // contains the information about the private streets
+    // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+    privateStreetLayerObject() {
+      return {
+        title: 'private',
+        url: process.env.VUE_APP_PRIVATE_STREETS_URL,
+        renderer: this.privateStreetRenderer,
+      };
+    },
+  },
+  methods: {
+    showLabels() {
+      this.labelsVisible = !this.labelsVisible;
+    },
+    // Converts the reservation status to a string for the popup
+    reservationToString(feature) {
+      let reserveString = 'Open';
+      if (feature.graphic.attributes.RESERVED === 1) {
+        reserveString = 'Reserved';
+      } else if (feature.graphic.attributes.RESERVED === 2) {
+        reserveString = 'Complete';
+      }
+      return `<strong>Status:</strong> ${reserveString}`;
+    },
+    loadMap() {
       // lazy load the required ArcGIS API for JavaScript modules and CSS
       loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
         .then(([ArcGISMap, MapView, FeatureLayer, Locate]) => {
           const map = new ArcGISMap({
             basemap: 'gray',
           });
+
+          // Main object with information about the map display
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html
           this.view = new MapView({
             container: this.$el,
             map,
-            center: [-71.0640, 42.3554],
+            center: [-71.0640, 42.3554], // Boston Common
             zoom: 13.5,
             popup: {
               dockEnabled: true,
@@ -167,79 +203,67 @@ export default {
                 // Set position of modal to bottom of the map
                 position: 'bottom-center',
               },
-            // Condition to display
-            // visible: !!props.currentSelection
             },
           });
+
+          // Converting layer objects to ArcGIS featureLayers so they can be
+          // interpreted by the MapView
+          const blockLayer = new FeatureLayer(this.blockLayerObject);
+          map.add(blockLayer);
+          const privateStreetLayer = new FeatureLayer(this.privateStreetLayerObject);
+          map.add(privateStreetLayer);
+
+          // Button that centers map over users current location
+          // https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Locate.html
           const locate = new Locate({
             view: this.view,
             useHeadingEnabled: false,
             goToOverride: (view, options) => view.goTo(options.target),
           });
           this.view.ui.add(locate, 'top-left');
-          const streetSegments = new FeatureLayer({
-            title: 'blocks',
-            url: process.env.VUE_APP_ARCGIS_URL,
-            renderer,
-            popupTemplate: template,
-            labelingInfo: [blockLabel],
-            labelsVisible: this.labelsVisible,
-          // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
-          // popupTemplate: template,
-          });
-          streetSegments.definitionExpression = sqlExpression;
-          map.add(streetSegments);
-          const privateStreets = new FeatureLayer({
-            title: 'private',
-            url: process.env.VUE_APP_PRIVATE_STREETS_URL,
-            renderer: privateRenderer,
-          });
-          map.add(privateStreets);
-          if (this.isAdminMap) {
-            const completeBlocks = new FeatureLayer({
-              title: 'complete',
-              url: process.env.VUE_APP_ARCGIS_URL,
-              renderer,
-              outFields: ['BLOCK'],
-              popupTemplate: isCompleteTemplate,
-              labelingInfo: [blockLabel],
-              labelsVisible: this.labelsVisible,
-            });
-            completeBlocks.definitionExpression = completeExpression;
-            map.add(completeBlocks);
-          }
-          // Opens a popup with the street information that corresponds with the given ID
+
+          // Opens a popup with the block information that corresponds with the activeBlockId
           this.view.when(() => {
-            if (this.activeStreetId !== undefined) {
+            if (this.activeBlockId !== undefined) {
             // Create a query where the ID equals the given ID
-              const query = streetSegments.createQuery();
-              query.where = `ID = ${this.activeStreetId}  AND RESERVED = 1`;
-              streetSegments.queryFeatures(query)
+              const query = blockLayer.createQuery();
+              query.where = `ID = ${this.activeBlockId}  AND RESERVED = 1`;
+              blockLayer.queryFeatures(query)
                 .then((response) => {
                 // ID is a key so there should only be one item in the
                 // features array that is returned
-                  const streetFeatures = response.features;
+                  const blockFeatures = response.features;
                   // Sets what the popup should look like
-                  if (streetFeatures.length > 0) {
-                    streetFeatures[0].popupTemplate = template;
+                  if (blockFeatures.length > 0) {
+                    blockFeatures[0].popupTemplate = this.blockPopupTemplate;
                   }
                   this.view.popup.open({
-                    features: streetFeatures,
+                    features: blockFeatures,
                   });
                 });
             }
           });
-          // eslint-disable-next-line no-unused-vars
-          // Determine to which list the street in the popup will be added
+
+          // Hides the completed block action when a block is completed
+          this.view.popup.watch('selectedFeature', (graphic) => {
+            if (graphic) {
+              if (graphic.attributes.RESERVED === 2) {
+                const graphicTemplate = graphic.getEffectivePopupTemplate();
+                graphicTemplate.actions.items[1].visible = false;
+              }
+            }
+          });
+
+          // Determine to which list the block in the popup will be added
           // https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/index.html
           this.view.popup.on('trigger-action', (event) => {
           // Execute the measureThis() function if the measure-this action is clicked
-          // If the event id matches one of the ids defined as an action for selecting a street
+          // If the event id matches one of the ids defined as an action for selecting a block
           // then add to the list with a corresponding id
             if (event.action.id === 'reserve'
-            || event.action.id === 'unreserve'
+            || event.action.id === 'release'
             || event.action.id === 'complete') {
-              this.pushStreet(event.target.selectedFeature.attributes.ID, event.action.id);
+              this.pushBlock(this.view.popup.selectedFeature.attributes.ID, event.action.id);
             }
           });
         });
