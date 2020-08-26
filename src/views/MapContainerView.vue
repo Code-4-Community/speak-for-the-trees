@@ -17,6 +17,7 @@
     </div>
 
     <hr />
+
     <div class="action-row">
       <SelectedBlocks
           class="blocks-container"
@@ -41,14 +42,14 @@
           v-bind:title="'Complete'"/>
     </div>
 
-      <Map
-        v-if="showHeader"
-        class="map-container-small"
-        v-bind:reservedFilter="this.reservedFilter"
-        v-bind:pushBlock="this.pushBlock"
-        v-bind:isAdminMap="this.isAdminMap"
-        v-bind:activeBlockId="this.activeBlockId"
-        ref="map"/>
+    <Map
+      v-if="showHeader"
+      class="map-container-small"
+      v-bind:reservedFilter="this.reservedFilter"
+      v-bind:pushBlock="this.pushBlock"
+      v-bind:isAdminMap="this.isAdminMap"
+      v-bind:activeBlockId="this.activeBlockId"
+      ref="map"/>
 
     <div v-if="!showHeader">
       <Map
@@ -80,11 +81,14 @@ import {
 } from '../api/api';
 
 export default {
+
   name: 'MapPage',
+
   components: {
     Map,
     SelectedBlocks,
   },
+
   data() {
     return {
       blocksToReserve: [],
@@ -95,16 +99,20 @@ export default {
       showHeader: true,
     };
   },
+
   props: {
     activeBlockId: {
       type: String,
       required: false,
     },
   },
+
   computed: {
+
     isAdminMap() {
       return this.$route.name === 'AdminMap';
     },
+
     header() {
       let headerVal = '';
       let subTitle = '';
@@ -123,6 +131,7 @@ export default {
         subTitle,
       };
     },
+
     reservedFilter() {
       if (this.$route.params.editmode === 'edit') {
         return 1;
@@ -134,6 +143,7 @@ export default {
       }
     },
   },
+
   methods: {
 
     // Adds a block ID to the given pending list
@@ -172,6 +182,7 @@ export default {
         this.$bvModal.show('error-modal');
       });
     },
+
     releaseBlocks() {
       this.blockListString = this.blocksToRelease.join(', ');
       releaseBlocks({ blocks: this.blocksToRelease }).then(() => {
@@ -184,6 +195,7 @@ export default {
         this.$bvModal.show('error-modal');
       });
     },
+
     completeBlocks() {
       this.blockListString = this.blocksToComplete.join(', ');
       finishBlocks({ blocks: this.blocksToComplete }).then(() => {
@@ -201,9 +213,11 @@ export default {
     setReserveBlocks(blocks) {
       this.blocksToReserve = blocks;
     },
+
     setReleaseBlocks(blocks) {
       this.blocksToRelease = blocks;
     },
+
     setCompleteBlocks(blocks) {
       this.blocksToComplete = blocks;
     },

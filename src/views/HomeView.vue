@@ -21,7 +21,9 @@ import { mapState } from 'vuex';
 Vue.use(VueRouter);
 
 export default {
+
   name: 'home',
+
   props: {
     firstLogIn: {
       type: Boolean,
@@ -29,18 +31,23 @@ export default {
       required: false,
     },
   },
+
   computed: mapState({
     userData: 'userData',
   }),
+
   methods: {
+
     // sends to the user to the map to make a reservation
     toNewReservations() {
       this.$router.push('/reserve/new');
     },
+
     // sends the user to their current reservations
     toCurrentReservations() {
       this.$router.push('/current-reservations');
     },
+
     // sends the teams page, either available teams or their own team page
     toTeams() {
       this.$router.push('/available-teams');

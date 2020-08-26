@@ -41,11 +41,15 @@ import constants from '../auth/constants';
 import { logout } from '../auth/authAPI';
 
 export default {
+
   name: 'Header',
+
   methods: {
+
     ...mapMutations({
       resetState: 'resetState',
     }),
+
     logout() {
       logout().finally(() => {
         this.resetState();
@@ -53,11 +57,14 @@ export default {
       });
     },
   },
+
   computed: {
+
     ...mapState({
       showNavbar: 'isUserAuthenticated',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === constants.ADMIN;
     },

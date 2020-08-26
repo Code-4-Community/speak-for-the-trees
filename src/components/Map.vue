@@ -17,22 +17,27 @@ export default {
       type: Number,
       required: false,
     },
+
     pushBlock: {
       type: Function,
       required: false,
     },
+
     activeBlockId: {
       type: String,
       required: false,
     },
+
     isAdminMap: {
       type: Boolean,
       required: false,
     },
   },
+
   data: () => ({
     labelsVisible: true,
   }),
+
   created() {
     // The action button to add a block to the reserve list
     this.addToReserve = {
@@ -40,18 +45,21 @@ export default {
       id: 'reserve',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
+
     // The action button to add a block to the release list
     this.addToRelease = {
       title: 'Release',
       id: 'release',
       image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
     };
+
     // The action button to add a block to the complete list
     this.addToComplete = {
       title: 'Complete',
       id: 'complete',
       image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
     };
+
     // Sets the colors of blocks based on their reservation status
     this.blockRenderer = {
       // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
@@ -82,6 +90,7 @@ export default {
         },
       ],
     };
+
     // Sets the color of the marked private streets
     this.privateStreetRenderer = {
       type: 'simple',
@@ -91,6 +100,7 @@ export default {
         width: 2,
       },
     };
+
     // The optional labels of the blocks on the map
     this.blockLabel = {
       labelExpressionInfo: { expression: '$feature.ID' },
@@ -102,10 +112,12 @@ export default {
       },
     };
   },
+
   computed: {
     ...mapState({
       reservedBlocks: 'reservedBlocks',
     }),
+
     // Determines which blocks to display depending on the user is looking at
     // reserve new blocks, current reservations, or admin map
     blockFilter() {
@@ -122,6 +134,7 @@ export default {
       // Will not display any blocks
       return '1=0';
     },
+
     // The content of the popup when clicking on a block
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-PopupTemplate.html
     blockPopupTemplate() {
@@ -133,6 +146,7 @@ export default {
         actions: this.blockActions,
       };
     },
+
     // Sets whether a user can reserve, release, or complete a block depending
     // on which map screen they are viewing
     blockActions() {
@@ -141,6 +155,7 @@ export default {
       }
       return [this.addToRelease, this.addToComplete];
     },
+
     // contains the information about each of the blocks, each block is a feature.
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
     blockLayerObject() {
@@ -154,6 +169,7 @@ export default {
         definitionExpression: this.blockFilter,
       };
     },
+
     // contains the information about the private streets
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
     privateStreetLayerObject() {
@@ -164,10 +180,12 @@ export default {
       };
     },
   },
+
   methods: {
     showLabels() {
       this.labelsVisible = !this.labelsVisible;
     },
+
     // Converts the reservation status to a string for the popup
     reservationToString(feature) {
       let reserveString = 'Open';
@@ -178,6 +196,7 @@ export default {
       }
       return `<strong>Status:</strong> ${reserveString}`;
     },
+
     loadMap() {
       // lazy load the required ArcGIS API for JavaScript modules and CSS
       loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
@@ -269,10 +288,12 @@ export default {
         });
     },
   },
+
   mounted() {
     this.$store.dispatch('getReservedBlocks');
     this.loadMap();
   },
+
   // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#refresh
   beforeDestroy() {
     if (this.view) {
@@ -284,9 +305,11 @@ export default {
     reservedBlocks() {
       this.loadMap();
     },
+
     reservedFilter() {
       this.loadMap();
     },
+
     labelsVisible() {
       this.loadMap();
     },

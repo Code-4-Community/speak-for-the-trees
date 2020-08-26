@@ -57,6 +57,7 @@ import { forgotPassword } from '../api/api';
 
 export default {
   name: 'login',
+
   data() {
     return {
       email: '',
@@ -69,14 +70,18 @@ export default {
       requestEmail: '',
     };
   },
+
   methods: {
+
     ...mapMutations({
       setUser: 'setUser',
     }),
+
     validateInput() {
       this.inputValid = this.email && this.password;
       return this.inputValid;
     },
+
     onLogin(e) {
       e.preventDefault();
       this.submitted = true;
@@ -100,6 +105,7 @@ export default {
           });
       }
     },
+
     requestPassword() {
       const email = {
         email: this.requestEmail,

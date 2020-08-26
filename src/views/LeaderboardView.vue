@@ -13,10 +13,13 @@ import constants from '../constants/leaderboardConstants';
 import { getTeam } from '../api/api';
 
 export default {
+
   name: 'TeamLeaderboard',
+
   components: {
     Board,
   },
+
   data() {
     return {
       loading: true,
@@ -25,6 +28,7 @@ export default {
       },
     };
   },
+
   mounted() {
     this.$store.dispatch('getBlocksLeaderboard');
     switch (this.route) {
@@ -48,17 +52,22 @@ export default {
         throw new Error('Unrecognized route');
     }
   },
+
   computed: {
+
     ...mapState({
       teamsLeaderboard: 'allTeamsLeaderboard',
       volunteersLeaderboard: 'allVolunteersLeaderboard',
     }),
+
     route() {
       return this.$route.name;
     },
+
     teamID() {
       return this.$route.params.id || -1;
     },
+
     title() {
       switch (this.route) {
         case constants.ALL_TEAMS_LEADERBOARD:
@@ -71,6 +80,7 @@ export default {
           throw new Error('Unrecognized route');
       }
     },
+
     description() {
       switch (this.route) {
         case constants.ALL_TEAMS_LEADERBOARD:
@@ -83,6 +93,7 @@ export default {
           throw new Error('Unrecognized route');
       }
     },
+
     individuals() {
       switch (this.route) {
         case constants.ALL_TEAMS_LEADERBOARD:

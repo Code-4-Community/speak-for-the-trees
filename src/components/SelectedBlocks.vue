@@ -41,28 +41,35 @@ export default {
     onClick: {
       type: Function,
     },
+
     blocks: {
       type: Array,
       default: () => [],
     },
+
     title: {
       type: String,
     },
+
     setBlocks: {
       type: Function,
     },
   },
+
   data() {
     return {
       popoverToggle: false,
     };
   },
+
   computed: {
     displayPopover() {
       return this.popoverToggle && this.blocks.length > 0;
     },
   },
+
   methods: {
+
     // Removes the given block from the given array of blocks and calls the
     // setBlocks callback with the new array
     removeBlock(block) {

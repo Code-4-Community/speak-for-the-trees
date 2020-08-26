@@ -21,13 +21,16 @@
 
 <script>
 export default {
+
   name: 'Board',
+
   props: {
     individuals: {
       type: Array,
       required: true,
     },
   },
+
   computed: {
     // creates a copy of the individuals array and adds a rank
     individualsWithRank() {

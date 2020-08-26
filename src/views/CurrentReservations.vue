@@ -34,13 +34,17 @@ import {
 } from '../api/api';
 
 export default {
+
   name: 'CurrentReservations',
+
   computed: {
     ...mapState({
       reservedBlocks: 'reservedBlocks',
     }),
   },
+
   methods: {
+
     // sends to the user to the map to edit a reservation
     viewReservation(id) {
       this.$router.push({
@@ -48,6 +52,7 @@ export default {
         params: { activeBlockId: id, editmode: 'edit' },
       });
     },
+
     completeBlock(block) {
       finishBlocks({ blocks: [block] }).then(() => {
         this.$bvToast.toast(`Successful completion of ${block}`);
@@ -58,6 +63,7 @@ export default {
         this.$bvToast.toast(`Error in completion of ${block}.`);
       });
     },
+
     releaseBlock(block) {
       releaseBlocks({ blocks: [block] }).then(() => {
         this.$bvToast.toast(
@@ -71,6 +77,7 @@ export default {
       });
     },
   },
+
   mounted() {
     this.$store.dispatch('getReservedBlocks');
   },

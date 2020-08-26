@@ -106,16 +106,22 @@ import {
 import constants from '../auth/constants';
 
 export default {
+
   name: 'Profile',
+
   computed: {
+
     ...mapState({
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === constants.ADMIN;
     },
+
   },
+
   data() {
     return {
       passwords: {
@@ -132,7 +138,9 @@ export default {
       },
     };
   },
+
   methods: {
+
     changePassword() {
       changePassword(this.passwords).then(() => {
         this.$bvToast.toast('Successfully changed password!');

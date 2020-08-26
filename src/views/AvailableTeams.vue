@@ -65,43 +65,56 @@ import teamConstants from '../constants/teamConstants';
 Vue.use(VueRouter);
 
 export default {
+
   name: 'availableTeams',
+
   data() {
     return {
       privilegeLevelConstants,
     };
   },
+
   computed: {
+
     ...mapState({
       teams: 'teams',
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === privilegeLevelConstants.ADMIN;
     },
+
     myTeams() {
       return this.teams.filter(e => [teamConstants.NONE, teamConstants.PENDING]
         .indexOf(e.userTeamRole) === -1);
     },
+
     availableTeams() {
       return this.teams.filter(e => [teamConstants.NONE].indexOf(e.userTeamRole) !== -1);
     },
+
     pendingTeams() {
       return this.teams.filter(e => [teamConstants.PENDING].indexOf(e.userTeamRole) !== -1);
     },
+
   },
+
   methods: {
+
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
     },
+
     /**
      * Downloads a CSV that contains all Team/User information.
      */
     downloadTeamsCSV() {
       getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
     },
+
     /**
      * Forces a download of the given data under the given file name.
      */
@@ -115,6 +128,7 @@ export default {
       document.body.removeChild(link);
     },
   },
+
   mounted() {
     if (this.teams?.length === 0) this.$store.dispatch('getAllTeams');
   },
