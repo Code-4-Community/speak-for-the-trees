@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title v-if="showHeader" :subtitle="this.header.subTitle" title="">
+    <page-title :backButton="true" v-if="showHeader" :subtitle="this.header.subTitle" title="">
       <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">Reserve New Block ^</h3>
       <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
         Hide Title

@@ -1,7 +1,7 @@
 <template>
   <div class="spanner">
     <div class="title-container">
-      <return-button :path="this.path" />
+      <return-button v-if="this.backButton" :path="this.path" />
       <h3>
         {{title}}
         <slot></slot>
@@ -27,6 +27,10 @@ export default {
     subtitle: {
       required: false,
       type: String,
+    },
+    backButton: {
+      required: false,
+      type: Boolean,
     },
     path: {
       required: false,

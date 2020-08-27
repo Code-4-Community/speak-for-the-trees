@@ -4,7 +4,7 @@
       <h3>{{ errorMessage }}</h3>
     </div>
     <div v-if="!error && loaded">
-      <page-title :title="team.name">
+      <page-title :backButton="true" :title="team.name" >
         <img v-if="userTeamRole === teamConstants.NONE"
              class="clickable"
              v-b-tooltip.hover.bottom
