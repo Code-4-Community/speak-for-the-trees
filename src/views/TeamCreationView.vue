@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <page-title :backButton="true" :title="'Create a Team'" :path="{ path: '/available-teams' }" />
+    <page-title
+        :returnButton="true"
+        :title="'Create a Team'"
+        :path="{ path: '/available-teams' }" />
     <b-form @submit="onSubmit" novalidate>
       <b-form-group>
         <b-form-input

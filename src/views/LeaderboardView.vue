@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title v-bind:title="title" v-bind:subtitle="description" />
+    <page-title v-bind:returnButton="true" v-bind:title="title" v-bind:subtitle="description" />
     <Board v-bind:individuals="this.individuals" />
   </div>
 </template>
