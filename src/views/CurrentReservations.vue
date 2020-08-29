@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-title :title="'Current Reservations'" :subtitle="subtitle" />
+    <page-title :returnButton="true" :title="'Current Reservations'" :subtitle="subtitle" />
     <div class="streetContainer" v-for="street in reservedBlocks" :key="street">
       <p class="street">{{ street }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>

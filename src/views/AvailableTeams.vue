@@ -1,6 +1,7 @@
 <template>
   <div class="cont">
-    <page-title :title="'Your Teams'"
+    <page-title :returnButton="true"
+                :title="'Your Teams'"
                 :subtitle="subtitle" />
       <router-link
           v-for="team in myTeams"
