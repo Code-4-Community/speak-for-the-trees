@@ -24,12 +24,14 @@
             placeholder="CONFIRM PASSWORD"
             ></b-form-input>
         </b-form-group>
+
+          <p class="auth-footer">
+              REMEBER YOUR PASSWORD?
+              <br>LOGIN <router-link class="footer-link" to="/login">HERE!</router-link>
+          </p>
+
+        <b-button class="auth-submit" type="submit">Reset</b-button>
     </b-form>
-    <p class="auth-footer">
-        REMEBER YOUR PASSWORD?
-        <br>LOGIN <router-link class="footer-link" to="/login">HERE!</router-link>
-    </p>
-    <b-button class="auth-submit" type="submit">Reset</b-button>
   </div>
 </template>
 
@@ -37,7 +39,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
-//   changePassword,
+  resetPassword,
 } from '../api/api';
 
 Vue.use(VueRouter);
@@ -50,15 +52,33 @@ export default {
     };
   },
   methods: {
+    validatePassword() {
+      if (this.password[0].length < 8) {
+        this.$bvToast.toast('Your password is too short');
+        return false;
+      }
+      if (this.password[0] !== this.password[1]) {
+        this.$bvToast.toast('Your passwords do not match');
+        return false;
+      }
+      return true;
+    },
     onReset(e) {
       e.preventDefault();
-      if (this.password[0] === this.password[1]) {
-        // const pw = {
-        //   password: this.password[0],
-        // };
-      } else {
-        this.error = true;
-        this.errorMessage = 'Your passwords do not match';
+      if (this.validatePassword()) {
+        const data = {
+          secretKey: this.$route.params.token,
+          newPassword: this.password[0],
+        };
+        resetPassword(data)
+          .then(() => {
+            this.$router.push({
+              name: 'Login',
+            });
+          })
+          .catch((error) => {
+            this.$bvToast.toast(`Error: ${error.message}`);
+          });
       }
     },
   },

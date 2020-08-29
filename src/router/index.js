@@ -118,7 +118,7 @@ const routes = [
     props: true,
   },
   {
-    path: '/forgot-password-reset/*',
+    path: '/forgot-password-reset/:token',
     name: 'ForgotPassword',
     component: ForgotPassword,
   },
