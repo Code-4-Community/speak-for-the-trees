@@ -10,7 +10,7 @@
       </b-button>
       <b-popover
         :target="title"
-        :show.sync="displayPopover"
+        :show="displayPopover"
         triggers="manual"
         placement="bottom"
         title="Block List"
