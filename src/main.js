@@ -12,6 +12,7 @@ import store from './store';
 Sentry.init({
   dsn: 'https://521cd3a837e643f687d530e7ac249b4d@o433473.ingest.sentry.io/5388723',
   integrations: [new VueIntegration({ Vue, attachProps: true })],
+  environment: process.env.production,
 });
 
 // Install BootstrapVue
