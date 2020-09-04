@@ -266,9 +266,11 @@ export default {
           // Hides the completed block action when a block is completed
           this.view.popup.watch('selectedFeature', (graphic) => {
             if (graphic) {
+              const graphicTemplate = graphic.getEffectivePopupTemplate();
               if (graphic.attributes.RESERVED === 2) {
-                const graphicTemplate = graphic.getEffectivePopupTemplate();
                 graphicTemplate.actions.items[1].visible = false;
+              } else if (graphic.attributes.RESERVED === 1) {
+                graphicTemplate.actions.items[1].visible = true;
               }
             }
           });
