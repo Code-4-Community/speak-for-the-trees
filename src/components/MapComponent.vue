@@ -1,5 +1,5 @@
 <template>
-  <div id="map">
+  <div id="map-component">
     <b-button class="label" type="submit" @click="showLabels">
       {{`${(this.labelsVisible ? "Hide" : "Show")} Block Numbers`}}
     </b-button>
@@ -11,7 +11,7 @@ import { mapState } from 'vuex';
 import { loadModules } from 'esri-loader';
 
 export default {
-  name: 'map',
+  name: 'mapComponent',
   props: {
     reservedFilter: {
       type: Number,

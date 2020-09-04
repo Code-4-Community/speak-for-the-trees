@@ -42,23 +42,23 @@
           v-bind:title="'Complete'"/>
     </div>
 
-    <Map
+    <MapComponent
       v-if="showHeader"
       class="map-container-small"
       v-bind:reservedFilter="this.reservedFilter"
       v-bind:pushBlock="this.pushBlock"
       v-bind:isAdminMap="this.isAdminMap"
       v-bind:activeBlockId="this.activeBlockId"
-      ref="map"/>
+      ref="mapComponent"/>
 
     <div v-if="!showHeader">
-      <Map
+      <MapComponent
         class="map-container-large"
         v-bind:reservedFilter="this.reservedFilter"
         v-bind:pushBlock="this.pushBlock"
         v-bind:isAdminMap="this.isAdminMap"
         v-bind:activeBlockId="this.activeBlockId"
-        ref="map"/>
+        ref="mapComponent"/>
     </div>
 
     <b-modal id="block-confirmation-modal" class="block-modal" ok-only title="Success">
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import Map from '../components/Map.vue';
+import MapComponent from '../components/MapComponent.vue';
 import SelectedBlocks from '../components/SelectedBlocks.vue';
 import {
   reserveBlocks,
@@ -85,7 +85,7 @@ export default {
   name: 'MapPage',
 
   components: {
-    Map,
+    MapComponent,
     SelectedBlocks,
   },
 
@@ -176,7 +176,7 @@ export default {
         this.modalMessage = 'You have successfully reserved';
         this.blocksToReserve = [];
         this.$bvModal.show('block-confirmation-modal');
-        this.$refs.map.loadMap();
+        this.$refs.mapComponent.loadMap();
       }).catch(() => {
         this.modalMessage = 'At least one block was unable to be reserved';
         this.$bvModal.show('error-modal');
@@ -189,7 +189,7 @@ export default {
         this.modalMessage = 'You have successfully released';
         this.blocksToRelease = [];
         this.$bvModal.show('block-confirmation-modal');
-        this.$refs.map.loadMap();
+        this.$refs.mapComponent.loadMap();
       }).catch(() => {
         this.modalMessage = 'At least one block was unable to be released';
         this.$bvModal.show('error-modal');
@@ -202,7 +202,7 @@ export default {
         this.modalMessage = 'You have successfully completed';
         this.blocksToComplete = [];
         this.$bvModal.show('block-confirmation-modal');
-        this.$refs.map.loadMap();
+        this.$refs.mapComponent.loadMap();
       }).catch(() => {
         this.modalMessage = 'At least one block was unable to be completed';
         this.$bvModal.show('error-modal');
