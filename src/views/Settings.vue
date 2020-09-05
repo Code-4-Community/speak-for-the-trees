@@ -111,9 +111,6 @@ export default {
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
-    fullName() {
-      return `${this.userData.firstName} ${this.userData.lastName}`;
-    },
     isAdmin() {
       return this.privilegeLevel === constants.ADMIN;
     },
