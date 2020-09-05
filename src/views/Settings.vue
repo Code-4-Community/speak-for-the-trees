@@ -106,8 +106,6 @@ import constants from '../auth/constants';
 
 export default {
   name: 'Profile',
-  components: {
-  },
   computed: {
     ...mapState({
       userData: 'userData',
