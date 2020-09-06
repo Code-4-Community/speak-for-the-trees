@@ -36,3 +36,4 @@ export const changeUsername = async data => AxiosInstance.post(`${PROTECTED_USER
 export const deleteUser = async () => AxiosInstance.delete(`${PROTECTED_USER}`);
 
 export const forgotPassword = async email => AxiosInstance.post('/api/v1/user/forgot_password/request/', email);
+export const resetPassword = async data => AxiosInstance.post('/api/v1/user/forgot_password/reset', data);
