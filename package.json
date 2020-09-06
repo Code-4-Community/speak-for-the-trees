@@ -11,14 +11,14 @@
     "cypress": "cypress open"
   },
   "dependencies": {
-    "@sentry/browser": "^5.21.1",
-    "@sentry/integrations": "^5.21.1",
+    "@sentry/browser": "^5.22.3",
+    "@sentry/integrations": "^5.22.3",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "cypress": "^4.12.1",
     "esri-loader": "^2.15.0",
     "moment": "^2.27.0",
-    "vue": "^2.6.11",
+    "vue": "^2.6.12",
     "vue-js-popover": "^1.2.1",
     "vue-router": "^3.4.3",
     "vue-tables-2": "^2.0.32",
@@ -44,7 +44,7 @@
     "lint-staged": "^9.5.0",
     "sass": "^1.26.10",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"
@@ -54,8 +54,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "resolutions": {
-    "serialize-javascript": "3.1.0"
   }
 }
