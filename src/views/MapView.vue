@@ -32,9 +32,6 @@
           v-bind:setBlocks="setCompleteStreets"
           v-bind:title="'Complete'"/>
       <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
-      <b-button v-on:click="labelsVisible = !labelsVisible">
-        {{`${(this.labelsVisible ? "Hide" : "Show")} block labels`}}
-      </b-button>
     </div>
     <div class="header-bar">
       <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
