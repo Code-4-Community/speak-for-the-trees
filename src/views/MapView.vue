@@ -33,10 +33,6 @@
           v-bind:title="'Complete'"/>
       <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
     </div>
-    <div class="header-bar">
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Available blocks</b-button> -->
-      <!-- <b-button v-if="reservedFilter === 0" disabled>Blocks near me</b-button> -->
-    </div>
     <Map
       v-if="showHeader"
       class="map-container-small"
@@ -215,21 +211,8 @@ export default {
   cursor: pointer;
 }
 
-.sub-title {
-  color: lightgray;
-}
-
 .show-text {
   margin-bottom: .75rem;
-}
-
-.header-bar {
-  display: flex;
-  padding: 0 5px;
-  justify-content: flex-end;
-  width: auto;
-  /*background-color: #9AC356;*/
-  margin-bottom: 5px;
 }
 
 .action-row {
