@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
+    <page-title v-bind:returnButton="true" v-bind:title="title" v-bind:subtitle="description" />
     <Board v-bind:individuals="this.individuals" />
   </div>
 </template>
@@ -11,11 +10,13 @@ import { mapState } from 'vuex';
 import Board from '../components/Board.vue';
 import constants from '../constants/leaderboardConstants';
 import { getTeam } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'TeamLeaderboard',
   components: {
     Board,
+    PageTitle,
   },
   data() {
     return {

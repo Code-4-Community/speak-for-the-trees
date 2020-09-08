@@ -4,16 +4,14 @@
       <h3>{{ errorMessage }}</h3>
     </div>
     <div v-if="!error && loaded">
-      <h1>
-        {{ team.name }}
+      <page-title :returnButton="true" :title="team.name" >
         <img v-if="userTeamRole === teamConstants.NONE"
              class="clickable"
              v-b-tooltip.hover.bottom
              title="Apply to Team"
              src="../assets/plus-icon.svg"
              alt="apply to team"
-             @click="applyToThisTeam">
-      </h1>
+             @click="applyToThisTeam"></page-title>
       <p class="basicText">{{ team.bio }}</p>
       <b-alert v-if="userTeamRole === teamConstants.PENDING"
                class="pending-request-alert"
@@ -152,9 +150,13 @@ import {
 import tokenService from '../auth/token';
 import leaderboardConstants from '../constants/leaderboardConstants';
 import teamConstants from '../constants/teamConstants';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'TeamView',
+  components: {
+    PageTitle,
+  },
   data() {
     return {
       team: {},
@@ -381,6 +383,7 @@ export default {
 }
 .clickable {
   cursor: pointer;
+  padding-bottom: 5px;
 }
 .pending-request-alert {
   width: 60%;

@@ -9,7 +9,6 @@
       <b-dropdown-item to="/available-teams">View All Teams</b-dropdown-item>
       <b-dropdown-item to="/all-teams-leaderboard">All Teams Leaderboard</b-dropdown-item>
       <b-dropdown-item to="/all-volunteers-leaderboard">All Volunteers Leaderboard</b-dropdown-item>
-      <b-dropdown-item to="/create">Create Team</b-dropdown-item>
       <b-dropdown-divider v-if="isAdmin" />
       <b-dropdown-item v-if="isAdmin" to="/team-progress">
         Team Progress

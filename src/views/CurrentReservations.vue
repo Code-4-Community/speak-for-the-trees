@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h1>Current Reservations</h1>
-    <p
-    v-if="reservedBlocks.length == 0"
-    class="basicText">You currently don't have any reservations</p>
+    <page-title :returnButton="true" :title="'Current Reservations'" :subtitle="subtitle" />
     <div class="streetContainer" v-for="street in reservedBlocks" :key="street">
       <p class="street">{{ street }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>
@@ -32,13 +29,20 @@ import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks, getReservedBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'CurrentReservations',
+  components: {
+    PageTitle,
+  },
   computed: {
     ...mapState({
       reservedBlocks: 'reservedBlocks',
     }),
+    subtitle() {
+      return this.reservedBlocks.length === 0 ? 'You currently don\'t have any reservations' : '';
+    },
   },
   methods: {
     // sends to the user to the map to edit a reservation
@@ -78,9 +82,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.basicText {
-  color: #C4C4C4;
-}
 .streetContainer {
   display: flex;
   background: #D4EDAA;

@@ -1,54 +1,46 @@
 <template>
   <div>
-    <div class="header" v-if="showHeader">
-      <span class="title">
-        <h1>{{ this.header.headerVal }}</h1>
-        <span class="caret-icon" @click="showHeader=false">
-          <h3 id="hide-title-tt">^</h3>
-        </span>
-        <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
-          Hide Title
-        </b-tooltip>
-      </span>
-      <p class="sub-title">{{ this.header.subTitle }}</p>
-    </div>
+    <page-title :returnButton="true" v-if="showHeader" :subtitle="this.header.subTitle" title="">
+      <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">Reserve New Block ^</h3>
+      <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+        Hide Title
+      </b-tooltip>
+    </page-title>
     <div v-else>
-      <p class="show-text" @click="showHeader=true">show</p>
+      <b-button class="show-text" @click="showHeader=true">show</b-button>
     </div>
-
-    <hr />
+    <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+      Hide Title
+    </b-tooltip>
     <div class="action-row">
       <SelectedStreets
-          class="streets-container"
           v-if="reservedFilter === 0"
           v-bind:onClick="reserveStreets"
           v-bind:streets="streetsToReserve"
           v-bind:setBlocks="setReserveStreets"
           v-bind:title="'Reserve'"/>
       <SelectedStreets
-          class="streets-container"
           v-if="(reservedFilter === 1) || isAdminMap"
           v-bind:onClick="unreserveStreets"
           v-bind:streets="streetsToUnreserve"
           v-bind:setBlocks="setUnreserveStreets"
           v-bind:title="'Unreserve'"/>
       <SelectedStreets
-          class="streets-container"
           v-if="(reservedFilter === 1) || isAdminMap"
           v-bind:onClick="completeStreets"
           v-bind:streets="streetsToComplete"
           v-bind:setBlocks="setCompleteStreets"
           v-bind:title="'Complete'"/>
+      <h3 v-if="reservedFilter === 1 && !!activeStreetId">Block {{this.activeStreetId}}</h3>
     </div>
-
-      <Map
-        v-if="showHeader"
-        class="map-container-small"
-        v-bind:reservedFilter="this.reservedFilter"
-        v-bind:pushStreet="this.pushStreet"
-        v-bind:isAdminMap="this.isAdminMap"
-        v-bind:activeStreetId="this.activeStreetId"
-        ref="map"/>
+    <Map
+      v-if="showHeader"
+      class="map-container-small"
+      v-bind:reservedFilter="this.reservedFilter"
+      v-bind:pushStreet="this.pushStreet"
+      v-bind:isAdminMap="this.isAdminMap"
+      v-bind:activeStreetId="this.activeStreetId"
+      ref="map"/>
 
     <div v-if="!showHeader">
       <Map
@@ -78,12 +70,14 @@ import {
   releaseBlocks,
   finishBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
   name: 'MapPage',
   components: {
     Map,
     SelectedStreets,
+    PageTitle,
   },
   data() {
     return {
@@ -92,6 +86,7 @@ export default {
       streetsToComplete: [],
       modalMessage: null,
       blockListString: null,
+      labelsVisible: true,
       showHeader: true,
     };
   },
@@ -216,42 +211,15 @@ export default {
   cursor: pointer;
 }
 
-.sub-title {
-  color: lightgray;
-}
-
 .show-text {
-  color: lightgray;
-  cursor: pointer;
-  margin-bottom: 0;
-}
-
-.header-bar {
-  display: flex;
-  justify-content: space-evenly;
-  width: auto;
-  background-color: #9AC356;
-  margin-bottom: 5px;
-}
-
-.label-toggle {
-  margin-left: 5px;
+  margin-bottom: .75rem;
 }
 
 .action-row {
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
-}
-.streets-container {
-  padding: 5px;
-}
-
-@media only screen and (max-width: 700px) {
-  .streets-container {
-    width: auto;
-    margin-left: 5px;
-  }
+  flex-wrap: wrap;
 }
 
 .map-container-small {
@@ -273,6 +241,16 @@ export default {
 }
 
 @media only screen and (max-width: 700px) {
+  .map-container {
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  .action-row {
+    justify-content: center;
+    height: 6rem;
+  }
+
   .map-container-large {
     width: 92vw;
   }
