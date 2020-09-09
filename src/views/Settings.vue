@@ -48,7 +48,6 @@
     aria-describedby="email-help-block" v-model="changeEmailRequest.newEmail"></b-input>
    </b-form>
   </b-modal>
-
     <b-modal @ok="changeUsername" id="modal-4" title="Username Change">
       <b-form @submit.stop.prevent>
         <label for="text-password-username">Enter Password</label>

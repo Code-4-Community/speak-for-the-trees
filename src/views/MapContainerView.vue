@@ -1,45 +1,37 @@
 <template>
   <div>
-    <div class="header" v-if="showHeader">
-      <span class="title">
-        <h1>{{ this.header.headerVal }}</h1>
-        <span class="caret-icon" @click="showHeader=false">
-          <h3 id="hide-title-tt">^</h3>
-        </span>
-        <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
-          Hide Title
-        </b-tooltip>
-      </span>
-      <p class="sub-title">{{ this.header.subTitle }}</p>
-    </div>
+    <page-title :returnButton="true" v-if="showHeader" :subtitle="this.header.subTitle" title="">
+      <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">Reserve New Block ^</h3>
+      <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+        Hide Title
+      </b-tooltip>
+    </page-title>
     <div v-else>
-      <p class="show-text" @click="showHeader=true">show</p>
+      <b-button class="show-text" @click="showHeader=true">show</b-button>
     </div>
-
-    <hr />
-
+    <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
+      Hide Title
+    </b-tooltip>
     <div class="action-row">
       <SelectedBlocks
-          class="blocks-container"
           v-if="reservedFilter === 0"
           v-bind:onClick="this.reserveBlocks"
           v-bind:blocks="blocksToReserve"
           v-bind:setBlocks="setReserveBlocks"
           v-bind:title="'Reserve'"/>
       <SelectedBlocks
-          class="blocks-container"
           v-if="(reservedFilter === 1) || isAdminMap"
-          v-bind:onClick="this.releaseBlocks"
+          v-bind:onClick="releaseBlocks"
           v-bind:blocks="blocksToRelease"
           v-bind:setBlocks="setReleaseBlocks"
           v-bind:title="'Release'"/>
       <SelectedBlocks
-          class="blocks-container"
           v-if="(reservedFilter === 1) || isAdminMap"
           v-bind:onClick="this.completeBlocks"
           v-bind:blocks="blocksToComplete"
           v-bind:setBlocks="setCompleteBlocks"
           v-bind:title="'Complete'"/>
+      <h3 v-if="reservedFilter === 1 && !!activeBlockId">Block {{this.activeBlockId}}</h3>
     </div>
 
     <MapComponent
@@ -79,6 +71,7 @@ import {
   releaseBlocks,
   finishBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
 
@@ -87,6 +80,7 @@ export default {
   components: {
     MapComponent,
     SelectedBlocks,
+    PageTitle,
   },
 
   data() {
@@ -96,6 +90,7 @@ export default {
       blocksToComplete: [],
       modalMessage: null,
       blockListString: null,
+      labelsVisible: true,
       showHeader: true,
     };
   },
@@ -238,42 +233,15 @@ export default {
   cursor: pointer;
 }
 
-.sub-title {
-  color: lightgray;
-}
-
 .show-text {
-  color: lightgray;
-  cursor: pointer;
-  margin-bottom: 0;
-}
-
-.header-bar {
-  display: flex;
-  justify-content: space-evenly;
-  width: auto;
-  background-color: #9AC356;
-  margin-bottom: 5px;
-}
-
-.label-toggle {
-  margin-left: 5px;
+  margin-bottom: .75rem;
 }
 
 .action-row {
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
-}
-.blocks-container {
-  padding: 5px;
-}
-
-@media only screen and (max-width: 700px) {
-  .blocks-container {
-    width: auto;
-    margin-left: 5px;
-  }
+  flex-wrap: wrap;
 }
 
 .map-container-small {
@@ -295,6 +263,16 @@ export default {
 }
 
 @media only screen and (max-width: 700px) {
+  .map-container {
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  .action-row {
+    justify-content: center;
+    height: 6rem;
+  }
+
   .map-container-large {
     width: 92vw;
   }

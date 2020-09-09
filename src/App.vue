@@ -29,8 +29,6 @@ export default {
         this.setUser();
         this.$store.dispatch('getUserData');
       });
-    } else {
-      this.$router.push('/login');
     }
   },
 };
