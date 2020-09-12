@@ -9,6 +9,7 @@
 <script>
 import { mapState } from 'vuex';
 import { loadModules } from 'esri-loader';
+import mapConstants from '../constants/mapConstants';
 
 export default {
   name: 'mapComponent',
@@ -37,81 +38,6 @@ export default {
   data: () => ({
     labelsVisible: true,
   }),
-
-  created() {
-    // The action button to add a block to the reserve list
-    this.addToReserve = {
-      title: 'Add',
-      id: 'reserve',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
-    };
-
-    // The action button to add a block to the release list
-    this.addToRelease = {
-      title: 'Release',
-      id: 'release',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
-    };
-
-    // The action button to add a block to the complete list
-    this.addToComplete = {
-      title: 'Complete',
-      id: 'complete',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
-    };
-
-    // Sets the colors of blocks based on their reservation status
-    this.blockRenderer = {
-      // https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html#renderer
-      // https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-UniqueValueRenderer.html
-      type: 'unique-value',
-      field: 'RESERVED',
-      defaultSymbol: { type: 'simple-fill' },
-      uniqueValueInfos: [
-        {
-          value: '0',
-          symbol: {
-            type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(195, 195, 195, 0.5)',
-          },
-        }, {
-          value: '1',
-          symbol: {
-            type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(240, 240, 30, 0.5)',
-          },
-        },
-        {
-          value: '2',
-          symbol: {
-            type: 'simple-fill', // autocasts as new SimpleFillSymbol()
-            color: 'rgba(134, 195, 86, 0.5)',
-          },
-        },
-      ],
-    };
-
-    // Sets the color of the marked private streets
-    this.privateStreetRenderer = {
-      type: 'simple',
-      symbol: {
-        type: 'simple-line',
-        color: 'rgba(200, 0, 0, 1)',
-        width: 2,
-      },
-    };
-
-    // The optional labels of the blocks on the map
-    this.blockLabel = {
-      labelExpressionInfo: { expression: '$feature.ID' },
-      symbol: {
-        type: 'text',
-        color: 'black',
-        haloSize: 1,
-        haloColor: 'white',
-      },
-    };
-  },
 
   computed: {
     ...mapState({
@@ -151,9 +77,9 @@ export default {
     // on which map screen they are viewing
     blockActions() {
       if (this.reservedFilter === 0) {
-        return [this.addToReserve];
+        return [mapConstants.ADD_TO_RESERVE];
       }
-      return [this.addToRelease, this.addToComplete];
+      return [mapConstants.ADD_TO_RELEASE, mapConstants.ADD_TO_COMPLETE];
     },
 
     // contains the information about each of the blocks, each block is a feature.
@@ -162,9 +88,9 @@ export default {
       return {
         title: 'blocks',
         url: process.env.VUE_APP_ARCGIS_URL,
-        renderer: this.blockRenderer,
+        renderer: mapConstants.BLOCK_RENDERER,
         popupTemplate: this.blockPopupTemplate,
-        labelingInfo: [this.blockLabel],
+        labelingInfo: [mapConstants.BLOCK_LABEL],
         labelsVisible: this.labelsVisible,
         definitionExpression: this.blockFilter,
       };
@@ -176,7 +102,7 @@ export default {
       return {
         title: 'private',
         url: process.env.VUE_APP_PRIVATE_STREETS_URL,
-        renderer: this.privateStreetRenderer,
+        renderer: mapConstants.PRIVATE_STREET_RENDERER,
       };
     },
   },
@@ -202,7 +128,7 @@ export default {
       loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
         .then(([ArcGISMap, MapView, FeatureLayer, Locate]) => {
           const map = new ArcGISMap({
-            basemap: 'gray',
+            basemap: 'satellite',
           });
 
           // Main object with information about the map display
@@ -303,6 +229,7 @@ export default {
       this.view.container = null;
     }
   },
+
   watch: {
     reservedBlocks() {
       this.loadMap();
