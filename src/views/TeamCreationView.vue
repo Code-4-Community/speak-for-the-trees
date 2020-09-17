@@ -144,7 +144,44 @@ export default {
       submitted: false,
     };
   },
+
+  computed: {
+
+    dateToday() {
+      return new Date();
+    },
+
+    validateName() {
+      if (!this.submitted) {
+        return null;
+      }
+      return this.form.teamName.length >= 4;
+    },
+
+    validateBio() {
+      if (!this.submitted) {
+        return null;
+      }
+      return this.form.teamBio.length > 0;
+    },
+
+    validateGoal() {
+      if (!this.submitted) {
+        return null;
+      }
+      return Number(this.form.teamGoal) > 0 && Number.isInteger(Number(this.form.teamGoal));
+    },
+
+    validateDate() {
+      if (!this.submitted) {
+        return null;
+      }
+      return this.form.teamDate !== '';
+    },
+  },
+
   methods: {
+
     onSubmit(evt) {
       evt.preventDefault();
       this.submitted = true;
@@ -163,9 +200,11 @@ export default {
         });
       }
     },
+
     validate() {
       return this.validateName && this.validateBio && this.validateGoal && this.validateDate;
     },
+
     // creates an object holding the names and email addresses of the invitees
     getInvites() {
       const result = [];
@@ -176,35 +215,6 @@ export default {
         i += 1;
       }
       return result;
-    },
-  },
-  computed: {
-    dateToday() {
-      return new Date();
-    },
-    validateName() {
-      if (!this.submitted) {
-        return null;
-      }
-      return this.form.teamName.length >= 4;
-    },
-    validateBio() {
-      if (!this.submitted) {
-        return null;
-      }
-      return this.form.teamBio.length > 0;
-    },
-    validateGoal() {
-      if (!this.submitted) {
-        return null;
-      }
-      return Number(this.form.teamGoal) > 0 && Number.isInteger(Number(this.form.teamGoal));
-    },
-    validateDate() {
-      if (!this.submitted) {
-        return null;
-      }
-      return this.form.teamDate !== '';
     },
   },
 };

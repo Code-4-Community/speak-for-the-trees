@@ -153,6 +153,7 @@ import teamConstants from '../constants/teamConstants';
 import PageTitle from '../components/PageTitle.vue';
 
 export default {
+
   name: 'TeamView',
   components: {
     PageTitle,
@@ -168,10 +169,13 @@ export default {
       teamConstants,
     };
   },
+
   computed: {
+
     userTeamRole() {
       return this.team.userTeamRole;
     },
+
     // format the target date into the appropriate format
     formattedTargetDate() {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -180,20 +184,24 @@ export default {
         { value: ye }] = dtf.formatToParts(this.team.goalCompleteDate);
       return `${mo}/${da}/${ye}`;
     },
+
     // calculates the percentage of blocks completed
     progressPercent() {
       return Math.round(this.team.blocksCompleted / this.team.goal * 100, 2);
     },
+
     // calculates the width of the progress bar
     barStyle() {
       return {
         '--barWidth': `${this.progressPercent}%`,
       };
     },
+
     currentUserID() {
       return tokenService.getUserID();
     },
   },
+
   mounted() {
     getTeam(this.$route.params.id).then((response) => {
       this.team = response.data;
@@ -204,7 +212,9 @@ export default {
       this.loaded = true;
     });
   },
+
   methods: {
+
     toThisTeamLeaderboard() {
       this.$router.push({
         name: leaderboardConstants.INDIVIDUAL_TEAM_LEADERBOARD,
@@ -213,6 +223,7 @@ export default {
         },
       });
     },
+
     fetchApplicants() {
       getApplicants(this.$route.params.id).then((res) => {
         this.applicants = res.data.applicants;
@@ -223,9 +234,11 @@ export default {
         this.applicantsLoaded = true;
       });
     },
+
     removeApplicant(applicantId) {
       this.applicants = this.applicants.filter(app => app.userId !== applicantId);
     },
+
     applyToThisTeam() {
       applyTeam(this.$route.params.id).then(() => {
         this.$store.dispatch('getAllTeams');
@@ -237,6 +250,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     leaveThisTeam() {
       leaveTeam(this.$route.params.id).then(() => {
         this.$store.dispatch('getAllTeams');
@@ -245,6 +259,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     kickThisMember(member) {
       kickMember(this.$route.params.id, member).then(() => {
         getTeam(this.$route.params.id);
@@ -255,6 +270,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     confirmTransfer(member) {
       this.$bvModal.msgBoxConfirm(`Are you sure you would like to make ${member.username} team leader?`, {
         size: 'sm',
@@ -273,6 +289,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     makeLeader(member) {
       transferOwnership(this.$route.params.id, member).then(() => {
         getTeam(this.$route.params.id);
@@ -283,6 +300,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     disbandThisTeam() {
       disbandTeam(this.$route.params.id).then(() => {
         this.$store.dispatch('getAllTeams');
@@ -291,6 +309,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     confirmRejection(applicant) {
       this.$bvModal.msgBoxConfirm(`Are you sure you would like to reject ${applicant.username}?`, {
         size: 'sm',
@@ -309,11 +328,13 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     denyApplicant(applicantId) {
       rejectApplicant(this.$route.params.id, applicantId).then(() => {
         this.removeApplicant(applicantId);
       });
     },
+
     confirmAcceptance(applicant) {
       this.$bvModal.msgBoxConfirm(`Are you sure you would like to accept ${applicant.username}?`, {
         size: 'sm',
@@ -332,6 +353,7 @@ export default {
         this.$bvToast.toast(`Error: ${error.message}.`);
       });
     },
+
     acceptApplicant(applicantId) {
       approveApplicant(this.$route.params.id, applicantId).then(() => {
         this.removeApplicant(applicantId);

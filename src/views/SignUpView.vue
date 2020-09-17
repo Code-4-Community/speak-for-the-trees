@@ -89,7 +89,9 @@ import { mapMutations } from 'vuex';
 import { signup } from '../auth/authAPI';
 
 export default {
+
   name: 'SignupForm',
+
   data() {
     return {
       firstName: '',
@@ -101,10 +103,13 @@ export default {
       errorMessage: '',
     };
   },
+
   methods: {
+
     ...mapMutations({
       setUser: 'setUser',
     }),
+
     onSignUp(e) {
       e.preventDefault();
       this.submitted = true;

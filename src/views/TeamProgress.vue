@@ -45,21 +45,27 @@ import { getTeamsCSV } from '../api/api';
 Vue.use(VueRouter);
 
 export default {
+
   name: 'teamProgress',
+
   data() {
     return {
       privilegeLevelConstants,
     };
   },
+
   computed: {
+
     ...mapState({
       allTeamsAdmin: 'allTeamsAdmin',
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === privilegeLevelConstants.ADMIN;
     },
+
     processedTeams() {
       const processed = this.allTeamsAdmin.map((team) => {
         const today = new Date();
@@ -88,13 +94,16 @@ export default {
       return processed;
     },
   },
+
   methods: {
+
     /**
      * Downloads a CSV that contains all Team/User information.
      */
     downloadTeamsCSV() {
       getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
     },
+
     /**
      * Forces a download of the given data under the given file name.
      */
@@ -108,6 +117,7 @@ export default {
       document.body.removeChild(link);
     },
   },
+
   mounted() {
     if (this.allTeamsAdmin?.length === 0) {
       this.$store.dispatch('getAllTeamsAdmin');

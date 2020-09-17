@@ -57,11 +57,13 @@ import {
 import PageTitle from '../components/PageTitle.vue';
 
 export default {
+
   name: 'ReservationsOverview',
   components: {
     PageTitle,
   },
   methods: {
+
     resetToOpen(block) {
       releaseBlocks({ blocks: [block] }).then(() => {
         this.$store.dispatch('getReservedBlocksAdmin');
@@ -69,6 +71,7 @@ export default {
         this.$bvToast.toast(`Error in opening of ${block}.`);
       });
     },
+
     completeBlock(block) {
       finishBlocks({ blocks: [block] }).then(() => {
         this.$store.dispatch('getReservedBlocksAdmin');
@@ -76,12 +79,14 @@ export default {
         this.$bvToast.toast(`Error in completion of ${block}.`);
       });
     },
+
     viewReservation(blockId) {
       this.$router.push({
         name: 'AdminMap',
-        params: { activeStreetId: blockId },
+        params: { activeBlockId: blockId },
       });
     },
+
     formatDate(date) {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
       const [{ value: mo },,
@@ -89,12 +94,14 @@ export default {
         { value: ye }] = dtf.formatToParts(date);
       return `${mo}/${da}/${ye}`;
     },
+
     /**
      * Downloads a CSV that contains all Block/User information.
      */
     downloadBlocksCSV() {
       getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
     },
+
     /**
      * Forces a download of the given data under the given file name.
      */
@@ -108,11 +115,13 @@ export default {
       document.body.removeChild(link);
     },
   },
+
   computed: {
     ...mapState({
       allReservedBlocks: 'allReservedBlocks',
     }),
   },
+
   mounted() {
     this.$store.dispatch('getReservedBlocksAdmin');
   },
