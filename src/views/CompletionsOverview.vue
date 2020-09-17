@@ -2,7 +2,7 @@
   <div>
     <h1>Completed Blocks</h1>
     <p
-    v-if="allCompletedBlocks.blocks.length == 0"
+    v-if="allCompletedBlocks.length == 0"
     class="basicText">No blocks have been completed</p>
     <div v-else class="reservation-table">
       <b-row id="header" class="text-left">
@@ -11,7 +11,7 @@
         <b-col cols="4">Completion Date</b-col>
         <b-col cols="2" align-self="center"></b-col>
       </b-row>
-      <b-row class="text-left" v-for="block in allCompletedBlocks.blocks" :key="block.fid">
+      <b-row class="text-left" v-for="block in allCompletedBlocks" :key="block.fid">
         <b-col class="ids" cols="2" align-self="center">{{ block.id }}</b-col>
         <b-col cols="4" align-self="center">{{ block.username }}</b-col>
         <b-col cols="4" align-self="center">{{ formatDate(block.dateUpdated) }}</b-col>
@@ -37,7 +37,7 @@
         </b-col>
       </b-row>
     </div>
-    <b-button v-if="allCompletedBlocks.blocks.length > 0"
+    <b-button v-if="allCompletedBlocks.length > 0"
               class="download"
               @click="downloadBlocksCSV">
       Download Blocks CSV
