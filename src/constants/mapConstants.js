@@ -9,7 +9,7 @@ const ADD_TO_RESERVE = {
 const ADD_TO_RELEASE = {
   title: 'Release',
   id: 'release',
-  image: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Checkmark.svg',
+  image: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Red-subtract-icon-png-13.png',
 };
 
 // The action button to add a block to the complete list

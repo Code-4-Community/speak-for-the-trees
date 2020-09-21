@@ -1,7 +1,9 @@
 <template>
   <div>
     <page-title :returnButton="true" v-if="showHeader" :subtitle="this.header.subTitle" title="">
-      <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">Reserve New Block ^</h3>
+      <h3 id="hide-title-tt" class="caret-icon" @click="showHeader=false">
+        {{this.header.headerVal}} ^
+        </h3>
       <b-tooltip target="hide-title-tt" triggers="hover" placement="bottom">
         Hide Title
       </b-tooltip>
