@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="isFirstNameLoaded">
     <h1 v-if="firstLogIn">Welcome {{ userData.firstName }}!</h1>
     <h1 v-else>Welcome back, {{ userData.firstName }}!</h1>
     <b-button-group vertical>
@@ -32,9 +32,15 @@ export default {
     },
   },
 
-  computed: mapState({
-    userData: 'userData',
-  }),
+  computed: {
+    ...mapState({
+      userData: 'userData',
+    }),
+
+    isFirstNameLoaded() {
+      return !!this.userData.firstName;
+    },
+  },
 
   methods: {
 
