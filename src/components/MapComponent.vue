@@ -128,7 +128,7 @@ export default {
       loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/FeatureLayer', 'esri/widgets/Locate'], { css: true })
         .then(([ArcGISMap, MapView, FeatureLayer, Locate]) => {
           const map = new ArcGISMap({
-            basemap: 'satellite',
+            basemap: 'national-geographic',
           });
 
           // Main object with information about the map display
