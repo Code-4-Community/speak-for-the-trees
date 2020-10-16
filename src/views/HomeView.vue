@@ -11,6 +11,11 @@
       <img src="../assets/trophy.svg" alt="trophy">
     </router-link>
   </div>
+  <div v-else>
+    <h3>Looks like you have been logged out.
+      <a href="/login">Click here</a>
+      to log back in</h3>
+  </div>
 </template>
 
 <script>
