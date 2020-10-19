@@ -68,6 +68,28 @@
       </b-form>
     </b-modal>
 
+    <b-modal id="modal-5" title="Add Admin">
+      <label>Add Admin Email</label>
+      <b-input type="email" id="new-admin-email"
+               aria-describedby="new-admin-help-block-email"/>
+      <b-form-text id="new-admin-help-block-email">
+        Enter a the new Admin's email
+      </b-form-text>
+      <label>Add Admin Password</label>
+      <b-input type="password" id="new-admin-password"
+               aria-describedby="new-admin-help-block-password"/>
+      <b-form-text id="new-admin-help-block-password">
+        Enter a the new Admin's password
+      </b-form-text>
+      <label>Your Password</label>
+      <b-input type="password" id="admin-password"
+               aria-describedby="admin-password-help-block"/>
+      <b-form-text id="admin-password-help-block">
+        Enter your password to verify it is you.
+      </b-form-text>
+    </b-modal>
+
+
 <h3>{{ userData.firstName }} {{ userData.lastName }}</h3>
     <b-list-group :flush='true'>
       <b-list-group-item>Username: {{ userData.username }}</b-list-group-item>
@@ -86,6 +108,11 @@
   <b-list-group-item>
     <b-button class="standardButton" v-b-modal.modal-2 block>
     Change Password
+    </b-button>
+  </b-list-group-item>
+  <b-list-group-item v-if="isAdmin">
+    <b-button v-b-modal.modal-5 block variant="danger">
+      Add New Admin
     </b-button>
   </b-list-group-item>
   <b-list-group-item v-if="!isAdmin">
