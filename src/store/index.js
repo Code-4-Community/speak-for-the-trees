@@ -53,10 +53,10 @@ export default new Vuex.Store({
       state.reservedBlocks = blockData;
     },
     setReservedBlocksAdmin(state, blockData) {
-      state.allReservedBlocks = blockData;
+      state.allReservedBlocks = blockData.blocks;
     },
     setCompletedBlocksAdmin(state, blockData) {
-      state.allCompletedBlocks = blockData;
+      state.allCompletedBlocks = blockData.blocks;
     },
   },
   actions: {

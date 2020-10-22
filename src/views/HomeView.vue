@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if="isFirstNameLoaded">
     <h1 v-if="firstLogIn">Welcome {{ userData.firstName }}!</h1>
     <h1 v-else>Welcome back, {{ userData.firstName }}!</h1>
     <b-button-group vertical>
@@ -11,6 +11,11 @@
       <img src="../assets/trophy.svg" alt="trophy">
     </router-link>
   </div>
+  <div v-else>
+    <h3>Looks like you have been logged out.
+      <a href="/login">Click here</a>
+      to log back in</h3>
+  </div>
 </template>
 
 <script>
@@ -21,7 +26,9 @@ import { mapState } from 'vuex';
 Vue.use(VueRouter);
 
 export default {
+
   name: 'home',
+
   props: {
     firstLogIn: {
       type: Boolean,
@@ -29,18 +36,29 @@ export default {
       required: false,
     },
   },
-  computed: mapState({
-    userData: 'userData',
-  }),
+
+  computed: {
+    ...mapState({
+      userData: 'userData',
+    }),
+
+    isFirstNameLoaded() {
+      return !!this.userData.firstName;
+    },
+  },
+
   methods: {
+
     // sends to the user to the map to make a reservation
     toNewReservations() {
       this.$router.push('/reserve/new');
     },
+
     // sends the user to their current reservations
     toCurrentReservations() {
       this.$router.push('/current-reservations');
     },
+
     // sends the teams page, either available teams or their own team page
     toTeams() {
       this.$router.push('/available-teams');

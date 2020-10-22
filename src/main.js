@@ -11,7 +11,7 @@ import store from './store';
 
 
 Sentry.init({
-  dsn: 'https://fa24905cafbf450193ab19955a6c2a24@o433473.ingest.sentry.io/5479191',
+  dsn: process.env.VUE_APP_SENTRY_DSN,
   integrations: [
     new VueIntegration({
       Vue,

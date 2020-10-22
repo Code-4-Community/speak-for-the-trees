@@ -1,25 +1,22 @@
 <template>
   <div>
-    <h1>Current Reservations</h1>
-    <p
-    v-if="reservedBlocks.length == 0"
-    class="basicText">You currently don't have any reservations</p>
-    <div class="streetContainer" v-for="street in reservedBlocks" :key="street">
-      <p class="street">{{ street }}</p>
+    <page-title :returnButton="true" :title="'Current Reservations'" :subtitle="subtitle" />
+    <div class="blockContainer" v-for="block in reservedBlocks" :key="block">
+      <p class="block">{{ block }}</p>
       <b-dropdown size="sm" dropleft variant="link" toggle-class="text-decoration-none" no-caret>
         <template v-slot:button-content>
           <img src="../assets/ellipsis-icon.svg" alt="actions" />
         </template>
         <b-dropdown-item
-        @click="completeStreet(street)">
+        @click="completeBlock(block)">
           Complete
         </b-dropdown-item>
         <b-dropdown-item
-        @click="releaseStreet(street)">
+        @click="releaseBlock(block)">
           Release
         </b-dropdown-item>
         <b-dropdown-item
-        @click="viewReservation(street)">
+        @click="viewReservation(block)">
           View reservation
         </b-dropdown-item>
       </b-dropdown>
@@ -32,45 +29,58 @@ import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks, getReservedBlocks,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
+
   name: 'CurrentReservations',
+  components: {
+    PageTitle,
+  },
   computed: {
     ...mapState({
       reservedBlocks: 'reservedBlocks',
     }),
+    subtitle() {
+      return this.reservedBlocks.length === 0 ? 'You currently don\'t have any reservations' : '';
+    },
   },
+
   methods: {
+
     // sends to the user to the map to edit a reservation
     viewReservation(id) {
       this.$router.push({
         name: 'ReserveEdit',
-        params: { activeStreetId: id, editmode: 'edit' },
+        params: { activeBlockId: id, editmode: 'edit' },
       });
     },
-    completeStreet(street) {
-      finishBlocks({ blocks: [street] }).then(() => {
-        this.$bvToast.toast(`Successful completion of ${street}`);
+
+    completeBlock(block) {
+      finishBlocks({ blocks: [block] }).then(() => {
+        this.$bvToast.toast(`Successful completion of ${block}`);
         return getReservedBlocks();
       }).then((reservedBlocks) => {
         this.reservedBlocks = reservedBlocks.data;
       }).catch(() => {
-        this.$bvToast.toast(`Error in completion of ${street}.`);
+        this.$bvToast.toast(`Error in completion of ${block}.`);
       });
     },
-    releaseStreet(street) {
-      releaseBlocks({ blocks: [street] }).then(() => {
+
+    releaseBlock(block) {
+      releaseBlocks({ blocks: [block] }).then(() => {
         this.$bvToast.toast(
-          `Successful release of ${street}. You are no longer responsible for this street`,
+          `Successful release of ${block}. You are no longer responsible for this block`,
         );
         return getReservedBlocks();
       }).then((reservedBlocks) => {
         this.reservedBlocks = reservedBlocks.data;
       }).catch(() => {
-        this.$bvToast.toast(`Error in releasing of ${street}.`);
+        this.$bvToast.toast(`Error in releasing of ${block}.`);
       });
     },
   },
+
   mounted() {
     this.$store.dispatch('getReservedBlocks');
   },
@@ -78,10 +88,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.basicText {
-  color: #C4C4C4;
-}
-.streetContainer {
+.blockContainer {
   display: flex;
   background: #D4EDAA;
   padding: 0.5rem 0 0.5rem 0;

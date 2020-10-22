@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 import Login from '../views/LoginView.vue';
 import SignUp from '../views/SignUpView.vue';
-import MapView from '../views/MapView.vue';
+import MapContainerView from '../views/MapContainerView.vue';
 import HomeView from '../views/HomeView.vue';
 import LeaderboardView from '../views/LeaderboardView.vue';
 import TeamCreation from '../views/TeamCreationView.vue';
@@ -13,6 +13,7 @@ import AvailableTeams from '../views/AvailableTeams.vue';
 import TeamProgress from '../views/TeamProgress.vue';
 import ReservationsOverview from '../views/ReservationsOverview.vue';
 import CompletionsOverview from '../views/CompletionsOverview.vue';
+import ForgotPassword from '../views/ForgotPassword.vue';
 import Settings from '../views/Settings.vue';
 
 import tokenService from '../auth/token';
@@ -95,26 +96,31 @@ const routes = [
     name: 'CompletionsOverview',
     component: CompletionsOverview,
   },
-  // editmode can either be set to 'new' if filtering for unreserved streets
-  // or can be set to 'edit' if using a provided list of streets
+  // editmode can either be set to 'new' if filtering for open blocks
+  // or can be set to 'edit' if using a provided list of blocks
   {
     // editmode will be set to 'new'
     path: '/reserve/:editmode',
     name: 'ReserveNew',
-    component: MapView,
+    component: MapContainerView,
     props: true,
   },
   {
     path: '/reserve/:editmode',
     name: 'ReserveEdit',
-    component: MapView,
+    component: MapContainerView,
     props: true,
   },
   {
     path: '/admin-map',
     name: 'AdminMap',
-    component: MapView,
+    component: MapContainerView,
     props: true,
+  },
+  {
+    path: '/forgot-password-reset/:token',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
   },
   {
     path: '/*',
@@ -130,7 +136,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (tokenService.getPrivilegeLevel() < 0) {
-    if (to.name === 'Login' || to.name === 'SignUp' || to.path === '/forgot-password-reset/*') next();
+    if (to.name === 'Login' || to.name === 'SignUp' || to.name === 'ForgotPassword') next();
     else next({ name: 'Login' });
   } else next();
   if (tokenService.getPrivilegeLevel() !== privilegeConstants.ADMIN) {

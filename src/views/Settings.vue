@@ -48,7 +48,6 @@
     aria-describedby="email-help-block" v-model="changeEmailRequest.newEmail"></b-input>
    </b-form>
   </b-modal>
-
     <b-modal @ok="changeUsername" id="modal-4" title="Username Change">
       <b-form @submit.stop.prevent>
         <label for="text-password-username">Enter Password</label>
@@ -106,16 +105,22 @@ import {
 import constants from '../auth/constants';
 
 export default {
+
   name: 'Profile',
+
   computed: {
+
     ...mapState({
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === constants.ADMIN;
     },
+
   },
+
   data() {
     return {
       passwords: {
@@ -132,7 +137,9 @@ export default {
       },
     };
   },
+
   methods: {
+
     changePassword() {
       changePassword(this.passwords).then(() => {
         this.$bvToast.toast('Successfully changed password!');

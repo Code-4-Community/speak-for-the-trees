@@ -1,17 +1,27 @@
 <template>
   <div>
-    <h1>All Reservations</h1>
+    <page-title :title="'All Reservations'" />
     <p
-    v-if="allReservedBlocks.blocks.length === 0"
+    v-if="allReservedBlocks.length === 0"
     class="basicText">There are currently no reservations</p>
     <div v-else class="reservation-table">
+    <p class="greenText"> Total Reserved Blocks: {{ totalRows }}</p>
+    <b-pagination
+        v-model="currentPage"
+        :total-rows="totalRows"
+        :per-page="perPage"
+        aria-controls="reservedBlock"
+      >
+        <template v-slot:first-text><span class="greenText">First</span></template>
+        <template v-slot:last-text><span class="greenText">Last</span></template>
+      </b-pagination>
       <b-row id="header" class="text-left">
         <b-col class="ids" cols="2">ID</b-col>
         <b-col cols="4">User</b-col>
         <b-col cols="4">Reservation Date</b-col>
         <b-col cols="2" align-self="start"></b-col>
       </b-row>
-      <b-row class="text-left" v-for="block in allReservedBlocks.blocks" :key="block.id">
+      <b-row class="text-left" id="reservedBlock" v-for="block in displayBlocks" :key="block.id">
         <b-col class="ids" cols="2" align-self="center">{{ block.id }}</b-col>
         <b-col cols="4" align-self="center">{{ block.username }}</b-col>
         <b-col cols="4" align-self="center">{{ formatDate(block.dateUpdated) }}</b-col>
@@ -41,7 +51,7 @@
         </b-col>
       </b-row>
     </div>
-    <b-button v-if="allReservedBlocks.blocks.length > 0"
+    <b-button v-if="allReservedBlocks.length > 0"
               class="download"
               @click="downloadBlocksCSV">
       Download Blocks CSV
@@ -54,10 +64,16 @@ import { mapState } from 'vuex';
 import {
   finishBlocks, releaseBlocks, getBlocksCSV,
 } from '../api/api';
+import PageTitle from '../components/PageTitle.vue';
 
 export default {
+
   name: 'ReservationsOverview',
+  components: {
+    PageTitle,
+  },
   methods: {
+
     resetToOpen(block) {
       releaseBlocks({ blocks: [block] }).then(() => {
         this.$store.dispatch('getReservedBlocksAdmin');
@@ -65,6 +81,7 @@ export default {
         this.$bvToast.toast(`Error in opening of ${block}.`);
       });
     },
+
     completeBlock(block) {
       finishBlocks({ blocks: [block] }).then(() => {
         this.$store.dispatch('getReservedBlocksAdmin');
@@ -72,12 +89,14 @@ export default {
         this.$bvToast.toast(`Error in completion of ${block}.`);
       });
     },
+
     viewReservation(blockId) {
       this.$router.push({
         name: 'AdminMap',
-        params: { activeStreetId: blockId },
+        params: { activeBlockId: blockId },
       });
     },
+
     formatDate(date) {
       const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
       const [{ value: mo },,
@@ -85,12 +104,14 @@ export default {
         { value: ye }] = dtf.formatToParts(date);
       return `${mo}/${da}/${ye}`;
     },
+
     /**
      * Downloads a CSV that contains all Block/User information.
      */
     downloadBlocksCSV() {
       getBlocksCSV().then(resp => this.forceFileDownload(resp.data, 'Blocks Export Data'));
     },
+
     /**
      * Forces a download of the given data under the given file name.
      */
@@ -104,11 +125,30 @@ export default {
       document.body.removeChild(link);
     },
   },
+
   computed: {
     ...mapState({
       allReservedBlocks: 'allReservedBlocks',
     }),
+
+    totalRows() {
+      return this.allReservedBlocks.length;
+    },
+
+    displayBlocks() {
+      return this.allReservedBlocks.slice(
+        (this.currentPage - 1) * this.perPage, this.currentPage * this.perPage,
+      );
+    },
   },
+
+  data() {
+    return {
+      currentPage: 1,
+      perPage: 15,
+    };
+  },
+
   mounted() {
     this.$store.dispatch('getReservedBlocksAdmin');
   },
@@ -157,5 +197,9 @@ button.download, button.download:hover, button.download:focus {
   padding: 0.5rem;
   margin: 1rem 5vw 0 0;
   float: right;
+}
+.greenText {
+  color: #086302;
+  font-weight: bold;
 }
 </style>

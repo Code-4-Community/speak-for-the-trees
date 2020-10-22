@@ -1,12 +1,8 @@
 <template>
   <div class="cont">
-    <div>
-      <h1>Your Teams</h1>
-      <p
-          class="basicText"
-          v-if="myTeams.length === 0">
-        You aren't on a team yet, check out some below!
-      </p>
+    <page-title :returnButton="true"
+                :title="'Your Teams'"
+                :subtitle="subtitle" />
       <router-link
           v-for="team in myTeams"
           :to="`/team/${team.id}`"
@@ -15,7 +11,7 @@
           {{ team.name }}
         </p>
       </router-link>
-    </div>
+      <h3>Available teams</h3>
     <div v-if="pendingTeams.length > 0">
       <h1>Pending Applications</h1>
       <router-link
@@ -28,7 +24,6 @@
       </router-link>
     </div>
     <div>
-      <h1>Available Teams</h1>
       <p
           class="basicText"
           v-if="availableTeams.length === 0">
@@ -58,6 +53,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
+import PageTitle from '../components/PageTitle.vue';
 import { getTeamsCSV } from '../api/api';
 import privilegeLevelConstants from '../auth/constants';
 import teamConstants from '../constants/teamConstants';
@@ -65,43 +61,60 @@ import teamConstants from '../constants/teamConstants';
 Vue.use(VueRouter);
 
 export default {
+
   name: 'availableTeams',
+  components: {
+    PageTitle,
+  },
   data() {
     return {
       privilegeLevelConstants,
     };
   },
+
   computed: {
+
     ...mapState({
       teams: 'teams',
       userData: 'userData',
       privilegeLevel: 'privilegeLevel',
     }),
+
     isAdmin() {
       return this.privilegeLevel === privilegeLevelConstants.ADMIN;
     },
+
     myTeams() {
       return this.teams.filter(e => [teamConstants.NONE, teamConstants.PENDING]
         .indexOf(e.userTeamRole) === -1);
     },
+
     availableTeams() {
       return this.teams.filter(e => [teamConstants.NONE].indexOf(e.userTeamRole) !== -1);
     },
+
     pendingTeams() {
       return this.teams.filter(e => [teamConstants.PENDING].indexOf(e.userTeamRole) !== -1);
     },
+    subtitle() {
+      return this.myTeams.length === 0 ? 'You aren\'t on a team yet, check out some below!' : '';
+    },
   },
+
   methods: {
+
     // sends the user to the create team page
     createTeam() {
       this.$router.push('/create');
     },
+
     /**
      * Downloads a CSV that contains all Team/User information.
      */
     downloadTeamsCSV() {
       getTeamsCSV().then(resp => this.forceFileDownload(resp.data, 'Teams Export Data'));
     },
+
     /**
      * Forces a download of the given data under the given file name.
      */
@@ -115,6 +128,7 @@ export default {
       document.body.removeChild(link);
     },
   },
+
   mounted() {
     if (this.teams?.length === 0) this.$store.dispatch('getAllTeams');
   },
