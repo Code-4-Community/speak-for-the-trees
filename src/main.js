@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import * as Sentry from '@sentry/browser'; // https://docs.sentry.io/platforms/javascript/vue/
 import { Vue as VueIntegration } from '@sentry/integrations';
+import { Integrations } from '@sentry/tracing';
 import 'bootstrap/dist/css/bootstrap.css'; // eslint-disable-line
 import 'bootstrap-vue/dist/bootstrap-vue.css'; // eslint-disable-line
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'; // eslint-disable-line
@@ -11,7 +12,17 @@ import store from './store';
 
 Sentry.init({
   dsn: process.env.VUE_APP_SENTRY_DSN,
-  integrations: [new VueIntegration({ Vue, attachProps: true })],
+  integrations: [
+    new VueIntegration({
+      Vue,
+      tracing: true,
+    }),
+    new Integrations.BrowserTracing(),
+  ],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
 });
 
 // Install BootstrapVue
