@@ -68,25 +68,23 @@
       </b-form>
     </b-modal>
 
-    <b-modal id="modal-5" title="Add Admin">
-      <label>Add Admin Email</label>
-      <b-input type="email" id="new-admin-email"
-               aria-describedby="new-admin-help-block-email"/>
-      <b-form-text id="new-admin-help-block-email">
-        Enter a the new Admin's email
-      </b-form-text>
-      <label>Add Admin Password</label>
-      <b-input type="password" id="new-admin-password"
-               aria-describedby="new-admin-help-block-password"/>
-      <b-form-text id="new-admin-help-block-password">
-        Enter a the new Admin's password
-      </b-form-text>
-      <label>Your Password</label>
-      <b-input type="password" id="admin-password"
-               aria-describedby="admin-password-help-block"/>
-      <b-form-text id="admin-password-help-block">
-        Enter your password to verify it is you.
-      </b-form-text>
+    <b-modal @ok="addAdmin" id="modal-5" title="Add Admin">
+      <b-form @submit.stop.prevent>
+        <label for="new-admin-email">Add Admin Email</label>
+        <b-input type="email" id="new-admin-email"
+                 aria-describedby="new-admin-help-block-email"
+                 v-model="makeNewAdminRequest.newAdminEmail"></b-input>
+        <b-form-text id="new-admin-help-block-email">
+          Enter a the new Admin's email
+        </b-form-text>
+        <label for="admin-password">Your Password</label>
+        <b-input type="password" id="admin-password"
+                 aria-describedby="admin-password-help-block"
+                 v-model="makeNewAdminRequest.password"></b-input>
+        <b-form-text id="admin-password-help-block">
+          Enter your password to verify it is you.
+        </b-form-text>
+      </b-form>
     </b-modal>
 
 
@@ -127,7 +125,7 @@
 <script>
 import { mapState } from 'vuex';
 import {
-  changePassword, changeEmail, deleteUser, changeUsername,
+  changePassword, changeEmail, deleteUser, changeUsername, makeUserAdmin,
 } from '../api/api';
 import constants from '../auth/constants';
 
@@ -161,6 +159,10 @@ export default {
       changeUsernameRequest: {
         password: '',
         newUsername: '',
+      },
+      makeNewAdminRequest: {
+        newAdminEmail: '',
+        password: '',
       },
     };
   },
@@ -215,6 +217,21 @@ export default {
         this.$router.push('/login');
       }).catch(() => {
         this.$bvToast.toast('Failed to deactivate your account');
+      });
+    },
+
+    addAdmin() {
+      makeUserAdmin(this.makeNewAdminRequest).then(() => {
+        this.$bvToast.toast('Successfully created new admin!');
+        this.$store.dispatch('getUserData');
+      }).catch((error) => {
+        const errorMsg = error.response?.data || error;
+        this.$bvToast.toast(`Failed to create new admin: ${errorMsg}`);
+      }).finally(() => {
+        this.makeNewAdminRequest = {
+          newAdminEmail: '',
+          password: '',
+        };
       });
     },
   },
