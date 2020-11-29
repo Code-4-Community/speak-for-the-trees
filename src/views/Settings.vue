@@ -75,7 +75,7 @@
                  aria-describedby="new-admin-help-block-email"
                  v-model="makeNewAdminRequest.newAdminEmail"></b-input>
         <b-form-text id="new-admin-help-block-email">
-          Enter a the new Admin's email
+          Enter the new admin's email
         </b-form-text>
         <label for="admin-password">Your Password</label>
         <b-input type="password" id="admin-password"
@@ -109,7 +109,7 @@
     </b-button>
   </b-list-group-item>
   <b-list-group-item v-if="isAdmin">
-    <b-button v-b-modal.modal-5 block variant="danger">
+    <b-button class="standardButton" v-b-modal.modal-5 block>
       Add New Admin
     </b-button>
   </b-list-group-item>
