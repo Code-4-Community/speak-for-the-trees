@@ -223,10 +223,8 @@ export default {
     addAdmin() {
       makeUserAdmin(this.makeNewAdminRequest).then(() => {
         this.$bvToast.toast('Successfully created new admin!');
-        this.$store.dispatch('getUserData');
       }).catch((error) => {
-        const errorMsg = error.response?.data || error;
-        this.$bvToast.toast(`Failed to create new admin: ${errorMsg}`);
+        this.$bvToast.toast(`Failed to create new admin: ${error}`);
       }).finally(() => {
         this.makeNewAdminRequest = {
           newAdminEmail: '',
