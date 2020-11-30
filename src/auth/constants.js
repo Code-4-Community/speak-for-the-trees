@@ -1,8 +1,8 @@
 
 const none = -1;
-const standard = 1;
-const admin = 2;
-const superAdmin = 3;
+const standard = 0;
+const admin = 1;
+const superAdmin = 2;
 
 const privilegeLevel = {
   NONE: none,
